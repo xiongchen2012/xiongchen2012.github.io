@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Openssl on Deathdealer-Archives</title>
+    <link>https://xiongchen2012.github.io/tags/openssl/</link>
+    <description>Recent content in Openssl on Deathdealer-Archives</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <copyright>© This post is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License，please give source if you likes to quote or reproduce.</copyright>
+    <lastBuildDate>Sun, 28 Jan 2018 17:04:13 +0800</lastBuildDate>
+    
+	<atom:link href="https://xiongchen2012.github.io/tags/openssl/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Tomcat with native Apache Portable Runtime</title>
+      <link>https://xiongchen2012.github.io/post/native-tomcat/</link>
+      <pubDate>Sun, 28 Jan 2018 17:04:13 +0800</pubDate>
+      
+      <guid>https://xiongchen2012.github.io/post/native-tomcat/</guid>
+      <description>Tomcat能使用Apache Portable Runtime提高性能，并能更好地与原生服务器技术相集成。APR是 Apache HTTP Server 2.x的核心。
+ 上传必须的库到服务器 scp /path/to/libssl1.0.0_1.0.2g-1ubuntu1_amd64.deb user@host:/home/user scp /path/to/openssl_1.0.2g-1ubuntu1_amd64.deb user@host:/home/user scp /path/to/libssl-dev_1.0.2g-1ubuntu1_amd64.deb user@host:/home/user
+ 安装TOMCAT并配置APR连接器 // 编译并安装APR scp /path/to/apr-1.5.2.tar.gz user@host:/home/user tar zxvf apr-1.5.2.tar.gz ./configure make make install // 安装APR-Util： scp /path/to/apr-util-1.5.4.tar.gz user@host:/home/user tar zxvf apr-util-1.5.4.tar.gz ./configure --with-apr=/usr/local/apr make make install // 安装TOMCAT APR： cp /opt/apache-tomcat-8.0.32/bin/tomcat-native.tar.gz /usr/local/src tar zxvf tomcat-native.tar.gz ./configure --with-apr=/usr/local/apr --with-java-home=/opt/jdk1.8 --with-ssl=/usr/bin make make install
+ 配置环境变量 vi /etc/profile export JAVA_HOME=/opt/jdk1.8 export JRE_HOME=/opt/jdk1.8/jre export PATH=$PATH:/opt/jdk1.</description>
+    </item>
+    
+  </channel>
+</rss>
