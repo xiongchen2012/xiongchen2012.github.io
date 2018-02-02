@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://xiongchen2012.github.io/post/introduce-to-cache/</loc>
+    <lastmod>2018-02-01T23:42:21+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://xiongchen2012.github.io/about/</loc>
     <lastmod>2018-01-29T22:48:28+08:00</lastmod>
   </url>
@@ -25,7 +30,7 @@
   
   <url>
     <loc>https://xiongchen2012.github.io/</loc>
-    <lastmod>2018-01-28T17:04:13+08:00</lastmod>
+    <lastmod>2018-02-01T23:42:21+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -37,7 +42,7 @@
   
   <url>
     <loc>https://xiongchen2012.github.io/post/</loc>
-    <lastmod>2018-01-28T17:04:13+08:00</lastmod>
+    <lastmod>2018-02-01T23:42:21+08:00</lastmod>
     <priority>0</priority>
   </url>
   

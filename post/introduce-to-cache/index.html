@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+
+  <meta charset="utf-8" />
+
+  
+  <title>深入分布式缓存读书笔记（1）</title>
+
+  
+  
+
+
+
+
+
+  
+  <meta name="author" content="Xiong Chen" />
+  <meta name="description" content="什么是缓存 书中引用的维基百科对缓存的定义是: 存储在计算机上的一个原始数据复制集，以便于访问
+我看到维基百科上缓存的定义是： 凡是位于速度相差较大的两种硬件之间，用于协调两者数据传输速度差异的结构，均可称之为Cache。  维基百科
+虽然文字上相差较大，但两者综合起来看，缓存可以理解为：
+缓存是原始数据的Copy，目的是为了协调和解决两个系统之间速度差异。让快的系统尽可能不用等待慢的系统处理数据。  PS：呆湾人对缓存的叫法是：快取，个人感觉这个叫法更贴近缓存的本意。
+为什么用缓存  Cache的核心作用是加快系统存取速度，提高系统性能  我认为任何系统不管你有多么复杂，设计的多么精妙，都遵循木桶效应 。对外表现出的性能只取决于最差的一部分。一个复杂的系统中，有的部分处理速度特别快（如内存读写），有的部分处理特别慢（如网络传输），在两者之间设置一个中间层来消弥这种差异，也可以看做在木桶最短的那快板上做了修补。
+ 方便进行系统调优  在系统的各个层次引入缓存，可以有效的优化整体系统性能。
+ 缓存为王，对开发人员来说是性能为王，对用户来说是用户体验为王
+ 缓存的特点  Source of Truth  缓存是原始数据的一份Copy，所以它有Source of Truth，即使缓存里的数据丢了，还可以从原始数据中重建缓存。
+ 缓存能进行CRUD操作   缓存不是一成不变，缓存中的数据应该可以随时被更新，被删除等。缓存和原始数据之间必定存在固定的算法，可以有效管理缓存和原始数据之间的对应关系。
+ 缓存也可能是持久化的  缓存不一定都是存在内存中的（断电就没有了），比如也可以存在SSD等高速存储设备中。
+缓存的分类 按照缓存在系统所处的位置不同可以分为：
+- 客户端缓存
+缓存的内容位于客户端，当缓存中有需要的内容时，不再向服务器去请求。典型的有Web缓存，HybridApp内缓存等
+ 网络缓存
+网络缓存位于客户端和服务端之间，代理客户端和服务端之间的Request和Response。如果缓存中有内容，代理将不再重新向服务端请求内容，直接将缓存内容返回客户端。典型有的Web代理服务器，CDN等
+ 服务端缓存
+缓存内容位于服务端，典型的有Database缓存、平台级的缓存有Ehcache，应用级的有Redis、Memcached等
+  按照缓存的规模和部署方式可以分为： - 单机缓存 - 集群缓存
+ 分布式缓存  关于缓存的一些术语  Cache Hit | Cache Miss  系统接收到客户发起的请求，如果请求的数据恰好在缓存中，称为Cache Hit，反之称为Cache Miss(Miss后如果缓存还有空间的话，会将数据更新到缓存中)" />
+
+  
+  
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@xiongchen2015" />
+    <meta name="twitter:title" content="深入分布式缓存读书笔记（1）" />
+    <meta name="twitter:description" content="什么是缓存 书中引用的维基百科对缓存的定义是: 存储在计算机上的一个原始数据复制集，以便于访问
+我看到维基百科上缓存的定义是： 凡是位于速度相差较大的两种硬件之间，用于协调两者数据传输速度差异的结构，均可称之为Cache。  维基百科
+虽然文字上相差较大，但两者综合起来看，缓存可以理解为：
+缓存是原始数据的Copy，目的是为了协调和解决两个系统之间速度差异。让快的系统尽可能不用等待慢的系统处理数据。  PS：呆湾人对缓存的叫法是：快取，个人感觉这个叫法更贴近缓存的本意。
+为什么用缓存  Cache的核心作用是加快系统存取速度，提高系统性能  我认为任何系统不管你有多么复杂，设计的多么精妙，都遵循木桶效应 。对外表现出的性能只取决于最差的一部分。一个复杂的系统中，有的部分处理速度特别快（如内存读写），有的部分处理特别慢（如网络传输），在两者之间设置一个中间层来消弥这种差异，也可以看做在木桶最短的那快板上做了修补。
+ 方便进行系统调优  在系统的各个层次引入缓存，可以有效的优化整体系统性能。
+ 缓存为王，对开发人员来说是性能为王，对用户来说是用户体验为王
+ 缓存的特点  Source of Truth  缓存是原始数据的一份Copy，所以它有Source of Truth，即使缓存里的数据丢了，还可以从原始数据中重建缓存。
+ 缓存能进行CRUD操作   缓存不是一成不变，缓存中的数据应该可以随时被更新，被删除等。缓存和原始数据之间必定存在固定的算法，可以有效管理缓存和原始数据之间的对应关系。
+ 缓存也可能是持久化的  缓存不一定都是存在内存中的（断电就没有了），比如也可以存在SSD等高速存储设备中。
+缓存的分类 按照缓存在系统所处的位置不同可以分为：
+- 客户端缓存
+缓存的内容位于客户端，当缓存中有需要的内容时，不再向服务器去请求。典型的有Web缓存，HybridApp内缓存等
+ 网络缓存
+网络缓存位于客户端和服务端之间，代理客户端和服务端之间的Request和Response。如果缓存中有内容，代理将不再重新向服务端请求内容，直接将缓存内容返回客户端。典型有的Web代理服务器，CDN等
+ 服务端缓存
+缓存内容位于服务端，典型的有Database缓存、平台级的缓存有Ehcache，应用级的有Redis、Memcached等
+  按照缓存的规模和部署方式可以分为： - 单机缓存 - 集群缓存
+ 分布式缓存  关于缓存的一些术语  Cache Hit | Cache Miss  系统接收到客户发起的请求，如果请求的数据恰好在缓存中，称为Cache Hit，反之称为Cache Miss(Miss后如果缓存还有空间的话，会将数据更新到缓存中)" />
+    <meta name="twitter:image" content="https://xiongchen2012.github.io/img/avatar.jpg" />
+  
+
+  
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="深入分布式缓存读书笔记（1）" />
+  <meta property="og:description" content="什么是缓存 书中引用的维基百科对缓存的定义是: 存储在计算机上的一个原始数据复制集，以便于访问
+我看到维基百科上缓存的定义是： 凡是位于速度相差较大的两种硬件之间，用于协调两者数据传输速度差异的结构，均可称之为Cache。  维基百科
+虽然文字上相差较大，但两者综合起来看，缓存可以理解为：
+缓存是原始数据的Copy，目的是为了协调和解决两个系统之间速度差异。让快的系统尽可能不用等待慢的系统处理数据。  PS：呆湾人对缓存的叫法是：快取，个人感觉这个叫法更贴近缓存的本意。
+为什么用缓存  Cache的核心作用是加快系统存取速度，提高系统性能  我认为任何系统不管你有多么复杂，设计的多么精妙，都遵循木桶效应 。对外表现出的性能只取决于最差的一部分。一个复杂的系统中，有的部分处理速度特别快（如内存读写），有的部分处理特别慢（如网络传输），在两者之间设置一个中间层来消弥这种差异，也可以看做在木桶最短的那快板上做了修补。
+ 方便进行系统调优  在系统的各个层次引入缓存，可以有效的优化整体系统性能。
+ 缓存为王，对开发人员来说是性能为王，对用户来说是用户体验为王
+ 缓存的特点  Source of Truth  缓存是原始数据的一份Copy，所以它有Source of Truth，即使缓存里的数据丢了，还可以从原始数据中重建缓存。
+ 缓存能进行CRUD操作   缓存不是一成不变，缓存中的数据应该可以随时被更新，被删除等。缓存和原始数据之间必定存在固定的算法，可以有效管理缓存和原始数据之间的对应关系。
+ 缓存也可能是持久化的  缓存不一定都是存在内存中的（断电就没有了），比如也可以存在SSD等高速存储设备中。
+缓存的分类 按照缓存在系统所处的位置不同可以分为：
+- 客户端缓存
+缓存的内容位于客户端，当缓存中有需要的内容时，不再向服务器去请求。典型的有Web缓存，HybridApp内缓存等
+ 网络缓存
+网络缓存位于客户端和服务端之间，代理客户端和服务端之间的Request和Response。如果缓存中有内容，代理将不再重新向服务端请求内容，直接将缓存内容返回客户端。典型有的Web代理服务器，CDN等
+ 服务端缓存
+缓存内容位于服务端，典型的有Database缓存、平台级的缓存有Ehcache，应用级的有Redis、Memcached等
+  按照缓存的规模和部署方式可以分为： - 单机缓存 - 集群缓存
+ 分布式缓存  关于缓存的一些术语  Cache Hit | Cache Miss  系统接收到客户发起的请求，如果请求的数据恰好在缓存中，称为Cache Hit，反之称为Cache Miss(Miss后如果缓存还有空间的话，会将数据更新到缓存中)" />
+  <meta property="og:url" content="https://xiongchen2012.github.io/post/introduce-to-cache/" />
+  <meta property="og:image" content="https://xiongchen2012.github.io/img/avatar.jpg" />
+
+
+
+
+<meta name="generator" content="Hugo 0.34" />
+
+
+<link rel="canonical" href="https://xiongchen2012.github.io/post/introduce-to-cache/" />
+<link rel="alternative" href="https://xiongchen2012.github.io/index.xml" title="Deathdealer-Archives" type="application/atom+xml" />
+
+
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="format-detection" content="telephone=no,email=no,adress=no" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+
+
+<meta name="robots" content="index,follow" />
+<meta name="referrer" content="origin-when-cross-origin" />
+
+
+
+
+
+
+
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Deathdealer-Archives" />
+<meta name="msapplication-tooltip" content="Deathdealer-Archives" />
+<meta name='msapplication-navbutton-color' content="#5fbf5e" />
+<meta name="msapplication-TileColor" content="#5fbf5e" />
+<meta name="msapplication-TileImage" content="/img/tile-image-windows.png" />
+<link rel="icon" href="https://xiongchen2012.github.io/img/favicon.ico" />
+<link rel="icon" type="image/png" sizes="16x16" href="https://xiongchen2012.github.io/img/favicon-16x16.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="https://xiongchen2012.github.io/img/favicon-32x32.png" />
+<link rel="icon" sizes="192x192" href="https://xiongchen2012.github.io/img/touch-icon-android.png" />
+<link rel="apple-touch-icon" href="https://xiongchen2012.github.io/img/touch-icon-apple.png" />
+<link rel="mask-icon" href="https://xiongchen2012.github.io/img/safari-pinned-tab.svg" color="#5fbf5e" />
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/video.js/6.2.8/alt/video-js-cdn.min.css" />
+
+<link rel="stylesheet" href="https://xiongchen2012.github.io/css/bundle.css" />
+
+
+  
+  <!--[if lt IE 9]>
+    <script src="//cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <script src="//cdn.bootcss.com/video.js/6.2.8/ie8/videojs-ie8.min.js"></script>
+  <![endif]-->
+
+<!--[if lte IE 11]>
+    <script src="//cdn.bootcss.com/classlist/1.1.20170427/classList.min.js"></script>
+  <![endif]-->
+
+
+<script src="//cdn.bootcss.com/object-fit-images/3.2.3/ofi.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/smooth-scroll/12.1.4/js/smooth-scroll.polyfills.min.js"></script>
+
+
+</head>
+  <body>
+    
+    <div class="suspension">
+      <a title="Go to top" class="to-top is-hide"><span class="icon icon-up"></span></a>
+      
+        
+      
+    </div>
+    
+    
+  <header class="site-header">
+  <img class="avatar" src="https://xiongchen2012.github.io/img/avatar.jpg" alt="Avatar">
+
+  <p class="subtitle">Try to be Full-Stack</p>
+  <button class="menu-toggle" type="button">
+    <span class="icon icon-menu"></span>
+  </button>
+  <nav class="site-menu collapsed">
+    <h2 class="offscreen">Main Menu</h2>
+    <ul class="menu-list">
+      
+      
+      
+      
+        <li class="menu-item
+            
+            
+            
+              is-active
+            
+            
+            "
+            >
+            <a href="https://xiongchen2012.github.io/">文章</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            
+            
+            "
+            >
+            <a href="https://xiongchen2012.github.io/archives">存档</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            
+            
+            "
+            >
+            <a href="https://xiongchen2012.github.io/tags">Tags</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            
+            
+            "
+            >
+            <a href="https://xiongchen2012.github.io/about">关于</a>
+          </li>
+      
+    </ul>
+  </nav>
+  <nav class="social-menu collapsed">
+    <h2 class="offscreen">Social Networks</h2>
+    <ul class="social-list">
+
+      
+      <li class="social-item">
+        <a href="mailto:master@deathdealer.cn" title="Email"><span class="icon icon-email"></span></a>
+      </li>
+
+      
+      <li class="social-item">
+        <a href="//github.com/xiongchen2012" title="GitHub"><span class="icon icon-github"></span></a>
+      </li>
+
+      <li class="social-item">
+        <a href="//twitter.com/xiongchen2015" title="Twitter"><span class="icon icon-twitter"></span></a>
+      </li>
+
+      
+
+      <li class="social-item">
+        <a href="//plus.google.com/108257803422142606899" title="Google+"><span class="icon icon-google"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a href="//weibo.com/deathdelaer" title="Weibo"><span class="icon icon-weibo"></span></a>
+      </li>
+
+      <li class="social-item">
+        <a href="https://xiongchen2012.github.io/img/qrcode.jpg" title="Wechat"><span class="icon icon-wechat"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a href="https://xiongchen2012.github.io/index.xml"><span class="icon icon-rss" title="RSS"></span></a>
+      </li>
+
+    </ul>
+  </nav>
+</header>
+
+  <section class="main post-detail">
+    <header class="post-header">
+      <h1 class="post-title">深入分布式缓存读书笔记（1）</h1>
+      <p class="post-meta">@Xiong Chen · Feb 1, 2018 · 1 min read</p>
+    </header>
+    <article class="post-content">
+
+<h2 id="什么是缓存">什么是缓存</h2>
+
+<p>书中引用的维基百科对缓存的定义是:
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">存储在计算机上的一个原始数据复制集</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#a6e22e">以便于访问</span></code></pre></div></p>
+
+<p>我看到维基百科上缓存的定义是：
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">凡是位于速度相差较大的两种硬件之间</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#a6e22e">用于协调两者数据传输速度差异的结构</span><span style="color:#960050;background-color:#1e0010">，</span><span style="color:#a6e22e">均可称之为Cache</span><span style="color:#960050;background-color:#1e0010">。</span>  </code></pre></div>
+<a href="https://zh.wikipedia.org/wiki/%E7%BC%93%E5%AD%98" title="Cache">维基百科</a></p>
+
+<p>虽然文字上相差较大，但两者综合起来看，缓存可以理解为：</p>
+
+<pre><code>缓存是原始数据的Copy，目的是为了协调和解决两个系统之间速度差异。让快的系统尽可能不用等待慢的系统处理数据。
+</code></pre>
+
+<p>PS：呆湾人对缓存的叫法是：<strong>快取</strong>，个人感觉这个叫法更贴近缓存的本意。</p>
+
+<h2 id="为什么用缓存">为什么用缓存</h2>
+
+<ol>
+<li>Cache的核心作用是加快系统存取速度，提高系统性能</li>
+</ol>
+
+<p>我认为任何系统不管你有多么复杂，设计的多么精妙，都遵循<a href="https://baike.baidu.com/item/%E6%9C%A8%E6%A1%B6%E6%95%88%E5%BA%94" title="木桶效应">木桶效应</a> 。对外表现出的性能只取决于最差的一部分。一个复杂的系统中，有的部分处理速度特别快（如内存读写），有的部分处理特别慢（如网络传输），在两者之间设置一个中间层来消弥这种差异，也可以看做在木桶最短的那快板上做了修补。</p>
+
+<ol>
+<li>方便进行系统调优</li>
+</ol>
+
+<p>在系统的各个层次引入缓存，可以有效的优化整体系统性能。</p>
+
+<blockquote>
+<p>缓存为王，对开发人员来说是<strong>性能为王</strong>，对用户来说是<strong>用户体验为王</strong></p>
+</blockquote>
+
+<h2 id="缓存的特点">缓存的特点</h2>
+
+<ol>
+<li>Source of Truth</li>
+</ol>
+
+<p>缓存是原始数据的一份Copy，所以它有Source of Truth，即使缓存里的数据丢了，还可以从原始数据中重建缓存。</p>
+
+<ol>
+<li>缓存能进行CRUD操作
+<br /></li>
+</ol>
+
+<p>缓存不是一成不变，缓存中的数据应该可以随时被更新，被删除等。缓存和原始数据之间必定存在固定的算法，可以有效管理缓存和原始数据之间的对应关系。</p>
+
+<ol>
+<li>缓存也可能是持久化的</li>
+</ol>
+
+<p>缓存不一定都是存在内存中的（断电就没有了），比如也可以存在SSD等高速存储设备中。</p>
+
+<h2 id="缓存的分类">缓存的分类</h2>
+
+<p>按照缓存在系统所处的位置不同可以分为：<br />
+- 客户端缓存<br />
+  缓存的内容位于客户端，当缓存中有需要的内容时，不再向服务器去请求。典型的有Web缓存，HybridApp内缓存等</p>
+
+<ul>
+<li><p>网络缓存<br />
+网络缓存位于客户端和服务端之间，代理客户端和服务端之间的Request和Response。如果缓存中有内容，代理将不再重新向服务端请求内容，直接将缓存内容返回客户端。典型有的Web代理服务器，CDN等</p></li>
+
+<li><p>服务端缓存<br />
+缓存内容位于服务端，典型的有Database缓存、平台级的缓存有Ehcache，应用级的有Redis、Memcached等</p></li>
+</ul>
+
+<p>按照缓存的规模和部署方式可以分为：
+- 单机缓存
+- 集群缓存</p>
+
+<ul>
+<li>分布式缓存</li>
+</ul>
+
+<h2 id="关于缓存的一些术语">关于缓存的一些术语</h2>
+
+<ul>
+<li>Cache Hit | Cache Miss</li>
+</ul>
+
+<p>系统接收到客户发起的请求，如果请求的数据恰好在缓存中，称为Cache Hit，反之称为Cache Miss(Miss后如果缓存还有空间的话，会将数据更新到缓存中)</p>
+
+<ul>
+<li>Cache Cost</li>
+</ul>
+
+<p>Cache Miss后系统从原始数据源取出数据，然后存入缓存，所花费的时间和存储空间称为缓存成本。</p>
+
+<ul>
+<li>Cache Failure
+<br /></li>
+</ul>
+
+<p>如果缓存中的某一数据需要更新，就称为该数据的缓存失效</p>
+
+<ul>
+<li>更新策略（替代策略）
+<br /></li>
+</ul>
+
+<p>Cache Miss后有必要将数据加入到缓存，但是在缓存已满的情况下，需要删除一些旧的数据来存放新的数据。哪些数据需要被删除和替代，取决于缓存使用的更新策略。常见的策略有：
+  <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:100%;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"><span style="margin-right:0.4em;padding:00.4em00.4em;display:block;color:#7c7c79"> 1</span><span style="margin-right:0.4em;padding:00.4em00.4em;display:block;color:#7c7c79"> 2</span><span style="margin-right:0.4em;padding:00.4em00.4em;display:block;color:#7c7c79"> 3</span><span style="margin-right:0.4em;padding:00.4em00.4em;display:block;color:#7c7c79"> 4</span><span style="margin-right:0.4em;padding:00.4em00.4em;display:block;color:#7c7c79"> 5</span><span style="margin-right:0.4em;padding:00.4em00.4em;display:block;color:#7c7c79"> 6</span><span style="margin-right:0.4em;padding:00.4em00.4em;display:block;color:#7c7c79"> 7</span><span style="margin-right:0.4em;padding:00.4em00.4em;display:block;color:#7c7c79"> 8</span><span style="margin-right:0.4em;padding:00.4em00.4em;display:block;color:#7c7c79"> 9</span><span style="margin-right:0.4em;padding:00.4em00.4em;display:block;color:#7c7c79">10</span><span style="margin-right:0.4em;padding:00.4em00.4em;display:block;color:#7c7c79">11</span><span style="margin-right:0.4em;padding:00.4em00.4em;display:block;color:#7c7c79">12</span><span style="margin-right:0.4em;padding:00.4em00.4em;display:block;color:#7c7c79">13</span><span style="margin-right:0.4em;padding:00.4em00.4em;display:block;color:#7c7c79">14</span><span style="margin-right:0.4em;padding:00.4em00.4em;display:block;color:#7c7c79">15</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">  - Least-Recently-Used:替换最近最少被使用的数据（LRU）
+  - Least-Frequently-Used：替换最少被使用的数据（LFU）
+  - LRU2：把被访问过2次的数据放入缓存，缓存满后使用LRU算法更新（LRU变种）
+  - TwoQueue：两个缓存队列，数据先存入1个，再次命中时再放到第2个队列（2Q，也是LRU变种）
+  - SIZE：替换占用空间最大的对象
+  - LRU Threshold：不缓存超过某个尺寸的对象（LRU的变种）
+  - Log(Size)+LRU：替换尺寸最大的对象，尺寸相当时使用LRU
+  - Hyper-G：改进版LRU
+  - Pitkow/Recker：替换最近最少使用的对象，除非所有对象都是今天被访问过的。如果是这样的，则替换最大的对象。
+  - Lowest-Latency-First、Hybrid、Lowest-Relativ-Value(LRV)
+  - Adaptive Replacement Cache
+  - Most Recently Used：与LRU相反，替换最近最多被使用的对象（MRU）
+  - First In First Out：先进先出（FIFO）
+  - Random Cache：完全随机替换
+  </code></pre></td></tr></table>
+</div>
+</div></p>
+</article>
+    <footer class="post-footer">
+      
+      <p class="post-copyright">
+        This site is generated by <a href='http://gohugo.io' style='color:rgb(95, 191, 94);'>HUGO</a> with a theme <a href='https://github.com/laozhu/hugo-nuo' style='color:rgb(95, 191, 94);'>HUGO-NUO</a> © deathdealer.cn
+      </p>
+    </footer>
+  </section>
+  <footer class="site-footer">
+  <p>© 2018 Deathdealer-Archives</p>
+  <p>Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank">Nuo</a>.</p>
+  
+    <p><a href="http://www.miitbeian.gov.cn" title="Check ICP info" target="_blank">苏ICP备15047226号-1</a></p>
+  
+</footer>
+
+
+<script async src="//cdn.bootcss.com/video.js/6.2.8/alt/video.novtt.min.js"></script>
+<script async src="//cdn.bootcss.com/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      displayMath: [['$$','$$'], ['\[','\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: { equationNumbers: { autoNumber: "AMS" },
+      extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    }
+  });
+</script>
+<script type="text/x-mathjax-config">
+  // Fix <code> tags after MathJax finishes running. This is a
+  // hack to overcome a shortcoming of Markdown. Discussion at
+  // https://github.com/mojombo/jekyll/issues/199
+  MathJax.Hub.Queue(() => {
+    MathJax.Hub.getAllJax().map(v => v.SourceElement().parentNode.className += ' has-jax');
+  });
+</script>
+
+<script src="https://xiongchen2012.github.io/js/bundle.js"></script>
+
+
+
+
+  </body>
+</html>
