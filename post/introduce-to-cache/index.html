@@ -5,7 +5,7 @@
   <meta charset="utf-8" />
 
   
-  <title>深入分布式缓存读书笔记（1）</title>
+  <title>深入分布式缓存读书笔记（1） - 缓存简介</title>
 
   
   
@@ -16,7 +16,11 @@
 
   
   <meta name="author" content="Xiong Chen" />
-  <meta name="description" content="什么是缓存 书中引用的维基百科对缓存的定义是: 存储在计算机上的一个原始数据复制集，以便于访问
+  <meta name="description" content="《深入分布式缓存》读书笔记
+（1）缓存简介
+（2）页面缓存（Application Cache）
+（3）HTTP缓存
+什么是缓存 书中引用的维基百科对缓存的定义是: 存储在计算机上的一个原始数据复制集，以便于访问
 我看到维基百科上缓存的定义是： 凡是位于速度相差较大的两种硬件之间，用于协调两者数据传输速度差异的结构，均可称之为Cache。  维基百科
 虽然文字上相差较大，但两者综合起来看，缓存可以理解为：
 缓存是原始数据的Copy，目的是为了协调和解决两个系统之间速度差异。让快的系统尽可能不用等待慢的系统处理数据。  PS：呆湾人对缓存的叫法是：快取，个人感觉这个叫法更贴近缓存的本意。
@@ -40,8 +44,12 @@
   
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:site" content="@xiongchen2015" />
-    <meta name="twitter:title" content="深入分布式缓存读书笔记（1）" />
-    <meta name="twitter:description" content="什么是缓存 书中引用的维基百科对缓存的定义是: 存储在计算机上的一个原始数据复制集，以便于访问
+    <meta name="twitter:title" content="深入分布式缓存读书笔记（1） - 缓存简介" />
+    <meta name="twitter:description" content="《深入分布式缓存》读书笔记
+（1）缓存简介
+（2）页面缓存（Application Cache）
+（3）HTTP缓存
+什么是缓存 书中引用的维基百科对缓存的定义是: 存储在计算机上的一个原始数据复制集，以便于访问
 我看到维基百科上缓存的定义是： 凡是位于速度相差较大的两种硬件之间，用于协调两者数据传输速度差异的结构，均可称之为Cache。  维基百科
 虽然文字上相差较大，但两者综合起来看，缓存可以理解为：
 缓存是原始数据的Copy，目的是为了协调和解决两个系统之间速度差异。让快的系统尽可能不用等待慢的系统处理数据。  PS：呆湾人对缓存的叫法是：快取，个人感觉这个叫法更贴近缓存的本意。
@@ -65,8 +73,12 @@
 
   
   <meta property="og:type" content="article" />
-  <meta property="og:title" content="深入分布式缓存读书笔记（1）" />
-  <meta property="og:description" content="什么是缓存 书中引用的维基百科对缓存的定义是: 存储在计算机上的一个原始数据复制集，以便于访问
+  <meta property="og:title" content="深入分布式缓存读书笔记（1） - 缓存简介" />
+  <meta property="og:description" content="《深入分布式缓存》读书笔记
+（1）缓存简介
+（2）页面缓存（Application Cache）
+（3）HTTP缓存
+什么是缓存 书中引用的维基百科对缓存的定义是: 存储在计算机上的一个原始数据复制集，以便于访问
 我看到维基百科上缓存的定义是： 凡是位于速度相差较大的两种硬件之间，用于协调两者数据传输速度差异的结构，均可称之为Cache。  维基百科
 虽然文字上相差较大，但两者综合起来看，缓存可以理解为：
 缓存是原始数据的Copy，目的是为了协调和解决两个系统之间速度差异。让快的系统尽可能不用等待慢的系统处理数据。  PS：呆湾人对缓存的叫法是：快取，个人感觉这个叫法更贴近缓存的本意。
@@ -291,10 +303,15 @@
 
   <section class="main post-detail">
     <header class="post-header">
-      <h1 class="post-title">深入分布式缓存读书笔记（1）</h1>
+      <h1 class="post-title">深入分布式缓存读书笔记（1） - 缓存简介</h1>
       <p class="post-meta">@Xiong Chen · Feb 1, 2018 · 1 min read</p>
     </header>
     <article class="post-content">
+
+<p><strong>《深入分布式缓存》读书笔记</strong><br />
+<a href='../introduce-to-cache/'>（1）缓存简介</a><br />
+<a href='../application-cache/'>（2）页面缓存（Application Cache）</a><br />
+<a href='../http-cache/'>（3）HTTP缓存</a></p>
 
 <h2 id="什么是缓存">什么是缓存</h2>
 
@@ -400,25 +417,24 @@
 </ul>
 
 <p>Cache Miss后有必要将数据加入到缓存，但是在缓存已满的情况下，需要删除一些旧的数据来存放新的数据。哪些数据需要被删除和替代，取决于缓存使用的更新策略。常见的策略有：
-  <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:100%;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"><span style="margin-right:0.4em;padding:00.4em00.4em;display:block;color:#7c7c79"> 1</span><span style="margin-right:0.4em;padding:00.4em00.4em;display:block;color:#7c7c79"> 2</span><span style="margin-right:0.4em;padding:00.4em00.4em;display:block;color:#7c7c79"> 3</span><span style="margin-right:0.4em;padding:00.4em00.4em;display:block;color:#7c7c79"> 4</span><span style="margin-right:0.4em;padding:00.4em00.4em;display:block;color:#7c7c79"> 5</span><span style="margin-right:0.4em;padding:00.4em00.4em;display:block;color:#7c7c79"> 6</span><span style="margin-right:0.4em;padding:00.4em00.4em;display:block;color:#7c7c79"> 7</span><span style="margin-right:0.4em;padding:00.4em00.4em;display:block;color:#7c7c79"> 8</span><span style="margin-right:0.4em;padding:00.4em00.4em;display:block;color:#7c7c79"> 9</span><span style="margin-right:0.4em;padding:00.4em00.4em;display:block;color:#7c7c79">10</span><span style="margin-right:0.4em;padding:00.4em00.4em;display:block;color:#7c7c79">11</span><span style="margin-right:0.4em;padding:00.4em00.4em;display:block;color:#7c7c79">12</span><span style="margin-right:0.4em;padding:00.4em00.4em;display:block;color:#7c7c79">13</span><span style="margin-right:0.4em;padding:00.4em00.4em;display:block;color:#7c7c79">14</span><span style="margin-right:0.4em;padding:00.4em00.4em;display:block;color:#7c7c79">15</span></code></pre></td>
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"><span style="margin-right:0.4em;padding:00.4em00.4em;display:block;color:#7c7c79"> 1</span><span style="margin-right:0.4em;padding:00.4em00.4em;display:block;color:#7c7c79"> 2</span><span style="margin-right:0.4em;padding:00.4em00.4em;display:block;color:#7c7c79"> 3</span><span style="margin-right:0.4em;padding:00.4em00.4em;display:block;color:#7c7c79"> 4</span><span style="margin-right:0.4em;padding:00.4em00.4em;display:block;color:#7c7c79"> 5</span><span style="margin-right:0.4em;padding:00.4em00.4em;display:block;color:#7c7c79"> 6</span><span style="margin-right:0.4em;padding:00.4em00.4em;display:block;color:#7c7c79"> 7</span><span style="margin-right:0.4em;padding:00.4em00.4em;display:block;color:#7c7c79"> 8</span><span style="margin-right:0.4em;padding:00.4em00.4em;display:block;color:#7c7c79"> 9</span><span style="margin-right:0.4em;padding:00.4em00.4em;display:block;color:#7c7c79">10</span><span style="margin-right:0.4em;padding:00.4em00.4em;display:block;color:#7c7c79">11</span><span style="margin-right:0.4em;padding:00.4em00.4em;display:block;color:#7c7c79">12</span><span style="margin-right:0.4em;padding:00.4em00.4em;display:block;color:#7c7c79">13</span><span style="margin-right:0.4em;padding:00.4em00.4em;display:block;color:#7c7c79">14</span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">  - Least-Recently-Used:替换最近最少被使用的数据（LRU）
-  - Least-Frequently-Used：替换最少被使用的数据（LFU）
-  - LRU2：把被访问过2次的数据放入缓存，缓存满后使用LRU算法更新（LRU变种）
-  - TwoQueue：两个缓存队列，数据先存入1个，再次命中时再放到第2个队列（2Q，也是LRU变种）
-  - SIZE：替换占用空间最大的对象
-  - LRU Threshold：不缓存超过某个尺寸的对象（LRU的变种）
-  - Log(Size)+LRU：替换尺寸最大的对象，尺寸相当时使用LRU
-  - Hyper-G：改进版LRU
-  - Pitkow/Recker：替换最近最少使用的对象，除非所有对象都是今天被访问过的。如果是这样的，则替换最大的对象。
-  - Lowest-Latency-First、Hybrid、Lowest-Relativ-Value(LRV)
-  - Adaptive Replacement Cache
-  - Most Recently Used：与LRU相反，替换最近最多被使用的对象（MRU）
-  - First In First Out：先进先出（FIFO）
-  - Random Cache：完全随机替换
-  </code></pre></td></tr></table>
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">Least-Recently-Used:替换最近最少被使用的数据（LRU）
+Least-Frequently-Used：替换最少被使用的数据（LFU）
+LRU2：把被访问过2次的数据放入缓存，缓存满后使用LRU算法更新（LRU变种）
+TwoQueue：两个缓存队列，数据先存入1个，再次命中时再放到第2个队列（2Q，也是LRU变种）
+SIZE：替换占用空间最大的对象
+LRU Threshold：不缓存超过某个尺寸的对象（LRU的变种）
+Log(Size)+LRU：替换尺寸最大的对象，尺寸相当时使用LRU
+Hyper-G：改进版LRU
+Pitkow/Recker：替换最近最少使用的对象，除非所有对象都是今天被访问过的。如果是这样的，则替换最大的对象。
+Lowest-Latency-First、Hybrid、Lowest-Relativ-Value(LRV)
+Adaptive Replacement Cache
+Most Recently Used：与LRU相反，替换最近最多被使用的对象（MRU）
+First In First Out：先进先出（FIFO）
+Random Cache：完全随机替换</code></pre></td></tr></table>
 </div>
 </div></p>
 </article>

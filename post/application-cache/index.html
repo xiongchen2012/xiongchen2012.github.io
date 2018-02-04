@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+
+  <meta charset="utf-8" />
+
+  
+  <title>深入分布式缓存读书笔记（2） - Application Cache</title>
+
+  
+  
+
+
+
+
+
+  
+  <meta name="author" content="Xiong Chen" />
+  <meta name="description" content="《深入分布式缓存》读书笔记
+（1）缓存简介
+（2）页面缓存（Application Cache）
+（3）HTTP缓存
+HTML5 Application Cache HTML5开始引入了Application Cache技术，可以在客户端缓存服务器上的HTML页面。基于AppCache可以实现网站的离线访问。
+Application Cache的引入，带来几个好处：
+ 离线访问 由于缓存了页面，访问速度快 减少服务端负载  Deathdealer注： &amp;gt; Application Cache现在已经是一个已经从Web标准中删除了的过期规范，
+&amp;gt; 虽然主流浏览器都还支持，但是不排除哪天会停止支持，所以尽量不要再使用。
+&amp;gt; 强列建议使用 Service Worker 来替代AppCache
+服务端设置 Application Cache是通过浏览器下载服务器上的manifest清单文件，由mainfest清单文件指定需要缓存的文件列表。按照H5规范，这个文件的MIME头必须是：text/cache-manifest，所以服务器端需要设置这个类型的响应头。以最常使用的三种服务器为例：
+ Nginx
+  修改Nginx配置目录下的mime.types文件，添加manifest的MIME： # /path/to/nginx/conf/mime.types  text/cache-manifest manifest;
+ Apache  修改Apache目录中的配置文件.htaccess文件，添加manifest的MIME: # /path/to/apache2/conf/.htaccess  AddType text/cache-manifest .apache
+ Tomcat  修改Tomcat目录中的配置文件web.xml文件，添加manifest的MIME: &amp;lt;!-- /path/to/tomcat/conf/web.xml --&amp;gt; &amp;lt;mime-mapping&amp;gt; &amp;lt;extention&amp;gt;list&amp;lt;/extention&amp;gt; &amp;lt;mime-type&amp;gt;text/cache-manifest&amp;lt;mime-type&amp;gt; &amp;lt;/mime-mapping&amp;gt;
+缓存清单文件 在HTML页面的&amp;lt;html&amp;gt;增加manifest属性。
+&amp;lt;html manifest=&amp;#39;example.appcache&amp;#39;&amp;gt; ... &amp;lt;/html&amp;gt; 每个指定了 manifest 的页面在用户对其访问时都会被缓存。如果未指定 manifest 属性，则页面不会被缓存（除非在 manifest 文件中直接指定了该页面）。" />
+
+  
+  
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@xiongchen2015" />
+    <meta name="twitter:title" content="深入分布式缓存读书笔记（2） - Application Cache" />
+    <meta name="twitter:description" content="《深入分布式缓存》读书笔记
+（1）缓存简介
+（2）页面缓存（Application Cache）
+（3）HTTP缓存
+HTML5 Application Cache HTML5开始引入了Application Cache技术，可以在客户端缓存服务器上的HTML页面。基于AppCache可以实现网站的离线访问。
+Application Cache的引入，带来几个好处：
+ 离线访问 由于缓存了页面，访问速度快 减少服务端负载  Deathdealer注： &amp;gt; Application Cache现在已经是一个已经从Web标准中删除了的过期规范，
+&amp;gt; 虽然主流浏览器都还支持，但是不排除哪天会停止支持，所以尽量不要再使用。
+&amp;gt; 强列建议使用 Service Worker 来替代AppCache
+服务端设置 Application Cache是通过浏览器下载服务器上的manifest清单文件，由mainfest清单文件指定需要缓存的文件列表。按照H5规范，这个文件的MIME头必须是：text/cache-manifest，所以服务器端需要设置这个类型的响应头。以最常使用的三种服务器为例：
+ Nginx
+  修改Nginx配置目录下的mime.types文件，添加manifest的MIME： # /path/to/nginx/conf/mime.types  text/cache-manifest manifest;
+ Apache  修改Apache目录中的配置文件.htaccess文件，添加manifest的MIME: # /path/to/apache2/conf/.htaccess  AddType text/cache-manifest .apache
+ Tomcat  修改Tomcat目录中的配置文件web.xml文件，添加manifest的MIME: &amp;lt;!-- /path/to/tomcat/conf/web.xml --&amp;gt; &amp;lt;mime-mapping&amp;gt; &amp;lt;extention&amp;gt;list&amp;lt;/extention&amp;gt; &amp;lt;mime-type&amp;gt;text/cache-manifest&amp;lt;mime-type&amp;gt; &amp;lt;/mime-mapping&amp;gt;
+缓存清单文件 在HTML页面的&amp;lt;html&amp;gt;增加manifest属性。
+&amp;lt;html manifest=&amp;#39;example.appcache&amp;#39;&amp;gt; ... &amp;lt;/html&amp;gt; 每个指定了 manifest 的页面在用户对其访问时都会被缓存。如果未指定 manifest 属性，则页面不会被缓存（除非在 manifest 文件中直接指定了该页面）。" />
+    <meta name="twitter:image" content="https://xiongchen2012.github.io/img/avatar.jpg" />
+  
+
+  
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="深入分布式缓存读书笔记（2） - Application Cache" />
+  <meta property="og:description" content="《深入分布式缓存》读书笔记
+（1）缓存简介
+（2）页面缓存（Application Cache）
+（3）HTTP缓存
+HTML5 Application Cache HTML5开始引入了Application Cache技术，可以在客户端缓存服务器上的HTML页面。基于AppCache可以实现网站的离线访问。
+Application Cache的引入，带来几个好处：
+ 离线访问 由于缓存了页面，访问速度快 减少服务端负载  Deathdealer注： &amp;gt; Application Cache现在已经是一个已经从Web标准中删除了的过期规范，
+&amp;gt; 虽然主流浏览器都还支持，但是不排除哪天会停止支持，所以尽量不要再使用。
+&amp;gt; 强列建议使用 Service Worker 来替代AppCache
+服务端设置 Application Cache是通过浏览器下载服务器上的manifest清单文件，由mainfest清单文件指定需要缓存的文件列表。按照H5规范，这个文件的MIME头必须是：text/cache-manifest，所以服务器端需要设置这个类型的响应头。以最常使用的三种服务器为例：
+ Nginx
+  修改Nginx配置目录下的mime.types文件，添加manifest的MIME： # /path/to/nginx/conf/mime.types  text/cache-manifest manifest;
+ Apache  修改Apache目录中的配置文件.htaccess文件，添加manifest的MIME: # /path/to/apache2/conf/.htaccess  AddType text/cache-manifest .apache
+ Tomcat  修改Tomcat目录中的配置文件web.xml文件，添加manifest的MIME: &amp;lt;!-- /path/to/tomcat/conf/web.xml --&amp;gt; &amp;lt;mime-mapping&amp;gt; &amp;lt;extention&amp;gt;list&amp;lt;/extention&amp;gt; &amp;lt;mime-type&amp;gt;text/cache-manifest&amp;lt;mime-type&amp;gt; &amp;lt;/mime-mapping&amp;gt;
+缓存清单文件 在HTML页面的&amp;lt;html&amp;gt;增加manifest属性。
+&amp;lt;html manifest=&amp;#39;example.appcache&amp;#39;&amp;gt; ... &amp;lt;/html&amp;gt; 每个指定了 manifest 的页面在用户对其访问时都会被缓存。如果未指定 manifest 属性，则页面不会被缓存（除非在 manifest 文件中直接指定了该页面）。" />
+  <meta property="og:url" content="https://xiongchen2012.github.io/post/application-cache/" />
+  <meta property="og:image" content="https://xiongchen2012.github.io/img/avatar.jpg" />
+
+
+
+
+<meta name="generator" content="Hugo 0.34" />
+
+
+<link rel="canonical" href="https://xiongchen2012.github.io/post/application-cache/" />
+<link rel="alternative" href="https://xiongchen2012.github.io/index.xml" title="Deathdealer-Archives" type="application/atom+xml" />
+
+
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="format-detection" content="telephone=no,email=no,adress=no" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+
+
+<meta name="robots" content="index,follow" />
+<meta name="referrer" content="origin-when-cross-origin" />
+
+
+
+
+
+
+
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Deathdealer-Archives" />
+<meta name="msapplication-tooltip" content="Deathdealer-Archives" />
+<meta name='msapplication-navbutton-color' content="#5fbf5e" />
+<meta name="msapplication-TileColor" content="#5fbf5e" />
+<meta name="msapplication-TileImage" content="/img/tile-image-windows.png" />
+<link rel="icon" href="https://xiongchen2012.github.io/img/favicon.ico" />
+<link rel="icon" type="image/png" sizes="16x16" href="https://xiongchen2012.github.io/img/favicon-16x16.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="https://xiongchen2012.github.io/img/favicon-32x32.png" />
+<link rel="icon" sizes="192x192" href="https://xiongchen2012.github.io/img/touch-icon-android.png" />
+<link rel="apple-touch-icon" href="https://xiongchen2012.github.io/img/touch-icon-apple.png" />
+<link rel="mask-icon" href="https://xiongchen2012.github.io/img/safari-pinned-tab.svg" color="#5fbf5e" />
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/video.js/6.2.8/alt/video-js-cdn.min.css" />
+
+<link rel="stylesheet" href="https://xiongchen2012.github.io/css/bundle.css" />
+
+
+  
+  <!--[if lt IE 9]>
+    <script src="//cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <script src="//cdn.bootcss.com/video.js/6.2.8/ie8/videojs-ie8.min.js"></script>
+  <![endif]-->
+
+<!--[if lte IE 11]>
+    <script src="//cdn.bootcss.com/classlist/1.1.20170427/classList.min.js"></script>
+  <![endif]-->
+
+
+<script src="//cdn.bootcss.com/object-fit-images/3.2.3/ofi.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/smooth-scroll/12.1.4/js/smooth-scroll.polyfills.min.js"></script>
+
+
+</head>
+  <body>
+    
+    <div class="suspension">
+      <a title="Go to top" class="to-top is-hide"><span class="icon icon-up"></span></a>
+      
+        
+      
+    </div>
+    
+    
+  <header class="site-header">
+  <img class="avatar" src="https://xiongchen2012.github.io/img/avatar.jpg" alt="Avatar">
+
+  <p class="subtitle">Try to be Full-Stack</p>
+  <button class="menu-toggle" type="button">
+    <span class="icon icon-menu"></span>
+  </button>
+  <nav class="site-menu collapsed">
+    <h2 class="offscreen">Main Menu</h2>
+    <ul class="menu-list">
+      
+      
+      
+      
+        <li class="menu-item
+            
+            
+            
+              is-active
+            
+            
+            "
+            >
+            <a href="https://xiongchen2012.github.io/">文章</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            
+            
+            "
+            >
+            <a href="https://xiongchen2012.github.io/archives">存档</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            
+            
+            "
+            >
+            <a href="https://xiongchen2012.github.io/tags">Tags</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            
+            
+            "
+            >
+            <a href="https://xiongchen2012.github.io/about">关于</a>
+          </li>
+      
+    </ul>
+  </nav>
+  <nav class="social-menu collapsed">
+    <h2 class="offscreen">Social Networks</h2>
+    <ul class="social-list">
+
+      
+      <li class="social-item">
+        <a href="mailto:master@deathdealer.cn" title="Email"><span class="icon icon-email"></span></a>
+      </li>
+
+      
+      <li class="social-item">
+        <a href="//github.com/xiongchen2012" title="GitHub"><span class="icon icon-github"></span></a>
+      </li>
+
+      <li class="social-item">
+        <a href="//twitter.com/xiongchen2015" title="Twitter"><span class="icon icon-twitter"></span></a>
+      </li>
+
+      
+
+      <li class="social-item">
+        <a href="//plus.google.com/108257803422142606899" title="Google+"><span class="icon icon-google"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a href="//weibo.com/deathdelaer" title="Weibo"><span class="icon icon-weibo"></span></a>
+      </li>
+
+      <li class="social-item">
+        <a href="https://xiongchen2012.github.io/img/qrcode.jpg" title="Wechat"><span class="icon icon-wechat"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a href="https://xiongchen2012.github.io/index.xml"><span class="icon icon-rss" title="RSS"></span></a>
+      </li>
+
+    </ul>
+  </nav>
+</header>
+
+  <section class="main post-detail">
+    <header class="post-header">
+      <h1 class="post-title">深入分布式缓存读书笔记（2） - Application Cache</h1>
+      <p class="post-meta">@Xiong Chen · Feb 4, 2018 · 1 min read</p>
+    </header>
+    <article class="post-content">
+
+<p><strong>《深入分布式缓存》读书笔记</strong><br />
+<a href='../introduce-to-cache/'>（1）缓存简介</a><br />
+<a href='../application-cache/'>（2）页面缓存（Application Cache）</a><br />
+<a href='../http-cache/'>（3）HTTP缓存</a></p>
+
+<h2 id="html5-application-cache">HTML5 Application Cache</h2>
+
+<p>HTML5开始引入了<a href="https://html.spec.whatwg.org/#applicationcache" title="Application Cache">Application Cache</a>技术，可以在客户端缓存服务器上的HTML页面。基于AppCache可以实现网站的离线访问。</p>
+
+<p>Application Cache的引入，带来几个好处：</p>
+
+<ol>
+<li>离线访问</li>
+<li>由于缓存了页面，访问速度快</li>
+<li>减少服务端负载</li>
+</ol>
+
+<p><strong>Deathdealer注：</strong>
+&gt; Application Cache现在已经是一个已经从Web标准中删除了的过期规范，<br />
+&gt; 虽然主流浏览器都还支持，但是不排除哪天会停止支持，所以尽量不要再使用。<br />
+&gt; 强列建议使用 <a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Service_Worker_API/Using_Service_Workers">Service Worker</a> 来替代AppCache</p>
+
+<h3 id="服务端设置">服务端设置</h3>
+
+<p>Application Cache是通过浏览器下载服务器上的manifest清单文件，由mainfest清单文件指定需要缓存的文件列表。按照H5规范，这个文件的MIME头必须是：<code>text/cache-manifest</code>，所以服务器端需要设置这个类型的响应头。以最常使用的三种服务器为例：</p>
+
+<ul>
+<li>Nginx<br />
+<br /></li>
+</ul>
+
+<p>修改Nginx配置目录下的<code>mime.types</code>文件，添加manifest的MIME：
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">   <span style="color:#75715e"># /path/to/nginx/conf/mime.types
+</span><span style="color:#75715e"></span>   text<span style="color:#f92672">/</span>cache<span style="color:#f92672">-</span>manifest     manifest;</code></pre></div></p>
+
+<ul>
+<li>Apache</li>
+</ul>
+
+<p>修改Apache目录中的配置文件<code>.htaccess</code>文件，添加manifest的MIME:
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">   <span style="color:#75715e"># /path/to/apache2/conf/.htaccess
+</span><span style="color:#75715e"></span>   AddType text<span style="color:#f92672">/</span>cache<span style="color:#f92672">-</span>manifest  .apache</code></pre></div></p>
+
+<ul>
+<li>Tomcat</li>
+</ul>
+
+<p>修改Tomcat目录中的配置文件<code>web.xml</code>文件，添加manifest的MIME:
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml">   <span style="color:#75715e">&lt;!-- /path/to/tomcat/conf/web.xml --&gt;</span>
+   <span style="color:#f92672">&lt;mime-mapping&gt;</span>
+       <span style="color:#f92672">&lt;extention&gt;</span>list<span style="color:#f92672">&lt;/extention&gt;</span>
+       <span style="color:#f92672">&lt;mime-type&gt;</span>text/cache-manifest<span style="color:#f92672">&lt;mime-type&gt;</span>
+   <span style="color:#f92672">&lt;/mime-mapping&gt;</span></code></pre></div></p>
+
+<h3 id="缓存清单文件">缓存清单文件</h3>
+
+<p><strong>在HTML页面的<code>&lt;html&gt;</code>增加manifest属性。</strong></p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">html</span> <span style="color:#a6e22e">manifest</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;example.appcache&#39;</span>&gt;
+  ...
+&lt;/<span style="color:#f92672">html</span>&gt;</code></pre></div>
+
+<p>每个指定了 manifest 的页面在用户对其访问时都会被缓存。如果未指定 manifest 属性，则页面不会被缓存（除非在 manifest 文件中直接指定了该页面）。</p>
+
+<p>标注了此属性的HTML文件，可以作为主记录文件，即application cache的入口（entry）</p>
+
+<p><strong>缓存清单文件（建议扩展名为.appcache）</strong></p>
+
+<p>manifest文件告知浏览器被缓存的内容（以及不缓存的内容），有三个小节：<br />
+- ACHE MANIFEST：列出的文件将在首次下载后进行缓存<br />
+- NETWORK：列出的文件需要与服务器的连接，并且不缓存<br />
+- FALLBACK：列出的文件规定当页面无法访问时的备胎页面（比如 404）</p>
+
+<p>因为AppCache已经不再是Web标准，所以介绍的比较简单。</p>
+
+<p>总结一下吧：<br />
+- 随便找一个HTML文件当成入口主记录文件，比如index.html。在index.html的<code>&lt;html&gt;</code>加上manifest属性，值指向服务器上的缓存清单文件。<br />
+- 缓存清单文件中把要缓存的所有文件在CACHE小节中全列出来。<br />
+- 不把需要缓存的文件在NETWORK小节中全列出来。<br />
+- 最后再指定一定备胎页面（类似404页面）应急。</p>
+
+<p>（TODO：以后有空再写一下ServiceWorker相关的博客）</p>
+</article>
+    <footer class="post-footer">
+      
+      <p class="post-copyright">
+        This site is generated by <a href='http://gohugo.io' style='color:rgb(95, 191, 94);'>HUGO</a> with a theme <a href='https://github.com/laozhu/hugo-nuo' style='color:rgb(95, 191, 94);'>HUGO-NUO</a> © deathdealer.cn
+      </p>
+    </footer>
+  </section>
+  <footer class="site-footer">
+  <p>© 2018 Deathdealer-Archives</p>
+  <p>Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank">Nuo</a>.</p>
+  
+    <p><a href="http://www.miitbeian.gov.cn" title="Check ICP info" target="_blank">苏ICP备15047226号-1</a></p>
+  
+</footer>
+
+
+<script async src="//cdn.bootcss.com/video.js/6.2.8/alt/video.novtt.min.js"></script>
+<script async src="//cdn.bootcss.com/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      displayMath: [['$$','$$'], ['\[','\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: { equationNumbers: { autoNumber: "AMS" },
+      extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    }
+  });
+</script>
+<script type="text/x-mathjax-config">
+  // Fix <code> tags after MathJax finishes running. This is a
+  // hack to overcome a shortcoming of Markdown. Discussion at
+  // https://github.com/mojombo/jekyll/issues/199
+  MathJax.Hub.Queue(() => {
+    MathJax.Hub.getAllJax().map(v => v.SourceElement().parentNode.className += ' has-jax');
+  });
+</script>
+
+<script src="https://xiongchen2012.github.io/js/bundle.js"></script>
+
+
+
+
+  </body>
+</html>
