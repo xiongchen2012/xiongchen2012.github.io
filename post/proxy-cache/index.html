@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+
+  <meta charset="utf-8" />
+
+  
+  <title>深入分布式缓存读书笔记（4） - Proxy Cache</title>
+
+  
+  
+
+
+
+
+
+  
+  <meta name="author" content="Xiong Chen" />
+  <meta name="description" content="《深入分布式缓存》读书笔记
+（1）缓存简介
+（2）页面缓存（Application Cache）
+（3）HTTP缓存  （4）代理服务器缓存
+代理服务器缓存 前面两篇博客写的是客户端缓存（即缓存的数据存储在客户端本地），而代理服务器缓存则是缓存在代理服务器上。代理服务器分为正向代理和反向代理。
+代理服务器缓存的作用 客户端因为种种原因不能直接访问源服务器时（比如客户端或源服务器处于防火墙隔绝的内网，或者源服务器访问量很大需要做负载均衡等），这时候需要通过代理服务器转发请求。
+其当客户端第1次访问源服务器需某资源时，代理服务器会将源服务器的资源保存到本地，然后发送给客户端。
+当有其它客户端访问相同的资源时，如果该资源没有更新，代理服务器会将缓存的内容直接发送给客户端。从而达到加快响应的目标。
+因为代理服务器缓存理解起来比较简单，而且各种代理服务器缓存的方式也不一样，这里不详细写了（其实是我不会） 下面开始跑题：
+正向代理 正向代理位于客户端和目标服务器之间。客户端无法直接访问目标服务器，但是为了获取目标服务器上的某资源，客户端需要向一台能够直接访问目标服务器的代理服务器发送请求，请求中还需要指定目标服务器地址。代理服务器获取到目标服务器上的资源后，将资源转发给客户端。
+正向代理情况下，客户端需要明确指定代理服务器的IP及端口，才能使用。
+正向代理有如下几种典型的应用场景：
+ 客户端无法直接访问目标服务器 （比如说tumblr,youtube,twitter,google），这时候通过正向代理服务器转发请求，然后正向代理将不可描述的内容转发给客户端。
+ 客户端访问授权：比如很多公司内部的电脑，不能直接连接Internet，必须在设置一个统一的Proxy来访问Internet。这样可以实现准确的授权控制。例如可以禁止上班时间浏览淘宝，可以禁止使用聊天工具， 还可以监控每个员工访问了什么网站哦 。
+  比较著名的正向代理服务器有：Squid、Shadowsocks
+反向代理 反向代理和正向代理正好相反（废话），对客户端来说代理服务器就和目标服务器是相同的。换句话来说，客户端是不知道目标服务器存在的。他直接向反向代理服务器请求资源，至于反向代理服务器再向哪台目标服务器请求，就管不着了。
+和正向代理最大的区别就是：使用反向代理时，客户端完全不需要进行任何设置。反向代理服务器对客户端来说和普通服务器没有什么区别。
+反向代理有如下几种典型的应用场景：
+ 负载均衡：客户端往反向代理服务器发请求，反向代理服务器根据目标服务器不同的负载，将请求转发到负载较低的目标服务器。
+ 保护和隐藏目标服务器
+  比较著名的反向代理服务器有：Nginx" />
+
+  
+  
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@xiongchen2015" />
+    <meta name="twitter:title" content="深入分布式缓存读书笔记（4） - Proxy Cache" />
+    <meta name="twitter:description" content="《深入分布式缓存》读书笔记
+（1）缓存简介
+（2）页面缓存（Application Cache）
+（3）HTTP缓存  （4）代理服务器缓存
+代理服务器缓存 前面两篇博客写的是客户端缓存（即缓存的数据存储在客户端本地），而代理服务器缓存则是缓存在代理服务器上。代理服务器分为正向代理和反向代理。
+代理服务器缓存的作用 客户端因为种种原因不能直接访问源服务器时（比如客户端或源服务器处于防火墙隔绝的内网，或者源服务器访问量很大需要做负载均衡等），这时候需要通过代理服务器转发请求。
+其当客户端第1次访问源服务器需某资源时，代理服务器会将源服务器的资源保存到本地，然后发送给客户端。
+当有其它客户端访问相同的资源时，如果该资源没有更新，代理服务器会将缓存的内容直接发送给客户端。从而达到加快响应的目标。
+因为代理服务器缓存理解起来比较简单，而且各种代理服务器缓存的方式也不一样，这里不详细写了（其实是我不会） 下面开始跑题：
+正向代理 正向代理位于客户端和目标服务器之间。客户端无法直接访问目标服务器，但是为了获取目标服务器上的某资源，客户端需要向一台能够直接访问目标服务器的代理服务器发送请求，请求中还需要指定目标服务器地址。代理服务器获取到目标服务器上的资源后，将资源转发给客户端。
+正向代理情况下，客户端需要明确指定代理服务器的IP及端口，才能使用。
+正向代理有如下几种典型的应用场景：
+ 客户端无法直接访问目标服务器 （比如说tumblr,youtube,twitter,google），这时候通过正向代理服务器转发请求，然后正向代理将不可描述的内容转发给客户端。
+ 客户端访问授权：比如很多公司内部的电脑，不能直接连接Internet，必须在设置一个统一的Proxy来访问Internet。这样可以实现准确的授权控制。例如可以禁止上班时间浏览淘宝，可以禁止使用聊天工具， 还可以监控每个员工访问了什么网站哦 。
+  比较著名的正向代理服务器有：Squid、Shadowsocks
+反向代理 反向代理和正向代理正好相反（废话），对客户端来说代理服务器就和目标服务器是相同的。换句话来说，客户端是不知道目标服务器存在的。他直接向反向代理服务器请求资源，至于反向代理服务器再向哪台目标服务器请求，就管不着了。
+和正向代理最大的区别就是：使用反向代理时，客户端完全不需要进行任何设置。反向代理服务器对客户端来说和普通服务器没有什么区别。
+反向代理有如下几种典型的应用场景：
+ 负载均衡：客户端往反向代理服务器发请求，反向代理服务器根据目标服务器不同的负载，将请求转发到负载较低的目标服务器。
+ 保护和隐藏目标服务器
+  比较著名的反向代理服务器有：Nginx" />
+    <meta name="twitter:image" content="https://xiongchen2012.github.io/img/avatar.jpg" />
+  
+
+  
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="深入分布式缓存读书笔记（4） - Proxy Cache" />
+  <meta property="og:description" content="《深入分布式缓存》读书笔记
+（1）缓存简介
+（2）页面缓存（Application Cache）
+（3）HTTP缓存  （4）代理服务器缓存
+代理服务器缓存 前面两篇博客写的是客户端缓存（即缓存的数据存储在客户端本地），而代理服务器缓存则是缓存在代理服务器上。代理服务器分为正向代理和反向代理。
+代理服务器缓存的作用 客户端因为种种原因不能直接访问源服务器时（比如客户端或源服务器处于防火墙隔绝的内网，或者源服务器访问量很大需要做负载均衡等），这时候需要通过代理服务器转发请求。
+其当客户端第1次访问源服务器需某资源时，代理服务器会将源服务器的资源保存到本地，然后发送给客户端。
+当有其它客户端访问相同的资源时，如果该资源没有更新，代理服务器会将缓存的内容直接发送给客户端。从而达到加快响应的目标。
+因为代理服务器缓存理解起来比较简单，而且各种代理服务器缓存的方式也不一样，这里不详细写了（其实是我不会） 下面开始跑题：
+正向代理 正向代理位于客户端和目标服务器之间。客户端无法直接访问目标服务器，但是为了获取目标服务器上的某资源，客户端需要向一台能够直接访问目标服务器的代理服务器发送请求，请求中还需要指定目标服务器地址。代理服务器获取到目标服务器上的资源后，将资源转发给客户端。
+正向代理情况下，客户端需要明确指定代理服务器的IP及端口，才能使用。
+正向代理有如下几种典型的应用场景：
+ 客户端无法直接访问目标服务器 （比如说tumblr,youtube,twitter,google），这时候通过正向代理服务器转发请求，然后正向代理将不可描述的内容转发给客户端。
+ 客户端访问授权：比如很多公司内部的电脑，不能直接连接Internet，必须在设置一个统一的Proxy来访问Internet。这样可以实现准确的授权控制。例如可以禁止上班时间浏览淘宝，可以禁止使用聊天工具， 还可以监控每个员工访问了什么网站哦 。
+  比较著名的正向代理服务器有：Squid、Shadowsocks
+反向代理 反向代理和正向代理正好相反（废话），对客户端来说代理服务器就和目标服务器是相同的。换句话来说，客户端是不知道目标服务器存在的。他直接向反向代理服务器请求资源，至于反向代理服务器再向哪台目标服务器请求，就管不着了。
+和正向代理最大的区别就是：使用反向代理时，客户端完全不需要进行任何设置。反向代理服务器对客户端来说和普通服务器没有什么区别。
+反向代理有如下几种典型的应用场景：
+ 负载均衡：客户端往反向代理服务器发请求，反向代理服务器根据目标服务器不同的负载，将请求转发到负载较低的目标服务器。
+ 保护和隐藏目标服务器
+  比较著名的反向代理服务器有：Nginx" />
+  <meta property="og:url" content="https://xiongchen2012.github.io/post/proxy-cache/" />
+  <meta property="og:image" content="https://xiongchen2012.github.io/img/avatar.jpg" />
+
+
+
+
+<meta name="generator" content="Hugo 0.34" />
+
+
+<link rel="canonical" href="https://xiongchen2012.github.io/post/proxy-cache/" />
+<link rel="alternative" href="https://xiongchen2012.github.io/index.xml" title="Deathdealer-Archives" type="application/atom+xml" />
+
+
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="format-detection" content="telephone=no,email=no,adress=no" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+
+
+<meta name="robots" content="index,follow" />
+<meta name="referrer" content="origin-when-cross-origin" />
+
+
+
+
+
+
+
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Deathdealer-Archives" />
+<meta name="msapplication-tooltip" content="Deathdealer-Archives" />
+<meta name='msapplication-navbutton-color' content="#5fbf5e" />
+<meta name="msapplication-TileColor" content="#5fbf5e" />
+<meta name="msapplication-TileImage" content="/img/tile-image-windows.png" />
+<link rel="icon" href="https://xiongchen2012.github.io/img/favicon.ico" />
+<link rel="icon" type="image/png" sizes="16x16" href="https://xiongchen2012.github.io/img/favicon-16x16.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="https://xiongchen2012.github.io/img/favicon-32x32.png" />
+<link rel="icon" sizes="192x192" href="https://xiongchen2012.github.io/img/touch-icon-android.png" />
+<link rel="apple-touch-icon" href="https://xiongchen2012.github.io/img/touch-icon-apple.png" />
+<link rel="mask-icon" href="https://xiongchen2012.github.io/img/safari-pinned-tab.svg" color="#5fbf5e" />
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/video.js/6.2.8/alt/video-js-cdn.min.css" />
+
+<link rel="stylesheet" href="https://xiongchen2012.github.io/css/bundle.css" />
+
+
+  
+  <!--[if lt IE 9]>
+    <script src="//cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <script src="//cdn.bootcss.com/video.js/6.2.8/ie8/videojs-ie8.min.js"></script>
+  <![endif]-->
+
+<!--[if lte IE 11]>
+    <script src="//cdn.bootcss.com/classlist/1.1.20170427/classList.min.js"></script>
+  <![endif]-->
+
+
+<script src="//cdn.bootcss.com/object-fit-images/3.2.3/ofi.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/smooth-scroll/12.1.4/js/smooth-scroll.polyfills.min.js"></script>
+
+
+</head>
+  <body>
+    
+    <div class="suspension">
+      <a title="Go to top" class="to-top is-hide"><span class="icon icon-up"></span></a>
+      
+        
+      
+    </div>
+    
+    
+  <header class="site-header">
+  <img class="avatar" src="https://xiongchen2012.github.io/img/avatar.jpg" alt="Avatar">
+
+  <p class="subtitle">Try to be Full-Stack</p>
+  <button class="menu-toggle" type="button">
+    <span class="icon icon-menu"></span>
+  </button>
+  <nav class="site-menu collapsed">
+    <h2 class="offscreen">Main Menu</h2>
+    <ul class="menu-list">
+      
+      
+      
+      
+        <li class="menu-item
+            
+            
+            
+              is-active
+            
+            
+            "
+            >
+            <a href="https://xiongchen2012.github.io/">文章</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            
+            
+            "
+            >
+            <a href="https://xiongchen2012.github.io/archives">存档</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            
+            
+            "
+            >
+            <a href="https://xiongchen2012.github.io/tags">Tags</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            
+            
+            "
+            >
+            <a href="https://xiongchen2012.github.io/about">关于</a>
+          </li>
+      
+    </ul>
+  </nav>
+  <div style="float:left;position:absolute;bottom:10px;right:10px;display:none;">
+    <a style="color:cadetblue;font-size:12px;" href="https://xiongchen2012.github.io/">
+      5 POSTS
+    </a>
+  </div>
+  <nav class="social-menu collapsed">
+    <h2 class="offscreen">Social Networks</h2>
+    <ul class="social-list">
+      
+      <li class="social-item">
+        <a href="mailto:master@deathdealer.cn" title="Email"><span class="icon icon-email"></span></a>
+      </li>
+
+      
+      <li class="social-item">
+        <a href="//github.com/xiongchen2012" title="GitHub"><span class="icon icon-github"></span></a>
+      </li>
+
+      <li class="social-item">
+        <a href="//twitter.com/xiongchen2015" title="Twitter"><span class="icon icon-twitter"></span></a>
+      </li>
+
+      
+
+      <li class="social-item">
+        <a href="//plus.google.com/108257803422142606899" title="Google+"><span class="icon icon-google"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a href="//weibo.com/deathdelaer" title="Weibo"><span class="icon icon-weibo"></span></a>
+      </li>
+
+      <li class="social-item">
+        <a href="https://xiongchen2012.github.io/img/qrcode.jpg" title="Wechat"><span class="icon icon-wechat"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a href="https://xiongchen2012.github.io/index.xml"><span class="icon icon-rss" title="RSS"></span></a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+  <section class="main post-detail">
+    <header class="post-header">
+      <h1 class="post-title">深入分布式缓存读书笔记（4） - Proxy Cache</h1>
+      <p class="post-meta">@Xiong Chen · Feb 5, 2018 · 1 min read</p>
+    </header>
+    <article class="post-content">
+
+<p><strong>《深入分布式缓存》读书笔记</strong><br />
+<a href='../introduce-to-cache/'>（1）缓存简介</a><br />
+<a href='../application-cache/'>（2）页面缓存（Application Cache）</a><br />
+<a href='../http-cache/'>（3）HTTP缓存</a>  <br/>
+<a href='../proxy-cache/'>（4）代理服务器缓存</a></p>
+
+<h2 id="代理服务器缓存">代理服务器缓存</h2>
+
+<p>前面两篇博客写的是客户端缓存（即缓存的数据存储在客户端本地），而代理服务器缓存则是缓存在代理服务器上。代理服务器分为正向代理和反向代理。</p>
+
+<h3 id="代理服务器缓存的作用">代理服务器缓存的作用</h3>
+
+<p>客户端因为种种原因不能直接访问源服务器时（比如客户端或源服务器处于防火墙隔绝的内网，或者源服务器访问量很大需要做负载均衡等），这时候需要通过代理服务器转发请求。<br/></p>
+
+<p>其当客户端第1次访问源服务器需某资源时，代理服务器会将源服务器的资源保存到本地，然后发送给客户端。<br/></p>
+
+<p>当有其它客户端访问相同的资源时，如果该资源没有更新，代理服务器会将缓存的内容直接发送给客户端。从而达到加快响应的目标。<br/></p>
+
+<p><strong>因为代理服务器缓存理解起来比较简单，而且各种代理服务器缓存的方式也不一样，这里不详细写了</strong><del>（其实是我不会）</del>  下面开始跑题：</p>
+
+<hr />
+
+<h3 id="正向代理">正向代理</h3>
+
+<p>正向代理位于客户端和目标服务器之间。客户端无法直接访问目标服务器，但是为了获取目标服务器上的某资源，客户端需要向一台能够直接访问目标服务器的代理服务器发送请求，请求中还需要指定目标服务器地址。代理服务器获取到目标服务器上的资源后，将资源转发给客户端。</p>
+
+<p>正向代理情况下，客户端需要明确指定代理服务器的IP及端口，才能使用。<br /></p>
+
+<p>正向代理有如下几种典型的应用场景：<br /></p>
+
+<ol>
+<li><p>客户端无法直接访问目标服务器 <del>（比如说tumblr,youtube,twitter,google）</del>，这时候通过正向代理服务器转发请求，然后正向代理将不可描述的内容转发给客户端。</p></li>
+
+<li><p>客户端访问授权：比如很多公司内部的电脑，不能直接连接Internet，必须在设置一个统一的Proxy来访问Internet。这样可以实现准确的授权控制。例如可以禁止上班时间浏览淘宝，可以禁止使用聊天工具， <del>还可以监控每个员工访问了什么网站哦</del> 。</p></li>
+</ol>
+
+<p>比较著名的正向代理服务器有：<a href="http://www.squid-cache.org/">Squid</a>、<a href="https://zh.wikipedia.org/wiki/Shadowsocks">Shadowsocks</a></p>
+
+<h3 id="反向代理">反向代理</h3>
+
+<p>反向代理和正向代理正好相反（<del>废话</del>），对客户端来说代理服务器就和目标服务器是相同的。换句话来说，客户端是不知道目标服务器存在的。他直接向反向代理服务器请求资源，至于反向代理服务器再向哪台目标服务器请求，就管不着了。</p>
+
+<p>和正向代理最大的区别就是：使用反向代理时，客户端完全不需要进行任何设置。反向代理服务器对客户端来说和普通服务器没有什么区别。</p>
+
+<p>反向代理有如下几种典型的应用场景：<br /></p>
+
+<ol>
+<li><p>负载均衡：客户端往反向代理服务器发请求，反向代理服务器根据目标服务器不同的负载，将请求转发到负载较低的目标服务器。</p></li>
+
+<li><p>保护和隐藏目标服务器</p></li>
+</ol>
+
+<p>比较著名的反向代理服务器有：<a href="http://http://nginx.org//">Nginx</a></p>
+</article>
+    <footer class="post-footer">
+      
+      <p class="post-copyright">
+        This site is generated by <a href='http://gohugo.io' style='color:rgb(95, 191, 94);'>HUGO</a> with a theme <a href='https://github.com/laozhu/hugo-nuo' style='color:rgb(95, 191, 94);'>HUGO-NUO</a> © deathdealer.cn
+      </p>
+    </footer>
+  </section>
+  <footer class="site-footer">
+  <p>© 2018 Deathdealer-Archives</p>
+  <p>Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank">Nuo</a>.</p>
+  
+    <p><a href="http://www.miitbeian.gov.cn" title="Check ICP info" target="_blank">苏ICP备15047226号-1</a></p>
+  
+</footer>
+
+
+<script async src="//cdn.bootcss.com/video.js/6.2.8/alt/video.novtt.min.js"></script>
+<script async src="//cdn.bootcss.com/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      displayMath: [['$$','$$'], ['\[','\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: { equationNumbers: { autoNumber: "AMS" },
+      extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    }
+  });
+</script>
+<script type="text/x-mathjax-config">
+  // Fix <code> tags after MathJax finishes running. This is a
+  // hack to overcome a shortcoming of Markdown. Discussion at
+  // https://github.com/mojombo/jekyll/issues/199
+  MathJax.Hub.Queue(() => {
+    MathJax.Hub.getAllJax().map(v => v.SourceElement().parentNode.className += ' has-jax');
+  });
+</script>
+
+<script src="https://xiongchen2012.github.io/js/bundle.js"></script>
+
+
+
+
+  </body>
+</html>
