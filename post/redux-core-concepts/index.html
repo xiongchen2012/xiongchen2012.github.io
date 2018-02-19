@@ -5,11 +5,7 @@
   <meta charset="utf-8" />
 
   
-  <title>
-  Tag → tomcat
-  
-   | Deathdealer-Archives
-</title>
+  <title>Redux Core Concepts</title>
 
   
   
@@ -20,20 +16,46 @@
 
   
   <meta name="author" content="Xiong Chen" />
-  <meta name="description" content="本站由静态网站生成器HUGO生成(https://gohugo.io)" />
+  <meta name="description" content=" Redux Core Concepts Action 先说是什么 首先action是一个普通的不能再普通的Javascript对象。理解这一点非常重要，这是整个Redux的基石。
+其次，所有的action对象都必须包含type字段（这是Redux强制规定的）
+一个Action对象看起是这样的：
+var addTodoAction = { type: &#39;ADD_TODO&#39;, //action必须包含这个字段 //其它的字段随便怎么定义，能用于展现view就行 payload: { text: &#39;todo item 1&#39;, index: 0 }, somekey: &#39;somevalue&#39; }  再说定义 直接引用官网：
+Actions are payloads of information that send data from your application to your store. They are the only source of information for the store.  Action是应用程序把数据传递到Store的有效负载，是Store中数据的唯一来源。
+换个角度理解：
+应用程序将action作为数据的载体，通过action把数据传递到Store中。而且它是唯一的给Store提供数据的途径。
+个人理解 action是一个普通的js对象，对象的type属性标记action的用途（方便后面的reducer根据），其余的字段都可以认为是数据。
+Reducer " />
 
   
-  <meta name="twitter:card" content="summary" />
-  <meta name="twitter:site" content="@xiongchen2015" />
-  <meta name="twitter:title" content="Deathdealer-Archives" />
-  <meta name="twitter:description" content="本站由静态网站生成器HUGO生成(https://gohugo.io)" />
-  <meta name="twitter:image" content="https://xiongchen2012.github.io/img/avatar.jpg" />
+  
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@xiongchen2015" />
+    <meta name="twitter:title" content="Redux Core Concepts" />
+    <meta name="twitter:description" content=" Redux Core Concepts Action 先说是什么 首先action是一个普通的不能再普通的Javascript对象。理解这一点非常重要，这是整个Redux的基石。
+其次，所有的action对象都必须包含type字段（这是Redux强制规定的）
+一个Action对象看起是这样的：
+var addTodoAction = { type: &#39;ADD_TODO&#39;, //action必须包含这个字段 //其它的字段随便怎么定义，能用于展现view就行 payload: { text: &#39;todo item 1&#39;, index: 0 }, somekey: &#39;somevalue&#39; }  再说定义 直接引用官网：
+Actions are payloads of information that send data from your application to your store. They are the only source of information for the store.  Action是应用程序把数据传递到Store的有效负载，是Store中数据的唯一来源。
+换个角度理解：
+应用程序将action作为数据的载体，通过action把数据传递到Store中。而且它是唯一的给Store提供数据的途径。
+个人理解 action是一个普通的js对象，对象的type属性标记action的用途（方便后面的reducer根据），其余的字段都可以认为是数据。
+Reducer " />
+    <meta name="twitter:image" content="https://xiongchen2012.github.io/img/avatar.jpg" />
+  
 
   
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="Deathdealer-Archives" />
-  <meta property="og:description" content="本站由静态网站生成器HUGO生成(https://gohugo.io)" />
-  <meta property="og:url" content="https://xiongchen2012.github.io/tags/tomcat/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Redux Core Concepts" />
+  <meta property="og:description" content=" Redux Core Concepts Action 先说是什么 首先action是一个普通的不能再普通的Javascript对象。理解这一点非常重要，这是整个Redux的基石。
+其次，所有的action对象都必须包含type字段（这是Redux强制规定的）
+一个Action对象看起是这样的：
+var addTodoAction = { type: &#39;ADD_TODO&#39;, //action必须包含这个字段 //其它的字段随便怎么定义，能用于展现view就行 payload: { text: &#39;todo item 1&#39;, index: 0 }, somekey: &#39;somevalue&#39; }  再说定义 直接引用官网：
+Actions are payloads of information that send data from your application to your store. They are the only source of information for the store.  Action是应用程序把数据传递到Store的有效负载，是Store中数据的唯一来源。
+换个角度理解：
+应用程序将action作为数据的载体，通过action把数据传递到Store中。而且它是唯一的给Store提供数据的途径。
+个人理解 action是一个普通的js对象，对象的type属性标记action的用途（方便后面的reducer根据），其余的字段都可以认为是数据。
+Reducer " />
+  <meta property="og:url" content="https://xiongchen2012.github.io/post/redux-core-concepts/" />
   <meta property="og:image" content="https://xiongchen2012.github.io/img/avatar.jpg" />
 
 
@@ -42,7 +64,7 @@
 <meta name="generator" content="Hugo 0.34" />
 
 
-<link rel="canonical" href="https://xiongchen2012.github.io/tags/tomcat/" />
+<link rel="canonical" href="https://xiongchen2012.github.io/post/redux-core-concepts/" />
 <link rel="alternative" href="https://xiongchen2012.github.io/index.xml" title="Deathdealer-Archives" type="application/atom+xml" />
 
 
@@ -106,6 +128,8 @@
     <div class="suspension">
       <a title="Go to top" class="to-top is-hide"><span class="icon icon-up"></span></a>
       
+        
+      
     </div>
     
     
@@ -126,6 +150,8 @@
         <li class="menu-item
             
             
+            
+              is-active
             
             
             "
@@ -236,32 +262,64 @@
   </nav>
 </header>
 
-  <section class="main post-list">
-    <header class="list-header offscreen">
-      <h2 class="list-label">Posts List</h2>
+  <section class="main post-detail">
+    <header class="post-header">
+      <h1 class="post-title">Redux Core Concepts</h1>
+      <p class="post-meta">@Xiong Chen · Feb 19, 2018 · 1 min read</p>
     </header>
-    
-    
-      
-        <article class="post-entry">
-  <header class="post-header">
-    <h3 class="post-title"><a href="https://xiongchen2012.github.io/post/native-tomcat/" class="post-link">Tomcat with native Apache Portable Runtime</a></h3>
-    <p class="post-meta">@Xiong Chen · Jan 28, 2018 · 1 min read</p>
-  </header>
-  
-  <p class="post-summary">
-    
-      Tomcat的APR模式通过JNI调用操作系统IO接口，使Tomcat性能有了极大提高。本文介绍如何开启Tomcat的APR运行模式，优化其并发性能
-    
-  </p>
-  <footer class="post-footer">
-    <a class="read-more" href="https://xiongchen2012.github.io/post/native-tomcat/">Read More →</a>
-  </footer>
-</article>
+    <article class="post-content">
 
+<h1 id="redux-core-concepts">Redux Core Concepts</h1>
+
+<h2 id="action">Action</h2>
+
+<hr />
+
+<h3 id="先说是什么">先说是什么</h3>
+
+<p>首先action是一个普通的不能再<strong>普通的Javascript对象</strong>。理解这一点非常重要，这是整个Redux的基石。</p>
+
+<p>其次，所有的action对象都必须包含<code>type</code>字段（这是Redux强制规定的）</p>
+
+<p>一个Action对象看起是这样的：</p>
+
+<pre><code class="language-js">  var addTodoAction = {
+      type: 'ADD_TODO',  //action必须包含这个字段
+      //其它的字段随便怎么定义，能用于展现view就行
+      payload: {         
+          text: 'todo item 1',
+          index: 0
+      },
+      somekey: 'somevalue'
+  }
+</code></pre>
+
+<h3 id="再说定义">再说定义</h3>
+
+<p>直接引用官网：</p>
+
+<pre><code>Actions are payloads of information that send data from your application to your store. They are the only source of information for the store. 
+</code></pre>
+
+<p>Action是应用程序把数据传递到Store的有效负载，是Store中数据的唯一来源。</p>
+
+<p><em>换个角度理解：</em><br />
+<strong>应用程序将action作为数据的载体，通过action把数据传递到Store中。而且它是唯一的给Store提供数据的途径。</strong></p>
+
+<h3 id="个人理解">个人理解</h3>
+
+<p>action是一个普通的js对象，对象的<code>type</code>属性标记action的<strong>用途</strong>（方便后面的reducer根据），其余的字段都可以认为是数据。</p>
+
+<h2 id="reducer">Reducer</h2>
+
+<hr />
+</article>
+    <footer class="post-footer">
       
-    
-    
+      <p class="post-copyright">
+        This site is generated by <a href='http://gohugo.io' style='color:rgb(95, 191, 94);'>HUGO</a> with a theme <a href='https://github.com/laozhu/hugo-nuo' style='color:rgb(95, 191, 94);'>HUGO-NUO</a> © deathdealer.cn
+      </p>
+    </footer>
   </section>
   <footer class="site-footer">
   <p>© 2018 Deathdealer-Archives</p>
