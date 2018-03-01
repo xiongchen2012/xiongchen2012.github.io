@@ -18,15 +18,18 @@
       <pubDate>Mon, 19 Feb 2018 20:49:37 +0800</pubDate>
       
       <guid>https://xiongchen2012.github.io/post/redux-core-concepts/</guid>
-      <description> Redux Core Concepts Action 先说是什么 首先action是一个普通的不能再普通的Javascript对象。理解这一点非常重要，这是整个Redux的基石。
+      <description>Redux Core Concepts Action 先说是什么 首先action是一个普通的不能再普通的Javascript对象。理解这一点非常重要，这是整个Redux的基石。
 其次，所有的action对象都必须包含type字段（这是Redux强制规定的）
-一个Action对象看起是这样的：
-var addTodoAction = { type: &#39;ADD_TODO&#39;, //action必须包含这个字段 //其它的字段随便怎么定义，能用于展现view就行 payload: { text: &#39;todo item 1&#39;, index: 0 }, somekey: &#39;somevalue&#39; }  再说定义 直接引用官网：
+一个Action对象看起是这样的： var addTodoAction = { type: &amp;#39;ADD_TODO&amp;#39;, //action必须包含这个字段  //其它的字段随便怎么定义，能用于展现view就行  payload: { text: &amp;#39;todo item 1&amp;#39;, index: 0 }, somekey: &amp;#39;somevalue&amp;#39; }
+再说定义 直接引用官网：
 Actions are payloads of information that send data from your application to your store. They are the only source of information for the store.  Action是应用程序把数据传递到Store的有效负载，是Store中数据的唯一来源。
 换个角度理解：
 应用程序将action作为数据的载体，通过action把数据传递到Store中。而且它是唯一的给Store提供数据的途径。
-个人理解 action是一个普通的js对象，对象的type属性标记action的用途（方便后面的reducer根据），其余的字段都可以认为是数据。
-Reducer </description>
+个人理解 action是一个普通的js对象，对象的type属性标记action的用途（方便后面的reducer根据type对state进行不同的更新），其余的字段都可以认为是state中要用的数据。
+Reducer 先说是什么 Action只描述了State有更新这件事，同时给出State需要更新的部分。但是具体怎么更新State是没有的。比如直接将State某属性旧的值更新成新的值，或者进行将某属性进行一定的运算后将结果更新到State中。
+而Reducer就是具体的做基于Action更新State这件事情的函数。我个人理解Reducer也可以称为：Action处理器或者叫State更新器
+再说定义 Reducer是一个纯函数,所谓纯函数就是满足以下条件的函数：
+ 纯函数在相同的输入值时，产生相同的输出。函数的输出和输入值以外的其他隐藏信息或状态无关，也和由I/O设备产生的外部输出无关。只要输入相同，输出就相同。</description>
     </item>
     
     <item>

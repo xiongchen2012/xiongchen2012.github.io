@@ -16,45 +16,54 @@
 
   
   <meta name="author" content="Xiong Chen" />
-  <meta name="description" content=" Redux Core Concepts Action 先说是什么 首先action是一个普通的不能再普通的Javascript对象。理解这一点非常重要，这是整个Redux的基石。
+  <meta name="description" content="Redux Core Concepts Action 先说是什么 首先action是一个普通的不能再普通的Javascript对象。理解这一点非常重要，这是整个Redux的基石。
 其次，所有的action对象都必须包含type字段（这是Redux强制规定的）
-一个Action对象看起是这样的：
-var addTodoAction = { type: &#39;ADD_TODO&#39;, //action必须包含这个字段 //其它的字段随便怎么定义，能用于展现view就行 payload: { text: &#39;todo item 1&#39;, index: 0 }, somekey: &#39;somevalue&#39; }  再说定义 直接引用官网：
+一个Action对象看起是这样的： var addTodoAction = { type: &amp;#39;ADD_TODO&amp;#39;, //action必须包含这个字段  //其它的字段随便怎么定义，能用于展现view就行  payload: { text: &amp;#39;todo item 1&amp;#39;, index: 0 }, somekey: &amp;#39;somevalue&amp;#39; }
+再说定义 直接引用官网：
 Actions are payloads of information that send data from your application to your store. They are the only source of information for the store.  Action是应用程序把数据传递到Store的有效负载，是Store中数据的唯一来源。
 换个角度理解：
 应用程序将action作为数据的载体，通过action把数据传递到Store中。而且它是唯一的给Store提供数据的途径。
-个人理解 action是一个普通的js对象，对象的type属性标记action的用途（方便后面的reducer根据），其余的字段都可以认为是数据。
-Reducer " />
+个人理解 action是一个普通的js对象，对象的type属性标记action的用途（方便后面的reducer根据type对state进行不同的更新），其余的字段都可以认为是state中要用的数据。
+Reducer 先说是什么 Action只描述了State有更新这件事，同时给出State需要更新的部分。但是具体怎么更新State是没有的。比如直接将State某属性旧的值更新成新的值，或者进行将某属性进行一定的运算后将结果更新到State中。
+而Reducer就是具体的做基于Action更新State这件事情的函数。我个人理解Reducer也可以称为：Action处理器或者叫State更新器
+再说定义 Reducer是一个纯函数,所谓纯函数就是满足以下条件的函数：
+ 纯函数在相同的输入值时，产生相同的输出。函数的输出和输入值以外的其他隐藏信息或状态无关，也和由I/O设备产生的外部输出无关。只要输入相同，输出就相同。" />
 
   
   
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:site" content="@xiongchen2015" />
     <meta name="twitter:title" content="Redux Core Concepts" />
-    <meta name="twitter:description" content=" Redux Core Concepts Action 先说是什么 首先action是一个普通的不能再普通的Javascript对象。理解这一点非常重要，这是整个Redux的基石。
+    <meta name="twitter:description" content="Redux Core Concepts Action 先说是什么 首先action是一个普通的不能再普通的Javascript对象。理解这一点非常重要，这是整个Redux的基石。
 其次，所有的action对象都必须包含type字段（这是Redux强制规定的）
-一个Action对象看起是这样的：
-var addTodoAction = { type: &#39;ADD_TODO&#39;, //action必须包含这个字段 //其它的字段随便怎么定义，能用于展现view就行 payload: { text: &#39;todo item 1&#39;, index: 0 }, somekey: &#39;somevalue&#39; }  再说定义 直接引用官网：
+一个Action对象看起是这样的： var addTodoAction = { type: &amp;#39;ADD_TODO&amp;#39;, //action必须包含这个字段  //其它的字段随便怎么定义，能用于展现view就行  payload: { text: &amp;#39;todo item 1&amp;#39;, index: 0 }, somekey: &amp;#39;somevalue&amp;#39; }
+再说定义 直接引用官网：
 Actions are payloads of information that send data from your application to your store. They are the only source of information for the store.  Action是应用程序把数据传递到Store的有效负载，是Store中数据的唯一来源。
 换个角度理解：
 应用程序将action作为数据的载体，通过action把数据传递到Store中。而且它是唯一的给Store提供数据的途径。
-个人理解 action是一个普通的js对象，对象的type属性标记action的用途（方便后面的reducer根据），其余的字段都可以认为是数据。
-Reducer " />
+个人理解 action是一个普通的js对象，对象的type属性标记action的用途（方便后面的reducer根据type对state进行不同的更新），其余的字段都可以认为是state中要用的数据。
+Reducer 先说是什么 Action只描述了State有更新这件事，同时给出State需要更新的部分。但是具体怎么更新State是没有的。比如直接将State某属性旧的值更新成新的值，或者进行将某属性进行一定的运算后将结果更新到State中。
+而Reducer就是具体的做基于Action更新State这件事情的函数。我个人理解Reducer也可以称为：Action处理器或者叫State更新器
+再说定义 Reducer是一个纯函数,所谓纯函数就是满足以下条件的函数：
+ 纯函数在相同的输入值时，产生相同的输出。函数的输出和输入值以外的其他隐藏信息或状态无关，也和由I/O设备产生的外部输出无关。只要输入相同，输出就相同。" />
     <meta name="twitter:image" content="https://xiongchen2012.github.io/img/avatar.jpg" />
   
 
   
   <meta property="og:type" content="article" />
   <meta property="og:title" content="Redux Core Concepts" />
-  <meta property="og:description" content=" Redux Core Concepts Action 先说是什么 首先action是一个普通的不能再普通的Javascript对象。理解这一点非常重要，这是整个Redux的基石。
+  <meta property="og:description" content="Redux Core Concepts Action 先说是什么 首先action是一个普通的不能再普通的Javascript对象。理解这一点非常重要，这是整个Redux的基石。
 其次，所有的action对象都必须包含type字段（这是Redux强制规定的）
-一个Action对象看起是这样的：
-var addTodoAction = { type: &#39;ADD_TODO&#39;, //action必须包含这个字段 //其它的字段随便怎么定义，能用于展现view就行 payload: { text: &#39;todo item 1&#39;, index: 0 }, somekey: &#39;somevalue&#39; }  再说定义 直接引用官网：
+一个Action对象看起是这样的： var addTodoAction = { type: &amp;#39;ADD_TODO&amp;#39;, //action必须包含这个字段  //其它的字段随便怎么定义，能用于展现view就行  payload: { text: &amp;#39;todo item 1&amp;#39;, index: 0 }, somekey: &amp;#39;somevalue&amp;#39; }
+再说定义 直接引用官网：
 Actions are payloads of information that send data from your application to your store. They are the only source of information for the store.  Action是应用程序把数据传递到Store的有效负载，是Store中数据的唯一来源。
 换个角度理解：
 应用程序将action作为数据的载体，通过action把数据传递到Store中。而且它是唯一的给Store提供数据的途径。
-个人理解 action是一个普通的js对象，对象的type属性标记action的用途（方便后面的reducer根据），其余的字段都可以认为是数据。
-Reducer " />
+个人理解 action是一个普通的js对象，对象的type属性标记action的用途（方便后面的reducer根据type对state进行不同的更新），其余的字段都可以认为是state中要用的数据。
+Reducer 先说是什么 Action只描述了State有更新这件事，同时给出State需要更新的部分。但是具体怎么更新State是没有的。比如直接将State某属性旧的值更新成新的值，或者进行将某属性进行一定的运算后将结果更新到State中。
+而Reducer就是具体的做基于Action更新State这件事情的函数。我个人理解Reducer也可以称为：Action处理器或者叫State更新器
+再说定义 Reducer是一个纯函数,所谓纯函数就是满足以下条件的函数：
+ 纯函数在相同的输入值时，产生相同的输出。函数的输出和输入值以外的其他隐藏信息或状态无关，也和由I/O设备产生的外部输出无关。只要输入相同，输出就相同。" />
   <meta property="og:url" content="https://xiongchen2012.github.io/post/redux-core-concepts/" />
   <meta property="og:image" content="https://xiongchen2012.github.io/img/avatar.jpg" />
 
@@ -281,18 +290,16 @@ Reducer " />
 
 <p>其次，所有的action对象都必须包含<code>type</code>字段（这是Redux强制规定的）</p>
 
-<p>一个Action对象看起是这样的：</p>
-
-<pre><code class="language-js">  var addTodoAction = {
-      type: 'ADD_TODO',  //action必须包含这个字段
-      //其它的字段随便怎么定义，能用于展现view就行
-      payload: {         
-          text: 'todo item 1',
-          index: 0
+<p>一个Action对象看起是这样的：
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">  <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">addTodoAction</span> <span style="color:#f92672">=</span> {
+      <span style="color:#a6e22e">type</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;ADD_TODO&#39;</span>,  <span style="color:#75715e">//action必须包含这个字段
+</span><span style="color:#75715e"></span>      <span style="color:#75715e">//其它的字段随便怎么定义，能用于展现view就行
+</span><span style="color:#75715e"></span>      <span style="color:#a6e22e">payload</span><span style="color:#f92672">:</span> {         
+          <span style="color:#a6e22e">text</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;todo item 1&#39;</span>,
+          <span style="color:#a6e22e">index</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">0</span>
       },
-      somekey: 'somevalue'
-  }
-</code></pre>
+      <span style="color:#a6e22e">somekey</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;somevalue&#39;</span>
+  }</code></pre></div></p>
 
 <h3 id="再说定义">再说定义</h3>
 
@@ -308,11 +315,73 @@ Reducer " />
 
 <h3 id="个人理解">个人理解</h3>
 
-<p>action是一个普通的js对象，对象的<code>type</code>属性标记action的<strong>用途</strong>（方便后面的reducer根据），其余的字段都可以认为是数据。</p>
+<p>action是一个普通的js对象，对象的<code>type</code>属性标记action的<strong>用途</strong>（方便后面的reducer根据type对state进行不同的更新），其余的字段都可以认为是state中要用的数据。</p>
 
 <h2 id="reducer">Reducer</h2>
 
 <hr />
+
+<h3 id="先说是什么-1">先说是什么</h3>
+
+<p>Action只描述了State有更新这件事，同时给出State需要更新的部分。但是具体怎么更新State是没有的。比如直接将State某属性旧的值更新成新的值，或者进行将某属性进行一定的运算后将结果更新到State中。</p>
+
+<p>而Reducer就是具体的做<code>基于Action更新State</code>这件事情的函数。我个人理解Reducer也可以称为：<code>Action处理器</code>或者叫<code>State更新器</code></p>
+
+<h3 id="再说定义-1">再说定义</h3>
+
+<p>Reducer是一个<a href="https://zh.wikipedia.org/wiki/%E7%BA%AF%E5%87%BD%E6%95%B0">纯函数</a>,所谓纯函数就是满足以下条件的函数：</p>
+
+<ul>
+<li><p>纯函数在相同的输入值时，产生相同的输出。函数的输出和输入值以外的其他隐藏信息或状态无关，也和由I/O设备产生的外部输出无关。只要输入相同，输出就相同。</p></li>
+
+<li><p>纯函数不能有语义上可观察的函数副作用，诸如『触发事件』、『调用非纯函数』、『请求网络接口』的内容等</p></li>
+</ul>
+
+<p>对应到Redux中，只要传入参数相同，返回计算得到的下一个 state 就一定相同。<strong>没有特殊情况、没有副作用，没有 API 请求、没有变量修改，单纯执行计算。</strong></p>
+
+<p>Reducer函数有两个入参：state，action，出参是经过计算后得到的新的state.(<strong>注意是新的state，而不是对入参state的修改</strong>)，用伪代码表示就是</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"> (<span style="color:#a6e22e">previousState</span>, <span style="color:#a6e22e">action</span>) =&gt; <span style="color:#a6e22e">newState</span></code></pre></div>
+
+<p>具体的例子如下：</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">todoApp</span>(<span style="color:#a6e22e">state</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">initialState</span>, <span style="color:#a6e22e">action</span>) {
+  <span style="color:#66d9ef">switch</span> (<span style="color:#a6e22e">action</span>.<span style="color:#a6e22e">type</span>) {
+    <span style="color:#66d9ef">case</span> <span style="color:#a6e22e">SET_VISIBILITY_FILTER</span><span style="color:#f92672">:</span>
+      <span style="color:#66d9ef">return</span> Object.<span style="color:#a6e22e">assign</span>({}, <span style="color:#a6e22e">state</span>, {
+        <span style="color:#a6e22e">visibilityFilter</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">action</span>.<span style="color:#a6e22e">filter</span>
+      })
+    <span style="color:#66d9ef">case</span> <span style="color:#a6e22e">ADD_TODO</span><span style="color:#f92672">:</span>
+      <span style="color:#66d9ef">return</span> Object.<span style="color:#a6e22e">assign</span>({}, <span style="color:#a6e22e">state</span>, {
+        <span style="color:#a6e22e">todos</span><span style="color:#f92672">:</span> [
+          ...<span style="color:#a6e22e">state</span>.<span style="color:#a6e22e">todos</span>,
+          {
+            <span style="color:#a6e22e">text</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">action</span>.<span style="color:#a6e22e">text</span>,
+            <span style="color:#a6e22e">completed</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">false</span>
+          }
+        ]
+      })
+    <span style="color:#66d9ef">default</span><span style="color:#f92672">:</span>
+      <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">state</span>
+  }
+}</code></pre></div>
+
+<ol>
+<li>当state为undefined时,返回初始state</li>
+<li>当action的type为未知时（switch走到了default），返回旧的state</li>
+<li>不要更新入参state，而是重新创建新的对象，把旧的state复制进去，同时把需要更新的部分更新掉</li>
+<li>可以用ES7的&hellip;对象展示运算符简化Object.assign的写法</li>
+</ol>
+
+<p><strong>时刻谨记永远不要在克隆 state 前修改它。</strong></p>
+
+<h3 id="分割reducer">分割Reducer</h3>
+
+<p>如果一个App的State能够人为的分成好几个部分，每个部分又不是关系特别紧密。把他们写在一个Reducer函数里面，会导致Reducer函数既看起来不太好看，又不太好维护。</p>
+
+<p>这时候可以写多个reducer函数，每个reducer只负责更新和维护自己关心的那部分state。最后Redux提供了一个<code>combineReducers()</code>工具方法，将这些reducer合到一起。<code>combineReducers()</code>得到一个合并过的reducer，这个reducer函数运行后得到的也是合并过的state。</p>
+
+<p><em>（待续）</em></p>
 </article>
     <footer class="post-footer">
       
