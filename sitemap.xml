@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://xiongchen2012.github.io/post/package-dependencies/</loc>
+    <lastmod>2018-03-05T23:20:57+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://xiongchen2012.github.io/post/redux-core-concepts/</loc>
     <lastmod>2018-02-19T20:49:37+08:00</lastmod>
   </url>
@@ -50,7 +55,7 @@
   
   <url>
     <loc>https://xiongchen2012.github.io/</loc>
-    <lastmod>2018-02-19T20:49:37+08:00</lastmod>
+    <lastmod>2018-03-05T23:20:57+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -62,7 +67,7 @@
   
   <url>
     <loc>https://xiongchen2012.github.io/post/</loc>
-    <lastmod>2018-02-19T20:49:37+08:00</lastmod>
+    <lastmod>2018-03-05T23:20:57+08:00</lastmod>
     <priority>0</priority>
   </url>
   

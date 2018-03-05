@@ -205,7 +205,7 @@ Reducer 先说是什么 Action只描述了State有更新这件事，同时给出
   </nav>
   <div style="float:left;position:absolute;bottom:10px;right:10px;display:none;">
     <a style="color:cadetblue;font-size:12px;" href="https://xiongchen2012.github.io/">
-      6 POSTS
+      7 POSTS
     </a>
   </div>
   <nav class="social-menu collapsed">
@@ -382,7 +382,57 @@ Reducer 先说是什么 Action只描述了State有更新这件事，同时给出
 
 <p>这时候可以写多个reducer函数，每个reducer只负责更新和维护自己关心的那部分state。最后Redux提供了一个<code>combineReducers()</code>工具方法，将这些reducer合到一起。<code>combineReducers()</code>得到一个合并过的reducer，这个reducer函数运行后得到的也是合并过的state。</p>
 
-<p><em>（待续）</em></p>
+<h2 id="store">Store</h2>
+
+<p>Action定义了State发生了什么样的变化，也就是<strong>WHAT</strong><br>
+Reducer定义了具体如何将这个变化应用(apply)到State中，也就是<strong>HOW</strong><br>
+Store是保存State的地方，一切的reducer,action都是在Store中发生的，也就是<strong>WHERE</strong>。</p>
+
+<p>Store：可以理解为仓库，是保存state的地方贮藏室。根据Redux的设计思想，整个Redux的应用<strong>有且仅有一个Store</strong>，这个规定保证了整个应用的状态是可控的，不会引起混乱。</p>
+
+<p>现实中的仓库可以提供物品存入、取出的功能。Redux的Store也提供了这些基本功能：<br>
+1. 维持整个Redux应用的State
+2. 随时可以获取应用的State（通过getState()方法）
+3. 随时可以更新应用的State（通过dispatch(action)方法）
+4. 可以注册监听器订阅State的变化（通过subscribe(listener)方法），或者注销监听器</p>
+
+<h4 id="创建store">创建Store</h4>
+
+<p>Redux提供了createStore方法创建Store；
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#66d9ef">import</span> { <span style="color:#a6e22e">createStore</span> } <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;redux&#39;</span>;
+
+<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">store</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">createStore</span>( <span style="color:#a6e22e">reducers</span>, <span style="color:#a6e22e">initialState</span>){
+    <span style="color:#75715e">/* ... */</span>
+}</code></pre></div></p>
+
+<p>第1个参数是通过combineReducers()合并成1个的Reducer合集；
+第2个参数是可选的，即应用初始化时候的State；</p>
+
+<h4 id="获取state">获取State</h4>
+
+<p>Store提供了getState()方法可以在任意时间点获取Store中保存的State;</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#66d9ef">let</span> <span style="color:#a6e22e">state</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">store</span>.<span style="color:#a6e22e">getState</span>())  <span style="color:#75715e">/* {visibilityFilter: &#34;SHOW_ALL&#34;, todos:[] } */</span></code></pre></div>
+
+<h4 id="更新state">更新State</h4>
+
+<p>Store提供了dispatch(action)方法，可以触发reducer根据不同类型的action更新state</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#75715e">/* dispatch参数：具体的Action或Action创建函数 */</span>
+<span style="color:#a6e22e">store</span>.<span style="color:#a6e22e">dispatch</span>(<span style="color:#a6e22e">action</span>)</code></pre></div>
+
+<p><strong>这里的更新不是指更新原有State中某个/某几个字段，而是生成新的state替换Store中的旧state</strong></p>
+
+<h4 id="监控state">监控State</h4>
+
+<p>Store提供了subscribe(listener)方法，用于当state更新通知listener
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#75715e">/* listner是一个函数，当State更新时会被调用 */</span>
+<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">unsubscribe</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">store</span>.<span style="color:#a6e22e">subscribe</span>(()=&gt;{
+    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">store</span>.<span style="color:#a6e22e">getState</span>());
+});
+
+<span style="color:#75715e">/* 可以随时注销Listener */</span>
+<span style="color:#a6e22e">unsubscribe</span>();</code></pre></div></p>
 </article>
     <footer class="post-footer">
       
