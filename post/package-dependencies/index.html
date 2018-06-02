@@ -64,7 +64,7 @@ package.json { &amp;#34;name&amp;#34;: &amp;#34;package-a&amp;#34;, &amp;#34;dep
 
 
 
-<meta name="generator" content="Hugo 0.34" />
+<meta name="generator" content="Hugo 0.41" />
 
 
 <link rel="canonical" href="https://xiongchen2012.github.io/post/package-dependencies/" />
@@ -196,7 +196,7 @@ package.json { &amp;#34;name&amp;#34;: &amp;#34;package-a&amp;#34;, &amp;#34;dep
   </nav>
   <div style="float:left;position:absolute;bottom:10px;right:10px;display:none;">
     <a style="color:cadetblue;font-size:12px;" href="https://xiongchen2012.github.io/">
-      7 POSTS
+      9 POSTS
     </a>
   </div>
   <nav class="social-menu collapsed">
@@ -313,21 +313,24 @@ package.json { &amp;#34;name&amp;#34;: &amp;#34;package-a&amp;#34;, &amp;#34;dep
     <span style="color:#e6db74">&#34;react&#34;</span>,
     <span style="color:#e6db74">&#34;core-js&#34;</span>
   ]
-}</code></pre></div></p>
+}
+</code></pre></div></p>
 
 <p>node_modules的文件夹结构就变成了：
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#960050;background-color:#1e0010">├──</span> <span style="color:#a6e22e">node_modules</span>
     <span style="color:#960050;background-color:#1e0010">├──</span> <span style="color:#66d9ef">package</span><span style="color:#f92672">-</span><span style="color:#a6e22e">a</span>
     <span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#960050;background-color:#1e0010">└──</span> <span style="color:#a6e22e">react</span>
     <span style="color:#960050;background-color:#1e0010">│</span>   <span style="color:#960050;background-color:#1e0010">└──</span> <span style="color:#a6e22e">core</span><span style="color:#f92672">-</span><span style="color:#a6e22e">js</span>
-    <span style="color:#960050;background-color:#1e0010">└──</span> <span style="color:#a6e22e">loadsh</span></code></pre></div></p>
+    <span style="color:#960050;background-color:#1e0010">└──</span> <span style="color:#a6e22e">loadsh</span>
+</code></pre></div></p>
 
 <p>如果不指定bundleDependency的话，应该是这样的：
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#960050;background-color:#1e0010">├──</span> <span style="color:#a6e22e">node_modules</span>
     <span style="color:#960050;background-color:#1e0010">├──</span> <span style="color:#66d9ef">package</span><span style="color:#f92672">-</span><span style="color:#a6e22e">a</span>
     <span style="color:#960050;background-color:#1e0010">├──</span> <span style="color:#a6e22e">react</span>
     <span style="color:#960050;background-color:#1e0010">├──</span> <span style="color:#a6e22e">core</span><span style="color:#f92672">-</span><span style="color:#a6e22e">js</span>
-    <span style="color:#960050;background-color:#1e0010">└──</span> <span style="color:#a6e22e">loadsh</span></code></pre></div></p>
+    <span style="color:#960050;background-color:#1e0010">└──</span> <span style="color:#a6e22e">loadsh</span>
+</code></pre></div></p>
 
 <h3 id="optionaldependency">optionalDependency</h3>
 
@@ -341,7 +344,8 @@ package.json { &amp;#34;name&amp;#34;: &amp;#34;package-a&amp;#34;, &amp;#34;dep
 }
 <span style="color:#66d9ef">if</span> ( <span style="color:#a6e22e">plugin</span> ) {
   <span style="color:#a6e22e">plugin</span>.<span style="color:#a6e22e">someMethod</span>();
-}</code></pre></div>
+}
+</code></pre></div>
 
 <p><strong>NOTE</strong>:optionDependency会覆盖dependency，所以不要两个地方都同时指定同一个package。</p>
 </article>

@@ -5,9 +5,7 @@
   <meta charset="utf-8" />
 
   
-  <title>
-  Tags | Deathdealer-Archives
-</title>
+  <title>Rel No Opener</title>
 
   
   
@@ -18,20 +16,43 @@
 
   
   <meta name="author" content="Xiong Chen" />
-  <meta name="description" content="本站由静态网站生成器HUGO生成(https://gohugo.io)" />
+  <meta name="description" content="最近在看30秒面试题，里面有一个题目是：
+Where and why is the rel=&amp;ldquo;noopener&amp;rdquo; attribute used?
+里面提到了rel属性的noopener的这个值的作用。写过HTML的人都知道&amp;lt;a&amp;gt;标签如果指定了target=&amp;quot;_blank&amp;quot;属性，那么链接会在新的窗口（或TAB页）中打开。
+我们假设原来的网页是A，通过A页面的链接新打开的网页是B。默认情况下在B网页中可以通过window.opener来获取A网页的window对象的引用，也就意味着B可以通过window.opener对A网页进行一定的操作。如果B网页是一个恶意网站，在拿到A网页的window对象后，完全可以用window.location将A网页跳转到另外一个挂马的网页或者钓鱼网站。这样用户就很不安全了。
+所以才会有noopener这个设置，当一个a标签的rel属性值设置成noopener时,点击链接跳转的网页就无法拿到原网页的window对象了。也就是刚才说的B网页拿不到A网页的window对象（此时window.opener=null）。
+&amp;lt;a href=&amp;quot;B&amp;quot; rel=&amp;quot;noopener&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;跳转到B&amp;lt;/a&amp;gt;
+具体的示例可以看：
+https://mathiasbynens.github.io/rel-noopener/" />
 
   
-  <meta name="twitter:card" content="summary" />
-  <meta name="twitter:site" content="@xiongchen2015" />
-  <meta name="twitter:title" content="Deathdealer-Archives" />
-  <meta name="twitter:description" content="本站由静态网站生成器HUGO生成(https://gohugo.io)" />
-  <meta name="twitter:image" content="https://xiongchen2012.github.io/img/avatar.jpg" />
+  
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@xiongchen2015" />
+    <meta name="twitter:title" content="Rel No Opener" />
+    <meta name="twitter:description" content="最近在看30秒面试题，里面有一个题目是：
+Where and why is the rel=&amp;ldquo;noopener&amp;rdquo; attribute used?
+里面提到了rel属性的noopener的这个值的作用。写过HTML的人都知道&amp;lt;a&amp;gt;标签如果指定了target=&amp;quot;_blank&amp;quot;属性，那么链接会在新的窗口（或TAB页）中打开。
+我们假设原来的网页是A，通过A页面的链接新打开的网页是B。默认情况下在B网页中可以通过window.opener来获取A网页的window对象的引用，也就意味着B可以通过window.opener对A网页进行一定的操作。如果B网页是一个恶意网站，在拿到A网页的window对象后，完全可以用window.location将A网页跳转到另外一个挂马的网页或者钓鱼网站。这样用户就很不安全了。
+所以才会有noopener这个设置，当一个a标签的rel属性值设置成noopener时,点击链接跳转的网页就无法拿到原网页的window对象了。也就是刚才说的B网页拿不到A网页的window对象（此时window.opener=null）。
+&amp;lt;a href=&amp;quot;B&amp;quot; rel=&amp;quot;noopener&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;跳转到B&amp;lt;/a&amp;gt;
+具体的示例可以看：
+https://mathiasbynens.github.io/rel-noopener/" />
+    <meta name="twitter:image" content="https://xiongchen2012.github.io/img/avatar.jpg" />
+  
 
   
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="Deathdealer-Archives" />
-  <meta property="og:description" content="本站由静态网站生成器HUGO生成(https://gohugo.io)" />
-  <meta property="og:url" content="https://xiongchen2012.github.io/tags/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Rel No Opener" />
+  <meta property="og:description" content="最近在看30秒面试题，里面有一个题目是：
+Where and why is the rel=&amp;ldquo;noopener&amp;rdquo; attribute used?
+里面提到了rel属性的noopener的这个值的作用。写过HTML的人都知道&amp;lt;a&amp;gt;标签如果指定了target=&amp;quot;_blank&amp;quot;属性，那么链接会在新的窗口（或TAB页）中打开。
+我们假设原来的网页是A，通过A页面的链接新打开的网页是B。默认情况下在B网页中可以通过window.opener来获取A网页的window对象的引用，也就意味着B可以通过window.opener对A网页进行一定的操作。如果B网页是一个恶意网站，在拿到A网页的window对象后，完全可以用window.location将A网页跳转到另外一个挂马的网页或者钓鱼网站。这样用户就很不安全了。
+所以才会有noopener这个设置，当一个a标签的rel属性值设置成noopener时,点击链接跳转的网页就无法拿到原网页的window对象了。也就是刚才说的B网页拿不到A网页的window对象（此时window.opener=null）。
+&amp;lt;a href=&amp;quot;B&amp;quot; rel=&amp;quot;noopener&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;跳转到B&amp;lt;/a&amp;gt;
+具体的示例可以看：
+https://mathiasbynens.github.io/rel-noopener/" />
+  <meta property="og:url" content="https://xiongchen2012.github.io/post/rel-no-opener/" />
   <meta property="og:image" content="https://xiongchen2012.github.io/img/avatar.jpg" />
 
 
@@ -40,7 +61,7 @@
 <meta name="generator" content="Hugo 0.41" />
 
 
-<link rel="canonical" href="https://xiongchen2012.github.io/tags/" />
+<link rel="canonical" href="https://xiongchen2012.github.io/post/rel-no-opener/" />
 <link rel="alternative" href="https://xiongchen2012.github.io/index.xml" title="Deathdealer-Archives" type="application/atom+xml" />
 
 
@@ -104,6 +125,8 @@
     <div class="suspension">
       <a title="Go to top" class="to-top is-hide"><span class="icon icon-up"></span></a>
       
+        
+      
     </div>
     
     
@@ -124,6 +147,8 @@
         <li class="menu-item
             
             
+            
+              is-active
             
             
             "
@@ -234,23 +259,31 @@
   </nav>
 </header>
 
-  <section class="main post-detail terms-list">
+  <section class="main post-detail">
     <header class="post-header">
-      <h1 class="post-title">Tags</h1>
+      <h1 class="post-title">Rel No Opener</h1>
+      <p class="post-meta">@Xiong Chen · Jun 2, 2018 · 1 min read</p>
     </header>
-    <div class="tags-cloud">
+    <article class="post-content"><p>最近在看30秒面试题，里面有一个题目是：<br />
+<a href="https://github.com/fejes713/30-seconds-of-interviews#where-and-why-is-the-relnoopener-attribute-used">Where and why is the rel=&ldquo;noopener&rdquo; attribute used?</a></p>
+
+<p>里面提到了rel属性的noopener的这个值的作用。写过HTML的人都知道<code>&lt;a&gt;</code>标签如果指定了<code>target=&quot;_blank&quot;</code>属性，那么链接会在新的窗口（或TAB页）中打开。</p>
+
+<p>我们假设原来的网页是A，通过A页面的链接新打开的网页是B。默认情况下在B网页中可以通过<code>window.opener</code>来获取A网页的window对象的引用，也就意味着B可以通过window.opener对A网页进行一定的操作。如果B网页是一个恶意网站，在拿到A网页的window对象后，完全可以用<code>window.location</code>将A网页跳转到另外一个挂马的网页或者钓鱼网站。这样用户就很不安全了。</p>
+
+<p>所以才会有noopener这个设置，当一个a标签的rel属性值设置成noopener时,点击链接跳转的网页就无法拿到原网页的window对象了。也就是刚才说的B网页拿不到A网页的window对象（此时window.opener=null）。</p>
+
+<p><code>&lt;a href=&quot;B&quot; rel=&quot;noopener&quot; target=&quot;_blank&quot;&gt;跳转到B&lt;/a&gt;</code></p>
+
+<p>具体的示例可以看：<br />
+<a href="https://mathiasbynens.github.io/rel-noopener/">https://mathiasbynens.github.io/rel-noopener/</a></p>
+</article>
+    <footer class="post-footer">
       
-      
-        
-        <a href="https://xiongchen2012.github.io/tags/apr/" class="tag-s">apr</a>
-      
-        
-        <a href="https://xiongchen2012.github.io/tags/openssl/" class="tag-s">openssl</a>
-      
-        
-        <a href="https://xiongchen2012.github.io/tags/tomcat/" class="tag-s">tomcat</a>
-      
-    </div>
+      <p class="post-copyright">
+        This site is generated by <a href='http://gohugo.io' style='color:rgb(95, 191, 94);'>HUGO</a> with a theme <a href='https://github.com/laozhu/hugo-nuo' style='color:rgb(95, 191, 94);'>HUGO-NUO</a> © deathdealer.cn
+      </p>
+    </footer>
   </section>
   <footer class="site-footer">
   <p>© 2018 Deathdealer-Archives</p>
