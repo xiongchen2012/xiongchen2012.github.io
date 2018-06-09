@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+
+  <meta charset="utf-8" />
+
+  
+  <title>script标签的defer/async属性</title>
+
+  
+  
+
+
+
+
+
+  
+  <meta name="author" content="Xiong Chen" />
+  <meta name="description" content=" HTML SCRIPT标签  What are defer and async attributes on a &amp;lt;script&amp;gt; tag?
+ 面试前端工程师的时候如果问&amp;lt;script&amp;gt;的作用是什么，100%的人都能回答出来，并且90%以上的人会告诉你&amp;lt;script&amp;gt;标签加载JS最好放在body之后，以防止浏览器白屏。
+但是如果进一步询问script标签的defer和async属性时，一般都会得到一个黑人问号脸。
+直接上图，下面这张图很好的解释了defer和async工作机制：
+script HTML文档自上而下解析，遇到&amp;lt;script src=&#39;some.js&#39;&amp;gt;标签会暂停解析，同时开始下载script src指定的脚本，下载完成后开始执行脚本，执行完成后才会继续之前暂停的HTML解析工作。（上图第1行）
+这也是以前前端工程师默认将script标签放在body元素之后的原因：首先是不阻塞HTML DOM的构建和渲染防止白屏，此外如果JS中有依赖DOM中某个ELEMENT也可以正确的找到它。
+script defer HTML文档自上而下解析，遇到&amp;lt;script defer src=&#39;some.js&#39;&amp;gt;标签时,HTML的解析会继续执行，同时会另起一个线程开始下载src指定的脚本，下载完成后不会立刻就执行该脚本，而是会等待HTML DOM解析完成后才会开始执行该脚本。
+同时defer加载的脚本是有顺序的，比如在HTML解析完之前，先后加载了1，2，3这三个脚本，后面执行时也会是按照1，2，3的顺序来执行。
+defer加载的脚本在DOMContentLoaded之前执行
+script async HTML文档自上而下解析，遇到&amp;lt;script async src=&#39;some.js&#39;&amp;gt;标签时，HTML解析会继续续执行，同时会另起一个线程开始下载src指定的脚本，下载完成后就会阻塞HTML的解析并立刻开始执行该脚本（这里是和defer的不同之处），等到脚本执行完成后，才会继续恢复HTML的执行。
+与defer的第二个不同之处是async加载的脚本是顺序无关的。
+async加载的脚本 不能保证 一定在DOMContentLoaded之前执行
+总结  defer和async都是为了异步加载外联的JS（潜台词：内联的不带src属性的script标签不要使用） 如果多个js有先后依赖顺序，使用defer； 如果没有则使用async 如果JS依赖于DOM加载完成，则使用defer；  " />
+
+  
+  
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@xiongchen2015" />
+    <meta name="twitter:title" content="script标签的defer/async属性" />
+    <meta name="twitter:description" content=" HTML SCRIPT标签  What are defer and async attributes on a &amp;lt;script&amp;gt; tag?
+ 面试前端工程师的时候如果问&amp;lt;script&amp;gt;的作用是什么，100%的人都能回答出来，并且90%以上的人会告诉你&amp;lt;script&amp;gt;标签加载JS最好放在body之后，以防止浏览器白屏。
+但是如果进一步询问script标签的defer和async属性时，一般都会得到一个黑人问号脸。
+直接上图，下面这张图很好的解释了defer和async工作机制：
+script HTML文档自上而下解析，遇到&amp;lt;script src=&#39;some.js&#39;&amp;gt;标签会暂停解析，同时开始下载script src指定的脚本，下载完成后开始执行脚本，执行完成后才会继续之前暂停的HTML解析工作。（上图第1行）
+这也是以前前端工程师默认将script标签放在body元素之后的原因：首先是不阻塞HTML DOM的构建和渲染防止白屏，此外如果JS中有依赖DOM中某个ELEMENT也可以正确的找到它。
+script defer HTML文档自上而下解析，遇到&amp;lt;script defer src=&#39;some.js&#39;&amp;gt;标签时,HTML的解析会继续执行，同时会另起一个线程开始下载src指定的脚本，下载完成后不会立刻就执行该脚本，而是会等待HTML DOM解析完成后才会开始执行该脚本。
+同时defer加载的脚本是有顺序的，比如在HTML解析完之前，先后加载了1，2，3这三个脚本，后面执行时也会是按照1，2，3的顺序来执行。
+defer加载的脚本在DOMContentLoaded之前执行
+script async HTML文档自上而下解析，遇到&amp;lt;script async src=&#39;some.js&#39;&amp;gt;标签时，HTML解析会继续续执行，同时会另起一个线程开始下载src指定的脚本，下载完成后就会阻塞HTML的解析并立刻开始执行该脚本（这里是和defer的不同之处），等到脚本执行完成后，才会继续恢复HTML的执行。
+与defer的第二个不同之处是async加载的脚本是顺序无关的。
+async加载的脚本 不能保证 一定在DOMContentLoaded之前执行
+总结  defer和async都是为了异步加载外联的JS（潜台词：内联的不带src属性的script标签不要使用） 如果多个js有先后依赖顺序，使用defer； 如果没有则使用async 如果JS依赖于DOM加载完成，则使用defer；  " />
+    <meta name="twitter:image" content="https://xiongchen2012.github.io/img/avatar.jpg" />
+  
+
+  
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="script标签的defer/async属性" />
+  <meta property="og:description" content=" HTML SCRIPT标签  What are defer and async attributes on a &amp;lt;script&amp;gt; tag?
+ 面试前端工程师的时候如果问&amp;lt;script&amp;gt;的作用是什么，100%的人都能回答出来，并且90%以上的人会告诉你&amp;lt;script&amp;gt;标签加载JS最好放在body之后，以防止浏览器白屏。
+但是如果进一步询问script标签的defer和async属性时，一般都会得到一个黑人问号脸。
+直接上图，下面这张图很好的解释了defer和async工作机制：
+script HTML文档自上而下解析，遇到&amp;lt;script src=&#39;some.js&#39;&amp;gt;标签会暂停解析，同时开始下载script src指定的脚本，下载完成后开始执行脚本，执行完成后才会继续之前暂停的HTML解析工作。（上图第1行）
+这也是以前前端工程师默认将script标签放在body元素之后的原因：首先是不阻塞HTML DOM的构建和渲染防止白屏，此外如果JS中有依赖DOM中某个ELEMENT也可以正确的找到它。
+script defer HTML文档自上而下解析，遇到&amp;lt;script defer src=&#39;some.js&#39;&amp;gt;标签时,HTML的解析会继续执行，同时会另起一个线程开始下载src指定的脚本，下载完成后不会立刻就执行该脚本，而是会等待HTML DOM解析完成后才会开始执行该脚本。
+同时defer加载的脚本是有顺序的，比如在HTML解析完之前，先后加载了1，2，3这三个脚本，后面执行时也会是按照1，2，3的顺序来执行。
+defer加载的脚本在DOMContentLoaded之前执行
+script async HTML文档自上而下解析，遇到&amp;lt;script async src=&#39;some.js&#39;&amp;gt;标签时，HTML解析会继续续执行，同时会另起一个线程开始下载src指定的脚本，下载完成后就会阻塞HTML的解析并立刻开始执行该脚本（这里是和defer的不同之处），等到脚本执行完成后，才会继续恢复HTML的执行。
+与defer的第二个不同之处是async加载的脚本是顺序无关的。
+async加载的脚本 不能保证 一定在DOMContentLoaded之前执行
+总结  defer和async都是为了异步加载外联的JS（潜台词：内联的不带src属性的script标签不要使用） 如果多个js有先后依赖顺序，使用defer； 如果没有则使用async 如果JS依赖于DOM加载完成，则使用defer；  " />
+  <meta property="og:url" content="https://xiongchen2012.github.io/post/script-defer-async/" />
+  <meta property="og:image" content="https://xiongchen2012.github.io/img/avatar.jpg" />
+
+
+
+
+<meta name="generator" content="Hugo 0.41" />
+
+
+<link rel="canonical" href="https://xiongchen2012.github.io/post/script-defer-async/" />
+<link rel="alternative" href="https://xiongchen2012.github.io/index.xml" title="Deathdealer-Archives" type="application/atom+xml" />
+
+
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="format-detection" content="telephone=no,email=no,adress=no" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+
+
+<meta name="robots" content="index,follow" />
+<meta name="referrer" content="origin-when-cross-origin" />
+
+
+
+
+
+
+
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Deathdealer-Archives" />
+<meta name="msapplication-tooltip" content="Deathdealer-Archives" />
+<meta name='msapplication-navbutton-color' content="#5fbf5e" />
+<meta name="msapplication-TileColor" content="#5fbf5e" />
+<meta name="msapplication-TileImage" content="/img/tile-image-windows.png" />
+<link rel="icon" href="https://xiongchen2012.github.io/img/favicon.ico" />
+<link rel="icon" type="image/png" sizes="16x16" href="https://xiongchen2012.github.io/img/favicon-16x16.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="https://xiongchen2012.github.io/img/favicon-32x32.png" />
+<link rel="icon" sizes="192x192" href="https://xiongchen2012.github.io/img/touch-icon-android.png" />
+<link rel="apple-touch-icon" href="https://xiongchen2012.github.io/img/touch-icon-apple.png" />
+<link rel="mask-icon" href="https://xiongchen2012.github.io/img/safari-pinned-tab.svg" color="#5fbf5e" />
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/video.js/6.2.8/alt/video-js-cdn.min.css" />
+
+<link rel="stylesheet" href="https://xiongchen2012.github.io/css/bundle.css" />
+
+
+  
+  <!--[if lt IE 9]>
+    <script src="//cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <script src="//cdn.bootcss.com/video.js/6.2.8/ie8/videojs-ie8.min.js"></script>
+  <![endif]-->
+
+<!--[if lte IE 11]>
+    <script src="//cdn.bootcss.com/classlist/1.1.20170427/classList.min.js"></script>
+  <![endif]-->
+
+
+<script src="//cdn.bootcss.com/object-fit-images/3.2.3/ofi.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/smooth-scroll/12.1.4/js/smooth-scroll.polyfills.min.js"></script>
+
+
+</head>
+  <body>
+    
+    <div class="suspension">
+      <a title="Go to top" class="to-top is-hide"><span class="icon icon-up"></span></a>
+      
+        
+      
+    </div>
+    
+    
+  <header class="site-header">
+  <img class="avatar" src="https://xiongchen2012.github.io/img/avatar.jpg" alt="Avatar">
+
+  <p class="subtitle">Try to be Full-Stack</p>
+  <button class="menu-toggle" type="button">
+    <span class="icon icon-menu"></span>
+  </button>
+  <nav class="site-menu collapsed">
+    <h2 class="offscreen">Main Menu</h2>
+    <ul class="menu-list">
+      
+      
+      
+      
+        <li class="menu-item
+            
+            
+            
+              is-active
+            
+            
+            "
+            >
+            <a href="https://xiongchen2012.github.io/">文章</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            
+            
+            "
+            >
+            <a href="https://xiongchen2012.github.io/archives">存档</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            
+            
+            "
+            >
+            <a href="https://xiongchen2012.github.io/tags">Tags</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            
+            
+            "
+            >
+            <a href="https://xiongchen2012.github.io/about">关于</a>
+          </li>
+      
+    </ul>
+  </nav>
+  <div style="float:left;position:absolute;bottom:10px;right:10px;display:none;">
+    <a style="color:cadetblue;font-size:12px;" href="https://xiongchen2012.github.io/">
+      10 POSTS
+    </a>
+  </div>
+  <nav class="social-menu collapsed">
+    <h2 class="offscreen">Social Networks</h2>
+    <ul class="social-list">
+      
+      <li class="social-item">
+        <a href="mailto:master@deathdealer.cn" title="Email"><span class="icon icon-email"></span></a>
+      </li>
+
+      
+      <li class="social-item">
+        <a href="//github.com/xiongchen2012" title="GitHub"><span class="icon icon-github"></span></a>
+      </li>
+
+      <li class="social-item">
+        <a href="//twitter.com/xiongchen2015" title="Twitter"><span class="icon icon-twitter"></span></a>
+      </li>
+
+      
+
+      <li class="social-item">
+        <a href="//plus.google.com/108257803422142606899" title="Google+"><span class="icon icon-google"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a href="//weibo.com/deathdelaer" title="Weibo"><span class="icon icon-weibo"></span></a>
+      </li>
+
+      <li class="social-item">
+        <a href="https://xiongchen2012.github.io/img/qrcode.jpg" title="Wechat"><span class="icon icon-wechat"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a href="https://xiongchen2012.github.io/index.xml"><span class="icon icon-rss" title="RSS"></span></a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+  <section class="main post-detail">
+    <header class="post-header">
+      <h1 class="post-title">script标签的defer/async属性</h1>
+      <p class="post-meta">@Xiong Chen · Jun 9, 2018 · 1 min read</p>
+    </header>
+    <article class="post-content">
+
+<h3 id="html-script标签">HTML SCRIPT标签</h3>
+
+<blockquote>
+<p>What are defer and async attributes on a <code>&lt;script&gt;</code> tag?</p>
+</blockquote>
+
+<p>面试前端工程师的时候如果问<code>&lt;script&gt;</code>的作用是什么，100%的人都能回答出来，并且90%以上的人会告诉你<code>&lt;script&gt;</code>标签加载JS最好放在body之后，以防止浏览器白屏。</p>
+
+<p>但是如果进一步询问script标签的<code>defer</code>和<code>async</code>属性时，一般都会得到一个黑人问号脸。</p>
+
+<p>直接上图，下面这张图很好的解释了defer和async工作机制：</p>
+
+<p><img src="https://raw.githubusercontent.com/xiongchen2012/xiongchen2012.github.io/master/images/script-defer-async.png" alt="script-defer-async" /></p>
+
+<h4 id="script">script</h4>
+
+<p>HTML文档自上而下解析，遇到<code>&lt;script src='some.js'&gt;</code>标签会暂停解析，同时开始下载script src指定的脚本，下载完成后开始执行脚本，执行完成后才会继续之前暂停的HTML解析工作。（上图第1行）</p>
+
+<p>这也是以前前端工程师默认将script标签放在body元素之后的原因：首先是不阻塞HTML DOM的构建和渲染防止白屏，此外如果JS中有依赖DOM中某个ELEMENT也可以正确的找到它。</p>
+
+<h4 id="script-defer">script defer</h4>
+
+<p>HTML文档自上而下解析，遇到<code>&lt;script defer src='some.js'&gt;</code>标签时,HTML的解析会继续执行，同时会另起一个线程开始下载src指定的脚本，下载完成后不会立刻就执行该脚本，<strong>而是会等待HTML DOM解析完成后</strong>才会开始执行该脚本。</p>
+
+<p>同时defer加载的脚本是有顺序的，比如在HTML解析完之前，先后加载了1，2，3这三个脚本，后面执行时也会是按照1，2，3的顺序来执行。</p>
+
+<p>defer加载的脚本在<code>DOMContentLoaded</code>之前执行</p>
+
+<h4 id="script-async">script async</h4>
+
+<p>HTML文档自上而下解析，遇到<code>&lt;script async src='some.js'&gt;</code>标签时，HTML解析会继续续执行，同时会另起一个线程开始下载src指定的脚本，<strong>下载完成后就会阻塞HTML的解析并立刻开始执行该脚本（这里是和defer的不同之处）</strong>，等到脚本执行完成后，才会继续恢复HTML的执行。</p>
+
+<p>与defer的第二个不同之处是async加载的脚本是顺序无关的。</p>
+
+<p>async加载的脚本 <strong>不能保证</strong> 一定在<code>DOMContentLoaded</code>之前执行</p>
+
+<h3 id="总结">总结</h3>
+
+<ol>
+<li>defer和async都是为了异步加载外联的JS（潜台词：内联的不带src属性的script标签不要使用）</li>
+<li>如果多个js有先后依赖顺序，使用defer； 如果没有则使用async</li>
+<li>如果JS依赖于DOM加载完成，则使用defer；</li>
+</ol>
+</article>
+    <footer class="post-footer">
+      
+      <p class="post-copyright">
+        This site is generated by <a href='http://gohugo.io' style='color:rgb(95, 191, 94);'>HUGO</a> with a theme <a href='https://github.com/laozhu/hugo-nuo' style='color:rgb(95, 191, 94);'>HUGO-NUO</a> © deathdealer.cn
+      </p>
+    </footer>
+  </section>
+  <footer class="site-footer">
+  <p>© 2018 Deathdealer-Archives</p>
+  <p>Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank">Nuo</a>.</p>
+  
+    <p><a href="http://www.miitbeian.gov.cn" title="Check ICP info" target="_blank">苏ICP备15047226号-1</a></p>
+  
+</footer>
+
+
+<script async src="//cdn.bootcss.com/video.js/6.2.8/alt/video.novtt.min.js"></script>
+<script async src="//cdn.bootcss.com/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      displayMath: [['$$','$$'], ['\[','\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: { equationNumbers: { autoNumber: "AMS" },
+      extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    }
+  });
+</script>
+<script type="text/x-mathjax-config">
+  // Fix <code> tags after MathJax finishes running. This is a
+  // hack to overcome a shortcoming of Markdown. Discussion at
+  // https://github.com/mojombo/jekyll/issues/199
+  MathJax.Hub.Queue(() => {
+    MathJax.Hub.getAllJax().map(v => v.SourceElement().parentNode.className += ' has-jax');
+  });
+</script>
+
+<script src="https://xiongchen2012.github.io/js/bundle.js"></script>
+
+
+
+
+  </body>
+</html>

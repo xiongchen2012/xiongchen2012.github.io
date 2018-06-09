@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://xiongchen2012.github.io/post/script-defer-async/</loc>
+    <lastmod>2018-06-09T21:15:31+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://xiongchen2012.github.io/post/rel-no-opener/</loc>
     <lastmod>2018-06-02T11:35:40+08:00</lastmod>
   </url>
@@ -65,7 +70,7 @@
   
   <url>
     <loc>https://xiongchen2012.github.io/</loc>
-    <lastmod>2018-06-02T11:35:40+08:00</lastmod>
+    <lastmod>2018-06-09T21:15:31+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -77,7 +82,7 @@
   
   <url>
     <loc>https://xiongchen2012.github.io/post/</loc>
-    <lastmod>2018-06-02T11:35:40+08:00</lastmod>
+    <lastmod>2018-06-09T21:15:31+08:00</lastmod>
     <priority>0</priority>
   </url>
   
