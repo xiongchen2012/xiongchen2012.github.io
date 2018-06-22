@@ -16,24 +16,39 @@
 
   
   <meta name="author" content="Xiong Chen" />
-  <meta name="description" content="LHS和RHS LHS是指Left-Hand Side，而RHS是指Right-Hand Side。二者区别就是关于作用域对变量的查询目的是变量赋值还是查询：如果是赋值就是LHS,如果是查询就是RHS.
-(To be continued）" />
+  <meta name="description" content=" LHS &amp;amp; RHS Concept https://en.wikipedia.org/wiki/Sides_of_an_equation
+ In mathematics, LHS is informal shorthand for the left-hand side of an equation. Similarly, RHS is the right-hand side. The two sides have the same value, expressed differently, since equality is symmetric.
+ 数学上LHS和RHS是指在位于等号左边和右边，完全相同的两个东西不同的表达方式。到了javascript中因为等号是具有语法意义的，所以意义有所不同。
+javascript运行过程中会在作用域中查找变量，查找变量有两种不同目的：
+ 目的是为了获取变量的值，则会进行RHS查询； 目的是为了给变量赋值，则会进行LHS查询；  可以简单的理解为：等号左边是LHS（赋值），等号右边的是RHS（读取值）
+LHS &amp;amp; RHS查询过程 LHS和RHS查询是在当前作用域中进行的，如果当前作用域中没有找到所需的变量，则会向上级作用域继续查询，最后到达全局作用域。到了全局作用域，无论找没找到都会停止查找。
+ 如果RHS查询在整个作用域都没有找到变量，则会抛出ReferenceError错误。 如果LHS查询在整个作用域都没有找到变量，在严格模式下(use strict)和RHS一样会抛出ReferenceError错误；在非严格模式下则会在全局作用域中创建一个变量（换句话说就是全局变量）  " />
 
   
   
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:site" content="@xiongchen2015" />
     <meta name="twitter:title" content="LHS和RHS" />
-    <meta name="twitter:description" content="LHS和RHS LHS是指Left-Hand Side，而RHS是指Right-Hand Side。二者区别就是关于作用域对变量的查询目的是变量赋值还是查询：如果是赋值就是LHS,如果是查询就是RHS.
-(To be continued）" />
+    <meta name="twitter:description" content=" LHS &amp;amp; RHS Concept https://en.wikipedia.org/wiki/Sides_of_an_equation
+ In mathematics, LHS is informal shorthand for the left-hand side of an equation. Similarly, RHS is the right-hand side. The two sides have the same value, expressed differently, since equality is symmetric.
+ 数学上LHS和RHS是指在位于等号左边和右边，完全相同的两个东西不同的表达方式。到了javascript中因为等号是具有语法意义的，所以意义有所不同。
+javascript运行过程中会在作用域中查找变量，查找变量有两种不同目的：
+ 目的是为了获取变量的值，则会进行RHS查询； 目的是为了给变量赋值，则会进行LHS查询；  可以简单的理解为：等号左边是LHS（赋值），等号右边的是RHS（读取值）
+LHS &amp;amp; RHS查询过程 LHS和RHS查询是在当前作用域中进行的，如果当前作用域中没有找到所需的变量，则会向上级作用域继续查询，最后到达全局作用域。到了全局作用域，无论找没找到都会停止查找。
+ 如果RHS查询在整个作用域都没有找到变量，则会抛出ReferenceError错误。 如果LHS查询在整个作用域都没有找到变量，在严格模式下(use strict)和RHS一样会抛出ReferenceError错误；在非严格模式下则会在全局作用域中创建一个变量（换句话说就是全局变量）  " />
     <meta name="twitter:image" content="https://xiongchen2012.github.io/img/avatar.jpg" />
   
 
   
   <meta property="og:type" content="article" />
   <meta property="og:title" content="LHS和RHS" />
-  <meta property="og:description" content="LHS和RHS LHS是指Left-Hand Side，而RHS是指Right-Hand Side。二者区别就是关于作用域对变量的查询目的是变量赋值还是查询：如果是赋值就是LHS,如果是查询就是RHS.
-(To be continued）" />
+  <meta property="og:description" content=" LHS &amp;amp; RHS Concept https://en.wikipedia.org/wiki/Sides_of_an_equation
+ In mathematics, LHS is informal shorthand for the left-hand side of an equation. Similarly, RHS is the right-hand side. The two sides have the same value, expressed differently, since equality is symmetric.
+ 数学上LHS和RHS是指在位于等号左边和右边，完全相同的两个东西不同的表达方式。到了javascript中因为等号是具有语法意义的，所以意义有所不同。
+javascript运行过程中会在作用域中查找变量，查找变量有两种不同目的：
+ 目的是为了获取变量的值，则会进行RHS查询； 目的是为了给变量赋值，则会进行LHS查询；  可以简单的理解为：等号左边是LHS（赋值），等号右边的是RHS（读取值）
+LHS &amp;amp; RHS查询过程 LHS和RHS查询是在当前作用域中进行的，如果当前作用域中没有找到所需的变量，则会向上级作用域继续查询，最后到达全局作用域。到了全局作用域，无论找没找到都会停止查找。
+ 如果RHS查询在整个作用域都没有找到变量，则会抛出ReferenceError错误。 如果LHS查询在整个作用域都没有找到变量，在严格模式下(use strict)和RHS一样会抛出ReferenceError错误；在非严格模式下则会在全局作用域中创建一个变量（换句话说就是全局变量）  " />
   <meta property="og:url" content="https://xiongchen2012.github.io/post/ydkj-lhs-rhs/" />
   <meta property="og:image" content="https://xiongchen2012.github.io/img/avatar.jpg" />
 
@@ -248,11 +263,35 @@
     </header>
     <article class="post-content">
 
-<h4 id="lhs和rhs">LHS和RHS</h4>
+<h3 id="lhs-rhs-concept">LHS &amp; RHS Concept</h3>
 
-<p>LHS是指Left-Hand Side，而RHS是指Right-Hand Side。二者区别就是关于作用域对变量的查询目的是变量赋值还是查询：如果是赋值就是LHS,如果是查询就是RHS.</p>
+<p><a href="https://en.wikipedia.org/wiki/Sides_of_an_equation">https://en.wikipedia.org/wiki/Sides_of_an_equation</a></p>
 
-<p>(To be continued）</p>
+<blockquote>
+<p>In mathematics, LHS is informal shorthand for the left-hand side of an equation.
+Similarly, RHS is the right-hand side. The two sides have the same value,
+expressed differently, since equality is symmetric.</p>
+</blockquote>
+
+<p>数学上LHS和RHS是指在位于等号左边和右边，完全相同的两个东西不同的表达方式。到了javascript中因为等号是具有语法意义的，所以意义有所不同。</p>
+
+<p>javascript运行过程中会在作用域中<strong>查找</strong>变量，查找变量有两种不同目的：</p>
+
+<ol>
+<li>目的是为了获取变量的值，则会进行RHS查询；</li>
+<li>目的是为了给变量赋值，则会进行LHS查询；</li>
+</ol>
+
+<p>可以简单的理解为：等号左边是LHS（赋值），等号右边的是RHS（读取值）</p>
+
+<h3 id="lhs-rhs查询过程">LHS &amp; RHS查询过程</h3>
+
+<p>LHS和RHS查询是在当前作用域中进行的，如果当前作用域中没有找到所需的变量，则会向上级作用域继续查询，最后到达全局作用域。到了全局作用域，无论找没找到都会停止查找。</p>
+
+<ul>
+<li>如果RHS查询在整个作用域都没有找到变量，则会抛出<code>ReferenceError</code>错误。</li>
+<li>如果LHS查询在整个作用域都没有找到变量，在严格模式下(<code>use strict</code>)和RHS一样会抛出<code>ReferenceError</code>错误；在非严格模式下则会<strong>在全局作用域中创建一个变量（换句话说就是全局变量）</strong></li>
+</ul>
 </article>
     <footer class="post-footer">
       
