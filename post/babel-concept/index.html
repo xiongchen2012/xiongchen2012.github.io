@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+
+  <meta charset="utf-8" />
+
+  
+  <title>Babel入门（1） - 基础知识</title>
+
+  
+  
+
+
+
+
+
+  
+  <meta name="author" content="Xiong Chen" />
+  <meta name="description" content="Babel入门（1） - 基础知识 Babel是什么 由于现代浏览器对于ECMAScript2015&#43;支持非常有限，用ES6语法写的Javascript代码没办法直接在浏览器中运行。于是Babel（发音/&amp;lsquo;beibəl/）应运而生了。
+Babel通过自己的工具链（ToolChain），将使用ES6语法写的Javascript代码转换成完全同等功能的ES5代码，以便在浏览器中执行。有了Babel用户可以直接山书写ES6的代码，而不用担心浏览器无法执行，大大提高了用户的开发效率，降低了由于ES5语言特性带来潜在问题的几率。
+官网的解释更简洁：
+Babel is a JavaScript compiler
+它的目的是：
+Use next generation JavaScript, today.
+配置Babel 有两种方式可以在项目中配置和使用Babel：.bablerc和package.json
+.babelrc 在项目根目录配置一个名为.babelrc的文件，这个文件按照JSON格式进行书写。主要可以分为两段：
+{ presets:[], plugins:[] }  其中presets用于指定babel编译js代码时使用的规则，plugins指定babel使用的一些插件
+package.json 也可以在项目的package.json中配置babel，内容和上述方式一样：
+... &amp;quot;babel&amp;quot;:{ presets: [], plugins: [] } ...  env选项 如果想为不同的env配置不同的选项，可以增加env配置项
+{ &amp;quot;presets&amp;quot;: [], //全局的预设 &amp;quot;plugins&amp;quot;: [], //全局的插件 &amp;quot;env&amp;quot;: { &amp;quot;production&amp;quot;: { &amp;quot;presets&amp;quot;: [], //production环境下的预设 &amp;quot;plugins&amp;quot;: [] //production环境下的插件 } } }  env的取值：process.env.BABEL_ENV &amp;gt; process.env.NODE_ENV &amp;gt; &amp;ldquo;development&amp;rdquo;
+配置文件的查找顺序如下：
+需编译的js文件的当前目录中查找.babelrc &amp;gt; 向上查找babelrc文件直到项目的根目录 &amp;gt; 如果没有babelrc则查找package." />
+
+  
+  
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@xiongchen2015" />
+    <meta name="twitter:title" content="Babel入门（1） - 基础知识" />
+    <meta name="twitter:description" content="Babel入门（1） - 基础知识 Babel是什么 由于现代浏览器对于ECMAScript2015&#43;支持非常有限，用ES6语法写的Javascript代码没办法直接在浏览器中运行。于是Babel（发音/&amp;lsquo;beibəl/）应运而生了。
+Babel通过自己的工具链（ToolChain），将使用ES6语法写的Javascript代码转换成完全同等功能的ES5代码，以便在浏览器中执行。有了Babel用户可以直接山书写ES6的代码，而不用担心浏览器无法执行，大大提高了用户的开发效率，降低了由于ES5语言特性带来潜在问题的几率。
+官网的解释更简洁：
+Babel is a JavaScript compiler
+它的目的是：
+Use next generation JavaScript, today.
+配置Babel 有两种方式可以在项目中配置和使用Babel：.bablerc和package.json
+.babelrc 在项目根目录配置一个名为.babelrc的文件，这个文件按照JSON格式进行书写。主要可以分为两段：
+{ presets:[], plugins:[] }  其中presets用于指定babel编译js代码时使用的规则，plugins指定babel使用的一些插件
+package.json 也可以在项目的package.json中配置babel，内容和上述方式一样：
+... &amp;quot;babel&amp;quot;:{ presets: [], plugins: [] } ...  env选项 如果想为不同的env配置不同的选项，可以增加env配置项
+{ &amp;quot;presets&amp;quot;: [], //全局的预设 &amp;quot;plugins&amp;quot;: [], //全局的插件 &amp;quot;env&amp;quot;: { &amp;quot;production&amp;quot;: { &amp;quot;presets&amp;quot;: [], //production环境下的预设 &amp;quot;plugins&amp;quot;: [] //production环境下的插件 } } }  env的取值：process.env.BABEL_ENV &amp;gt; process.env.NODE_ENV &amp;gt; &amp;ldquo;development&amp;rdquo;
+配置文件的查找顺序如下：
+需编译的js文件的当前目录中查找.babelrc &amp;gt; 向上查找babelrc文件直到项目的根目录 &amp;gt; 如果没有babelrc则查找package." />
+    <meta name="twitter:image" content="https://xiongchen2012.github.io/img/avatar.jpg" />
+  
+
+  
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Babel入门（1） - 基础知识" />
+  <meta property="og:description" content="Babel入门（1） - 基础知识 Babel是什么 由于现代浏览器对于ECMAScript2015&#43;支持非常有限，用ES6语法写的Javascript代码没办法直接在浏览器中运行。于是Babel（发音/&amp;lsquo;beibəl/）应运而生了。
+Babel通过自己的工具链（ToolChain），将使用ES6语法写的Javascript代码转换成完全同等功能的ES5代码，以便在浏览器中执行。有了Babel用户可以直接山书写ES6的代码，而不用担心浏览器无法执行，大大提高了用户的开发效率，降低了由于ES5语言特性带来潜在问题的几率。
+官网的解释更简洁：
+Babel is a JavaScript compiler
+它的目的是：
+Use next generation JavaScript, today.
+配置Babel 有两种方式可以在项目中配置和使用Babel：.bablerc和package.json
+.babelrc 在项目根目录配置一个名为.babelrc的文件，这个文件按照JSON格式进行书写。主要可以分为两段：
+{ presets:[], plugins:[] }  其中presets用于指定babel编译js代码时使用的规则，plugins指定babel使用的一些插件
+package.json 也可以在项目的package.json中配置babel，内容和上述方式一样：
+... &amp;quot;babel&amp;quot;:{ presets: [], plugins: [] } ...  env选项 如果想为不同的env配置不同的选项，可以增加env配置项
+{ &amp;quot;presets&amp;quot;: [], //全局的预设 &amp;quot;plugins&amp;quot;: [], //全局的插件 &amp;quot;env&amp;quot;: { &amp;quot;production&amp;quot;: { &amp;quot;presets&amp;quot;: [], //production环境下的预设 &amp;quot;plugins&amp;quot;: [] //production环境下的插件 } } }  env的取值：process.env.BABEL_ENV &amp;gt; process.env.NODE_ENV &amp;gt; &amp;ldquo;development&amp;rdquo;
+配置文件的查找顺序如下：
+需编译的js文件的当前目录中查找.babelrc &amp;gt; 向上查找babelrc文件直到项目的根目录 &amp;gt; 如果没有babelrc则查找package." />
+  <meta property="og:url" content="https://xiongchen2012.github.io/post/babel-concept/" />
+  <meta property="og:image" content="https://xiongchen2012.github.io/img/avatar.jpg" />
+
+
+
+
+<meta name="generator" content="Hugo 0.41" />
+
+
+<link rel="canonical" href="https://xiongchen2012.github.io/post/babel-concept/" />
+<link rel="alternative" href="https://xiongchen2012.github.io/index.xml" title="Deathdealer-Archives" type="application/atom+xml" />
+
+
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="format-detection" content="telephone=no,email=no,adress=no" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+
+
+<meta name="robots" content="index,follow" />
+<meta name="referrer" content="origin-when-cross-origin" />
+
+
+
+
+
+
+
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Deathdealer-Archives" />
+<meta name="msapplication-tooltip" content="Deathdealer-Archives" />
+<meta name='msapplication-navbutton-color' content="#5fbf5e" />
+<meta name="msapplication-TileColor" content="#5fbf5e" />
+<meta name="msapplication-TileImage" content="/img/tile-image-windows.png" />
+<link rel="icon" href="https://xiongchen2012.github.io/img/favicon.ico" />
+<link rel="icon" type="image/png" sizes="16x16" href="https://xiongchen2012.github.io/img/favicon-16x16.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="https://xiongchen2012.github.io/img/favicon-32x32.png" />
+<link rel="icon" sizes="192x192" href="https://xiongchen2012.github.io/img/touch-icon-android.png" />
+<link rel="apple-touch-icon" href="https://xiongchen2012.github.io/img/touch-icon-apple.png" />
+<link rel="mask-icon" href="https://xiongchen2012.github.io/img/safari-pinned-tab.svg" color="#5fbf5e" />
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/video.js/6.2.8/alt/video-js-cdn.min.css" />
+
+<link rel="stylesheet" href="https://xiongchen2012.github.io/css/bundle.css" />
+
+
+  
+  <!--[if lt IE 9]>
+    <script src="//cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <script src="//cdn.bootcss.com/video.js/6.2.8/ie8/videojs-ie8.min.js"></script>
+  <![endif]-->
+
+<!--[if lte IE 11]>
+    <script src="//cdn.bootcss.com/classlist/1.1.20170427/classList.min.js"></script>
+  <![endif]-->
+
+
+<script src="//cdn.bootcss.com/object-fit-images/3.2.3/ofi.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/smooth-scroll/12.1.4/js/smooth-scroll.polyfills.min.js"></script>
+
+
+</head>
+  <body>
+    
+    <div class="suspension">
+      <a title="Go to top" class="to-top is-hide"><span class="icon icon-up"></span></a>
+      
+        
+      
+    </div>
+    
+    
+  <header class="site-header">
+  <img class="avatar" src="https://xiongchen2012.github.io/img/avatar.jpg" alt="Avatar">
+
+  <p class="subtitle">Try to be Full-Stack</p>
+  <button class="menu-toggle" type="button">
+    <span class="icon icon-menu"></span>
+  </button>
+  <nav class="site-menu collapsed">
+    <h2 class="offscreen">Main Menu</h2>
+    <ul class="menu-list">
+      
+      
+      
+      
+        <li class="menu-item
+            
+            
+            
+              is-active
+            
+            
+            "
+            >
+            <a href="https://xiongchen2012.github.io/">文章</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            
+            
+            "
+            >
+            <a href="https://xiongchen2012.github.io/archives">存档</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            
+            
+            "
+            >
+            <a href="https://xiongchen2012.github.io/tags">Tags</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            
+            
+            "
+            >
+            <a href="https://xiongchen2012.github.io/about">关于</a>
+          </li>
+      
+    </ul>
+  </nav>
+  <div style="float:left;position:absolute;bottom:10px;right:10px;display:none;">
+    <a style="color:cadetblue;font-size:12px;" href="https://xiongchen2012.github.io/">
+      14 POSTS
+    </a>
+  </div>
+  <nav class="social-menu collapsed">
+    <h2 class="offscreen">Social Networks</h2>
+    <ul class="social-list">
+      
+      <li class="social-item">
+        <a href="mailto:master@deathdealer.cn" title="Email"><span class="icon icon-email"></span></a>
+      </li>
+
+      
+      <li class="social-item">
+        <a href="//github.com/xiongchen2012" title="GitHub"><span class="icon icon-github"></span></a>
+      </li>
+
+      <li class="social-item">
+        <a href="//twitter.com/xiongchen2015" title="Twitter"><span class="icon icon-twitter"></span></a>
+      </li>
+
+      
+
+      <li class="social-item">
+        <a href="//plus.google.com/108257803422142606899" title="Google+"><span class="icon icon-google"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a href="//weibo.com/deathdelaer" title="Weibo"><span class="icon icon-weibo"></span></a>
+      </li>
+
+      <li class="social-item">
+        <a href="https://xiongchen2012.github.io/img/qrcode.jpg" title="Wechat"><span class="icon icon-wechat"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a href="https://xiongchen2012.github.io/index.xml"><span class="icon icon-rss" title="RSS"></span></a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+  <section class="main post-detail">
+    <header class="post-header">
+      <h1 class="post-title">Babel入门（1） - 基础知识</h1>
+      <p class="post-meta">@Xiong Chen · Aug 17, 2018 · 2 min read</p>
+    </header>
+    <article class="post-content">
+
+<h2 id="babel入门-1-基础知识">Babel入门（1） - 基础知识</h2>
+
+<h3 id="babel是什么">Babel是什么</h3>
+
+<p>由于现代浏览器对于ECMAScript2015+支持非常有限，用ES6语法写的Javascript代码没办法直接在浏览器中运行。于是Babel（发音/&lsquo;beibəl/）应运而生了。</p>
+
+<p>Babel通过自己的工具链（ToolChain），将使用ES6语法写的Javascript代码转换成完全同等功能的ES5代码，以便在浏览器中执行。有了Babel用户可以直接山书写ES6的代码，而不用担心浏览器无法执行，大大提高了用户的开发效率，降低了由于ES5语言特性带来潜在问题的几率。</p>
+
+<p>官网的解释更简洁：<br />
+Babel is a JavaScript compiler</p>
+
+<p>它的目的是：<br />
+<strong>Use next generation JavaScript, today.</strong></p>
+
+<h3 id="配置babel">配置Babel</h3>
+
+<p>有两种方式可以在项目中配置和使用Babel：.bablerc和package.json</p>
+
+<h4 id="babelrc">.babelrc</h4>
+
+<p>在项目根目录配置一个名为<code>.babelrc</code>的文件，这个文件按照JSON格式进行书写。主要可以分为两段：</p>
+
+<pre><code class="language-json">{
+    presets:[],
+    plugins:[]
+}
+</code></pre>
+
+<p>其中<code>presets</code>用于指定babel编译js代码时使用的规则，<code>plugins</code>指定babel使用的一些插件</p>
+
+<h4 id="package-json">package.json</h4>
+
+<p>也可以在项目的package.json中配置babel，内容和上述方式一样：</p>
+
+<pre><code class="language-json">    ...
+    &quot;babel&quot;:{
+        presets: [],
+        plugins: []
+    }
+    ...
+</code></pre>
+
+<h4 id="env选项">env选项</h4>
+
+<p>如果想为不同的env配置不同的选项，可以增加<code>env</code>配置项</p>
+
+<pre><code class="language-json">	{
+        &quot;presets&quot;: [], //全局的预设
+        &quot;plugins&quot;: [], //全局的插件
+        &quot;env&quot;: {
+            &quot;production&quot;: {
+            	&quot;presets&quot;: [], //production环境下的预设
+                &quot;plugins&quot;: []  //production环境下的插件
+            }
+        }
+	}
+</code></pre>
+
+<p>env的取值：process.env.BABEL_ENV &gt; process.env.NODE_ENV &gt; &ldquo;development&rdquo;</p>
+
+<p><strong>配置文件的查找顺序如下：</strong></p>
+
+<p>需编译的js文件的当前目录中查找<code>.babelrc</code> &gt; 向上查找babelrc文件直到项目的根目录 &gt; 如果没有babelrc则查找<code>package.json</code>中是否有<code>babel:{}</code></p>
+
+<h3 id="plugins">Plugins</h3>
+
+<p>为什么要先写插件？要从Babel工作的步骤说起。Babel自称为编译器，它的编译工作分为了三个步骤：解析（parsing）-&gt; 转换（transforming）-&gt; 生成目标代码（generating）。</p>
+
+<p>开箱即用的Babel（可以理解为初始状态时的babel），实际上在第2阶段（transforming）什么工作都没做。解析(parsing)一份代码，因为在第2阶段什么都没做，所以第3阶段会输出完全相同的代码。即：<code>const babel = code =&gt; code</code></p>
+
+<p>因此Babel引入了插件来作用于第2阶段（transforming），插件以第1阶段解析的原始代码作为输入，实质性的进行了转换然后输出给第3阶段。这类用于转换代码的Babel插件统称为：Transform Plugins，插件机制带了很好的扩展性和性能。</p>
+
+<p>例如，如果需要将下面代码的的箭头函数转换成ES5，需要用到ES2015插件中的<code>es2015-arrow-functions</code></p>
+
+<pre><code class="language-javascript">let doubled = [1,2,3,4,5].map(num=&gt;num*2);
+</code></pre>
+
+<p>安装箭头函数转换的plugin</p>
+
+<pre><code class="language-shell">npm install --save-dev es2015-arrow-functions
+babel -i example.js -o output.js
+</code></pre>
+
+<p>转码后输出，已将箭头函数转换成了ES5的function：</p>
+
+<pre><code class="language-javascript">let doubled = [1,2,3,4,5].map(function(num){
+    return num*2;
+})
+</code></pre>
+
+<p>Babel插件拆分的非常细，基本上每一项语法特性都会有一个对应的插件，比如将ES2015转换相关的官方插件就有19个之多，几乎每个新特性对应一个插件。这样的设计使得开发者可以根据自己的需要进行插件的组合，官方可以不断对其进行扩展，也有利于babel社区贡献特定的插件。</p>
+
+<p>PS：有些代码在第1阶段就可能会无法解析，典型的比如React的jsx，babel也通过插件来解决问题。这类用于解析源文件的插件统称为：Syntax Plugins。一般Transform插件会自动使用相应的Syntax插件，不需额外指定Syntax插件。</p>
+
+<p><strong>总结：Syntax插件+Transform插件共同组成了Babel的插件体系，Syntax用于第1阶段解析源码，Transform用于第2阶段转换源码</strong></p>
+
+<h3 id="presets">Presets</h3>
+
+<p>上一节解释了Babel的插件机制，通过插件就可以把Babel所有的事情都干了，为什么还要引入Presets呢？</p>
+
+<p>原因很简单：逐个插件引入的效率比较低下。比如在项目开发中，开发者想要将所有ES6的代码转成ES5，插件逐个引入的方式比较麻烦（需要引入20+个插件），而且容易出错（少一个可能就会跪了）。</p>
+
+<p>这时候，就可以引入presets来解决这个麻烦。</p>
+
+<blockquote>
+<p>Don&rsquo;t want to assemble your own set of plugins? No problem! Presets are sharable <a href="https://babeljs.io/docs/en/babelrc"><code>.babelrc</code></a> configs or simply an array of babel plugins.</p>
+</blockquote>
+
+<p>官方把presets定义成可共享的babel配置，也可以简单把presets看成plugins数组。比如<code>babel-preset-es2015</code>包含了所有跟ES6转换有关的插件；可以理解为：<code>babel-preset-es2015 === [es2015-arrow-functions,es2015-classes,es2015-destructuring.....]</code></p>
+
+<p>可共享的babel配置，可以理解为配置了presets就可以省去配置一堆插件，而preset名可以替代这些插件名。</p>
+
+<pre><code class="language-json">{
+    &quot;presets&quot;: [&quot;es2015&quot;] // 配置了es2015 preset
+}
+// 等价于
+{
+    &quot;plugins&quot;: [&quot;es2015-arrow-functions&quot;,&quot;es2015-classes&quot;,&quot;es2015-literals&quot; // ...]
+}
+</code></pre>
+
+<p>官方提供了12种Preset
+| Preset | 用途 | 备注 |
+| :&mdash;&ndash; | &mdash;&mdash; | &mdash;&mdash; |
+| env | 可以根据指定的环境自动配置Babel插件的preset | 这篇博客专门讲这个preset |
+| es2015/es2016/es2017 | 用于转ES2015,2016和2017 | 还有个latest，已经不用了 |
+| stage-0/1/2/3 | 用于转tc39处于各阶段的提案语法 |  |
+| flow | 用于将Flow书写的代码转成javascript |  |
+| react | 用于将React代码转成js(主要是jsx语法) |  |
+| minify | 用于将编译后的代码进行压缩 |  |</p>
+
+<h3 id="plugin和preset简写形式">Plugin和Preset简写形式</h3>
+
+<p>如果plugin的名称以<code>babel-plugin-</code>开头，就可以在配置中省掉这个前缀。比如：</p>
+
+<pre><code class="language-json">&quot;plugins&quot;: [&quot;someplugin&quot;]
+等价于
+&quot;plugins&quot;: [&quot;babel-plugin-someplugin&quot;]
+</code></pre>
+
+<p>同样，preset的名称以<code>babel-preset-</code>开头，可以在配置中省掉这个前缀。比如：</p>
+
+<pre><code class="language-json">&quot;presets&quot;: [&quot;somepreset&quot;]
+等价于
+&quot;presets&quot;: [&quot;babel-plugin-somepreset&quot;]
+</code></pre>
+
+<h3 id="plugin和preset的执行顺序">Plugin和Preset的执行顺序</h3>
+
+<p>可以同时指定多个plugin和preset，plugins和presets也可以同时存在。所以需要知道顺序：</p>
+
+<ul>
+<li>plugin执行先于preset（Plugins run before Presets）</li>
+<li>plugin按照配置的次序<strong>顺序</strong>执行（Plugin ordering is first to last）</li>
+<li>plugin按照配置的次序<strong>逆序</strong>执行（Preset ordering is last to first）</li>
+</ul>
+
+<h3 id="plugin和preset的选项配置">Plugin和Preset的选项配置</h3>
+
+<p>plugin和preset都支持各自进行配置，不同的插件和预设支持的选项不一样，需要具体查看其文档，但是指定选项的配置语法是相同的：</p>
+
+<pre><code class="language-json">{
+    &quot;plugins&quot;: [
+        [&quot;plugin1&quot;,{
+            &quot;someoption&quot;: &quot;value&quot;
+            ...
+        }], //需要用一个数组来配置plugin和它的选项
+        [&quot;plugin2&quot;,{
+            &quot;someoption&quot;: &quot;value&quot;
+            //...
+        }]
+    ],
+    &quot;presets&quot;: [
+        [&quot;preset1&quot;,{
+            &quot;someoption&quot;: &quot;value&quot;
+            //...
+        }],
+        [&quot;preset2&quot;,{
+            &quot;someoption&quot;: &quot;value&quot;
+            //...
+        }],
+    ]
+}
+</code></pre>
+
+<p><strong>Tip</strong>: wrapping the name and an options object in an array inside your config.</p>
+</article>
+    <footer class="post-footer">
+      
+      <ul class="post-tags">
+        
+          <li><a href="https://xiongchen2012.github.io/tags/javascript"><span class="tag">Javascript</span></a></li>
+        
+          <li><a href="https://xiongchen2012.github.io/tags/babel"><span class="tag">Babel</span></a></li>
+        
+      </ul>
+      
+      <p class="post-copyright">
+        This site is generated by <a href='http://gohugo.io' style='color:rgb(95, 191, 94);'>HUGO</a> with a theme <a href='https://github.com/laozhu/hugo-nuo' style='color:rgb(95, 191, 94);'>HUGO-NUO</a> © deathdealer.cn
+      </p>
+    </footer>
+  </section>
+  <footer class="site-footer">
+  <p>© 2018 Deathdealer-Archives</p>
+  <p>Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank">Nuo</a>.</p>
+  
+    <p><a href="http://www.miitbeian.gov.cn" title="Check ICP info" target="_blank">苏ICP备15047226号-1</a></p>
+  
+</footer>
+
+
+<script async src="//cdn.bootcss.com/video.js/6.2.8/alt/video.novtt.min.js"></script>
+<script async src="//cdn.bootcss.com/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      displayMath: [['$$','$$'], ['\[','\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: { equationNumbers: { autoNumber: "AMS" },
+      extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    }
+  });
+</script>
+<script type="text/x-mathjax-config">
+  // Fix <code> tags after MathJax finishes running. This is a
+  // hack to overcome a shortcoming of Markdown. Discussion at
+  // https://github.com/mojombo/jekyll/issues/199
+  MathJax.Hub.Queue(() => {
+    MathJax.Hub.getAllJax().map(v => v.SourceElement().parentNode.className += ' has-jax');
+  });
+</script>
+
+<script src="https://xiongchen2012.github.io/js/bundle.js"></script>
+
+
+
+
+  </body>
+</html>

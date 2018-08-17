@@ -3,6 +3,16 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://xiongchen2012.github.io/post/babel-concept/</loc>
+    <lastmod>2018-08-17T20:53:39+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://xiongchen2012.github.io/post/js-object-properties/</loc>
+    <lastmod>2018-07-19T10:08:16+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://xiongchen2012.github.io/post/ydjs-lexical-scope/</loc>
     <lastmod>2018-06-26T23:20:23+08:00</lastmod>
   </url>
@@ -80,6 +90,12 @@
   </url>
   
   <url>
+    <loc>https://xiongchen2012.github.io/tags/babel/</loc>
+    <lastmod>2018-08-17T20:53:39+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://xiongchen2012.github.io/tags/cache/</loc>
     <lastmod>2018-02-05T23:09:15+08:00</lastmod>
     <priority>0</priority>
@@ -92,7 +108,7 @@
   
   <url>
     <loc>https://xiongchen2012.github.io/</loc>
-    <lastmod>2018-06-26T23:20:23+08:00</lastmod>
+    <lastmod>2018-08-17T20:53:39+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -116,13 +132,13 @@
   
   <url>
     <loc>https://xiongchen2012.github.io/tags/http/</loc>
-    <lastmod>2018-02-04T10:17:48+08:00</lastmod>
+    <lastmod>2018-07-19T10:08:16+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://xiongchen2012.github.io/tags/javascript/</loc>
-    <lastmod>2018-06-10T14:22:57+08:00</lastmod>
+    <lastmod>2018-08-17T20:53:39+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -146,7 +162,7 @@
   
   <url>
     <loc>https://xiongchen2012.github.io/post/</loc>
-    <lastmod>2018-06-26T23:20:23+08:00</lastmod>
+    <lastmod>2018-08-17T20:53:39+08:00</lastmod>
     <priority>0</priority>
   </url>
   
