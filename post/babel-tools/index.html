@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+
+  <meta charset="utf-8" />
+
+  
+  <title>Babel入门（2） - 全家桶</title>
+
+  
+  
+
+
+
+
+
+  
+  <meta name="author" content="Xiong Chen" />
+  <meta name="description" content="babel-cli babel自带的命令行工具，用于在命令行编译源文件。babel-cli有两种安装方式：
+ 全局安装  npm install --global babel-cli  全局安装babel后，可以在任意工程下直接执行代码编译。但是官方并不推荐这种方式，而是极力推荐第2种随项目安装的方式，原因和webpack有点一致。
+ 不同的项目使用的Babel版本可以不同 项目依赖的方式，不需要依赖宿主机上也安装Babel，这样的项目可移植性更强   随项目安装  npm install --save-dev babel-cli  在项目内安装babel，借助于npx命令（npm&amp;gt;5.2.0）包执行器，可以在项目内直接执行babel命令。感觉就和全局安装了babel一样。
+babel命令行工具的用法和参数很灵活，具体用到时参考官方文档更为高效和直接：https://babeljs.io/docs/en/babel-cli
+和babel-cli一起被安装的还有一个名为babel-node的命令行工具，这个命令其实是babel的命令行REPL（Read-Eval-Print-Loop）
+另外一个和babel-cli一起安装的命令行工具是babel-external-helpers，用这个命令可以生成一个包括了所有helper函数的js文件，然后在项目入口引入此文件后，再引入一个external-helpers的插件，这样在转码的时候可以直接使用helper js中的代码，可以节省很多代码量。（不这样的话每个模块开头都会重复引用这些helper函数），这个命令行用起比较麻烦，再加上现在有了 babel-runtime 包和 transform-runtime 插件，所以用的也比较少了。
+babel-core Babel的核心包，所有的API都封装在这个包里。当你准备在自己的代码中对某段代码进行转码时，就需要引入这个包。通过这个包，可以对Javascript的新语法进行编译（仅仅是语法哦，）
+npm install --save babel-core  然后就可以在代码中调用babel提供的API，主要的API有几个：
+var babel = require(&#39;babel-core&#39;); /* 对以字符串形式指定的code进行转码 */ babel.transform(&#39;code&#39;,options) /* 对文件进行转码（异步） */ babel.transformFile(&#39;file.js&#39;,options,(err,result)=&amp;gt;{ console.log(result); }) /* 对文件进行转码（同步） */ babel.transformFileSync(&#39;file.js&#39;,options); /* AST转成Code */ babel.transformFromAst(ast, code, options);  具体的options非常多，不照搬官方文档了：https://babeljs.io/docs/en/babel-core#options
+tranform-runtime和babel-runtime Babel默认情况下只会对Javascript新的语法进行转换，但是不会对新的API（如Promise，Map等）进行转换，项目中引入 transform-runtime 插件后就可以为这些新的API提供转换（垫片）。" />
+
+  
+  
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@xiongchen2015" />
+    <meta name="twitter:title" content="Babel入门（2） - 全家桶" />
+    <meta name="twitter:description" content="babel-cli babel自带的命令行工具，用于在命令行编译源文件。babel-cli有两种安装方式：
+ 全局安装  npm install --global babel-cli  全局安装babel后，可以在任意工程下直接执行代码编译。但是官方并不推荐这种方式，而是极力推荐第2种随项目安装的方式，原因和webpack有点一致。
+ 不同的项目使用的Babel版本可以不同 项目依赖的方式，不需要依赖宿主机上也安装Babel，这样的项目可移植性更强   随项目安装  npm install --save-dev babel-cli  在项目内安装babel，借助于npx命令（npm&amp;gt;5.2.0）包执行器，可以在项目内直接执行babel命令。感觉就和全局安装了babel一样。
+babel命令行工具的用法和参数很灵活，具体用到时参考官方文档更为高效和直接：https://babeljs.io/docs/en/babel-cli
+和babel-cli一起被安装的还有一个名为babel-node的命令行工具，这个命令其实是babel的命令行REPL（Read-Eval-Print-Loop）
+另外一个和babel-cli一起安装的命令行工具是babel-external-helpers，用这个命令可以生成一个包括了所有helper函数的js文件，然后在项目入口引入此文件后，再引入一个external-helpers的插件，这样在转码的时候可以直接使用helper js中的代码，可以节省很多代码量。（不这样的话每个模块开头都会重复引用这些helper函数），这个命令行用起比较麻烦，再加上现在有了 babel-runtime 包和 transform-runtime 插件，所以用的也比较少了。
+babel-core Babel的核心包，所有的API都封装在这个包里。当你准备在自己的代码中对某段代码进行转码时，就需要引入这个包。通过这个包，可以对Javascript的新语法进行编译（仅仅是语法哦，）
+npm install --save babel-core  然后就可以在代码中调用babel提供的API，主要的API有几个：
+var babel = require(&#39;babel-core&#39;); /* 对以字符串形式指定的code进行转码 */ babel.transform(&#39;code&#39;,options) /* 对文件进行转码（异步） */ babel.transformFile(&#39;file.js&#39;,options,(err,result)=&amp;gt;{ console.log(result); }) /* 对文件进行转码（同步） */ babel.transformFileSync(&#39;file.js&#39;,options); /* AST转成Code */ babel.transformFromAst(ast, code, options);  具体的options非常多，不照搬官方文档了：https://babeljs.io/docs/en/babel-core#options
+tranform-runtime和babel-runtime Babel默认情况下只会对Javascript新的语法进行转换，但是不会对新的API（如Promise，Map等）进行转换，项目中引入 transform-runtime 插件后就可以为这些新的API提供转换（垫片）。" />
+    <meta name="twitter:image" content="https://xiongchen2012.github.io/img/avatar.jpg" />
+  
+
+  
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Babel入门（2） - 全家桶" />
+  <meta property="og:description" content="babel-cli babel自带的命令行工具，用于在命令行编译源文件。babel-cli有两种安装方式：
+ 全局安装  npm install --global babel-cli  全局安装babel后，可以在任意工程下直接执行代码编译。但是官方并不推荐这种方式，而是极力推荐第2种随项目安装的方式，原因和webpack有点一致。
+ 不同的项目使用的Babel版本可以不同 项目依赖的方式，不需要依赖宿主机上也安装Babel，这样的项目可移植性更强   随项目安装  npm install --save-dev babel-cli  在项目内安装babel，借助于npx命令（npm&amp;gt;5.2.0）包执行器，可以在项目内直接执行babel命令。感觉就和全局安装了babel一样。
+babel命令行工具的用法和参数很灵活，具体用到时参考官方文档更为高效和直接：https://babeljs.io/docs/en/babel-cli
+和babel-cli一起被安装的还有一个名为babel-node的命令行工具，这个命令其实是babel的命令行REPL（Read-Eval-Print-Loop）
+另外一个和babel-cli一起安装的命令行工具是babel-external-helpers，用这个命令可以生成一个包括了所有helper函数的js文件，然后在项目入口引入此文件后，再引入一个external-helpers的插件，这样在转码的时候可以直接使用helper js中的代码，可以节省很多代码量。（不这样的话每个模块开头都会重复引用这些helper函数），这个命令行用起比较麻烦，再加上现在有了 babel-runtime 包和 transform-runtime 插件，所以用的也比较少了。
+babel-core Babel的核心包，所有的API都封装在这个包里。当你准备在自己的代码中对某段代码进行转码时，就需要引入这个包。通过这个包，可以对Javascript的新语法进行编译（仅仅是语法哦，）
+npm install --save babel-core  然后就可以在代码中调用babel提供的API，主要的API有几个：
+var babel = require(&#39;babel-core&#39;); /* 对以字符串形式指定的code进行转码 */ babel.transform(&#39;code&#39;,options) /* 对文件进行转码（异步） */ babel.transformFile(&#39;file.js&#39;,options,(err,result)=&amp;gt;{ console.log(result); }) /* 对文件进行转码（同步） */ babel.transformFileSync(&#39;file.js&#39;,options); /* AST转成Code */ babel.transformFromAst(ast, code, options);  具体的options非常多，不照搬官方文档了：https://babeljs.io/docs/en/babel-core#options
+tranform-runtime和babel-runtime Babel默认情况下只会对Javascript新的语法进行转换，但是不会对新的API（如Promise，Map等）进行转换，项目中引入 transform-runtime 插件后就可以为这些新的API提供转换（垫片）。" />
+  <meta property="og:url" content="https://xiongchen2012.github.io/post/babel-tools/" />
+  <meta property="og:image" content="https://xiongchen2012.github.io/img/avatar.jpg" />
+
+
+
+
+<meta name="generator" content="Hugo 0.41" />
+
+
+<link rel="canonical" href="https://xiongchen2012.github.io/post/babel-tools/" />
+<link rel="alternative" href="https://xiongchen2012.github.io/index.xml" title="Deathdealer-Archives" type="application/atom+xml" />
+
+
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="format-detection" content="telephone=no,email=no,adress=no" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+
+
+<meta name="robots" content="index,follow" />
+<meta name="referrer" content="origin-when-cross-origin" />
+
+
+
+
+
+
+
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Deathdealer-Archives" />
+<meta name="msapplication-tooltip" content="Deathdealer-Archives" />
+<meta name='msapplication-navbutton-color' content="#5fbf5e" />
+<meta name="msapplication-TileColor" content="#5fbf5e" />
+<meta name="msapplication-TileImage" content="/img/tile-image-windows.png" />
+<link rel="icon" href="https://xiongchen2012.github.io/img/favicon.ico" />
+<link rel="icon" type="image/png" sizes="16x16" href="https://xiongchen2012.github.io/img/favicon-16x16.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="https://xiongchen2012.github.io/img/favicon-32x32.png" />
+<link rel="icon" sizes="192x192" href="https://xiongchen2012.github.io/img/touch-icon-android.png" />
+<link rel="apple-touch-icon" href="https://xiongchen2012.github.io/img/touch-icon-apple.png" />
+<link rel="mask-icon" href="https://xiongchen2012.github.io/img/safari-pinned-tab.svg" color="#5fbf5e" />
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/video.js/6.2.8/alt/video-js-cdn.min.css" />
+
+<link rel="stylesheet" href="https://xiongchen2012.github.io/css/bundle.css" />
+
+
+  
+  <!--[if lt IE 9]>
+    <script src="//cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <script src="//cdn.bootcss.com/video.js/6.2.8/ie8/videojs-ie8.min.js"></script>
+  <![endif]-->
+
+<!--[if lte IE 11]>
+    <script src="//cdn.bootcss.com/classlist/1.1.20170427/classList.min.js"></script>
+  <![endif]-->
+
+
+<script src="//cdn.bootcss.com/object-fit-images/3.2.3/ofi.min.js"></script>
+
+
+<script src="//cdn.bootcss.com/smooth-scroll/12.1.4/js/smooth-scroll.polyfills.min.js"></script>
+
+
+</head>
+  <body>
+    
+    <div class="suspension">
+      <a title="Go to top" class="to-top is-hide"><span class="icon icon-up"></span></a>
+      
+        
+      
+    </div>
+    
+    
+  <header class="site-header">
+  <img class="avatar" src="https://xiongchen2012.github.io/img/avatar.jpg" alt="Avatar">
+
+  <p class="subtitle">Try to be Full-Stack</p>
+  <button class="menu-toggle" type="button">
+    <span class="icon icon-menu"></span>
+  </button>
+  <nav class="site-menu collapsed">
+    <h2 class="offscreen">Main Menu</h2>
+    <ul class="menu-list">
+      
+      
+      
+      
+        <li class="menu-item
+            
+            
+            
+              is-active
+            
+            
+            "
+            >
+            <a href="https://xiongchen2012.github.io/">文章</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            
+            
+            "
+            >
+            <a href="https://xiongchen2012.github.io/archives">存档</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            
+            
+            "
+            >
+            <a href="https://xiongchen2012.github.io/tags">Tags</a>
+          </li>
+      
+        <li class="menu-item
+            
+            
+            
+            
+            "
+            >
+            <a href="https://xiongchen2012.github.io/about">关于</a>
+          </li>
+      
+    </ul>
+  </nav>
+  <div style="float:left;position:absolute;bottom:10px;right:10px;display:none;">
+    <a style="color:cadetblue;font-size:12px;" href="https://xiongchen2012.github.io/">
+      15 POSTS
+    </a>
+  </div>
+  <nav class="social-menu collapsed">
+    <h2 class="offscreen">Social Networks</h2>
+    <ul class="social-list">
+      
+      <li class="social-item">
+        <a href="mailto:master@deathdealer.cn" title="Email"><span class="icon icon-email"></span></a>
+      </li>
+
+      
+      <li class="social-item">
+        <a href="//github.com/xiongchen2012" title="GitHub"><span class="icon icon-github"></span></a>
+      </li>
+
+      <li class="social-item">
+        <a href="//twitter.com/xiongchen2015" title="Twitter"><span class="icon icon-twitter"></span></a>
+      </li>
+
+      
+
+      <li class="social-item">
+        <a href="//plus.google.com/108257803422142606899" title="Google+"><span class="icon icon-google"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a href="//weibo.com/deathdelaer" title="Weibo"><span class="icon icon-weibo"></span></a>
+      </li>
+
+      <li class="social-item">
+        <a href="https://xiongchen2012.github.io/img/qrcode.jpg" title="Wechat"><span class="icon icon-wechat"></span></a>
+      </li>
+
+      
+
+      
+
+      
+
+      
+
+      <li class="social-item">
+        <a href="https://xiongchen2012.github.io/index.xml"><span class="icon icon-rss" title="RSS"></span></a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+  <section class="main post-detail">
+    <header class="post-header">
+      <h1 class="post-title">Babel入门（2） - 全家桶</h1>
+      <p class="post-meta">@Xiong Chen · Aug 17, 2018 · 2 min read</p>
+    </header>
+    <article class="post-content">
+
+<h3 id="babel-cli">babel-cli</h3>
+
+<p>babel自带的命令行工具，用于在命令行编译源文件。babel-cli有两种安装方式：</p>
+
+<ol>
+<li>全局安装</li>
+</ol>
+
+<pre><code class="language-shell">   npm install --global babel-cli
+</code></pre>
+
+<p>全局安装babel后，可以在任意工程下直接执行代码编译。但是官方并不推荐这种方式，而是极力推荐第2种随项目安装的方式，原因和webpack有点一致。</p>
+
+<ul>
+<li>不同的项目使用的Babel版本可以不同</li>
+<li>项目依赖的方式，不需要依赖宿主机上也安装Babel，这样的项目可移植性更强</li>
+</ul>
+
+<ol>
+<li>随项目安装</li>
+</ol>
+
+<pre><code class="language-shell">   npm install --save-dev babel-cli
+</code></pre>
+
+<p>在项目内安装babel，借助于npx命令（npm&gt;5.2.0）包执行器，可以在项目内直接执行babel命令。感觉就和全局安装了babel一样。</p>
+
+<p>babel命令行工具的用法和参数很灵活，具体用到时参考官方文档更为高效和直接：<a href="https://babeljs.io/docs/en/babel-cli">https://babeljs.io/docs/en/babel-cli</a></p>
+
+<p>和babel-cli一起被安装的还有一个名为babel-node的命令行工具，这个命令其实是babel的命令行REPL（Read-Eval-Print-Loop）</p>
+
+<p>另外一个和babel-cli一起安装的命令行工具是babel-external-helpers，用这个命令可以生成一个包括了所有helper函数的js文件，然后在项目入口引入此文件后，再引入一个external-helpers的插件，这样在转码的时候可以直接使用helper js中的代码，可以节省很多代码量。（不这样的话每个模块开头都会重复引用这些helper函数），这个命令行用起比较麻烦，再加上现在有了 <code>babel-runtime</code> 包和 <code>transform-runtime</code> 插件，所以用的也比较少了。</p>
+
+<h3 id="babel-core">babel-core</h3>
+
+<p>Babel的核心包，所有的API都封装在这个包里。当你准备在自己的代码中对某段代码进行转码时，就需要引入这个包。通过这个包，可以对Javascript的<strong>新语法</strong>进行编译（仅仅是语法哦，）</p>
+
+<pre><code class="language-shell">npm install --save babel-core
+</code></pre>
+
+<p>然后就可以在代码中调用babel提供的API，主要的API有几个：</p>
+
+<pre><code class="language-javascript">var babel = require('babel-core');
+
+/* 对以字符串形式指定的code进行转码 */
+babel.transform('code',options) 
+
+/* 对文件进行转码（异步） */
+babel.transformFile('file.js',options,(err,result)=&gt;{
+   	console.log(result);
+}) 
+
+/* 对文件进行转码（同步） */
+babel.transformFileSync('file.js',options);
+
+/* AST转成Code */
+babel.transformFromAst(ast, code, options);
+</code></pre>
+
+<p>具体的options非常多，不照搬官方文档了：<a href="https://babeljs.io/docs/en/babel-core#options">https://babeljs.io/docs/en/babel-core#options</a></p>
+
+<h3 id="tranform-runtime和babel-runtime">tranform-runtime和babel-runtime</h3>
+
+<p>Babel默认情况下只会对Javascript新的语法进行转换，但是不会对新的API（如Promise，Map等）进行转换，项目中引入 <code>transform-runtime</code> 插件后就可以为这些新的API提供转换（垫片）。</p>
+
+<p>Babel在编译时会使用一些很小的共通helper函数，比如： <code>_extend</code>，<code>_defineProperty</code> 等等。默认情况下Babel会在每一个引入这些工具函数的文件头部加上这些函数的代码。这种重复的代码在很多情况下是不必要的，尤其是你的项目有很多很多文件时，如果每个文件都被加上这些代码，最后编译出来的文件会非常大。</p>
+
+<p>这个就是 <code>transform-runtime</code> 插件使用的原因之一： 插件会引用 <code>babel-runtime</code> 包里的helper函数，而不是将它们插入到项止js文件头部。<code>babel-runtime</code>  这个包会被编译到你的bundle中。</p>
+
+<p><code>transform-runtime</code> 插件还可以为你的代码创建一个沙箱环境，如果你用了 <code>babel-polyfill</code> （这个包会提供Promise，Set，Map这些新的API），它会污染你的全局环境。如果你开发的项目是APP或者命令行工具，也没有什么问题，但是如果你开发的是另外一个可能对外发布的<strong>库/工具</strong>，污染了全局环境就容易引发问题了。当然 <code>babel-runtime</code> 也提供了Promise，Set，Map等这些新的API，不过是在沙箱环境中运行的，不会污染全局环境。</p>
+
+<p>一般把 <code>tranform-runtime</code> 安装到devDependencies中，而将 <code>babel-runtime</code> 安装在dependencies中</p>
+
+<pre><code class="language-shell">npm install --save-dev babel-plugin-transform-runtime
+#OR
+npm install --save-dev @babel/transform-runtime
+
+npm install --save babel-runtime
+</code></pre>
+
+<p><code>transform-runtime</code> 插件实际只做了3件事情：</p>
+
+<ol>
+<li>当使用<code>generator/async</code> 函数时，自动引用 <code>babel-runtime/regnerator</code> 进行编译</li>
+<li>当使用ES6静态方法（非实例方法）或其它内置语法时，自动引用 <code>babel-runtime/core-js</code> 进行编译</li>
+<li>用 <code>babel-runtime/helpers</code>  中的helper函数替换文件头中的那些helper函数</li>
+</ol>
+
+<p>一句话理解：<code>tranform-runtime</code> 是使用了 <code>babel-runtime</code> 包，对新的API支持、集中存放Helper函数等进行编译的Babel插件，特别适用的场合是：<strong>你在开发类库或工具</strong></p>
+
+<h3 id="babel-polyfill">babel-polyfill</h3>
+
+<p>参考上一节 <code>babel-runtime</code> 已经是包括了很多polyfill 了，同样是引用了 core-js 和 regenerator，垫片支持也是一样，为什么又搞出一个 <code>babel-polyfill</code> 包？</p>
+
+<blockquote>
+<p>This will emulate a full ES2015+ environment and is intended to be used in an application rather than a library/tool. This polyfill is automatically loaded when using <code>babel-node</code>.</p>
+</blockquote>
+
+<p>以上是官网给的解释：<code>babel-polyfill</code> 模拟一个完整的用于应用程序而非类库/工具开发的ES2015+环境，也就是说，你可以使用：</p>
+
+<ul>
+<li><p><code>Promise</code>、<code>WeakMap</code> 等新的API</p></li>
+
+<li><p><code>Array.from</code>、<code>Object.assign</code>等静态方法</p></li>
+
+<li><p><code>Array.prototype.includes</code> 等实例方法 （注意：<strong><code>babel-runtime</code> 不能提供实例方法的垫片</strong>）</p></li>
+
+<li><p>生成器函数（generator）</p></li>
+</ul>
+
+<p>为了达到这个目的，这些垫片会被挂到全局作用域，以及 <code>String</code>  等类的prototype上（感觉就像是为这些类增加了新的方法一样）。</p>
+
+<p>使用<code>babel-polyfill</code> 需要将这个包保存在dependencies中，而不是devDependencies中。</p>
+
+<pre><code class="language-shell">npm install --save babel-polyfill
+#OR
+npm install --save @babel/polyfill
+</code></pre>
+
+<p><strong>必须在应用程序的入口中首先加载babel-polyfill，需要确保它在其它代码执行之前加载！</strong></p>
+
+<pre><code class="language-javascript">// First Line
+require('babel-polyfill');
+import &quot;babel-polyfill&quot;;
+import &quot;@babel/polyfill&quot;;
+
+//with webpack.config.js
+module.exports = {
+    entry: [&quot;babel-polyfill&quot;,&quot;./src/app.js&quot;]
+}
+</code></pre>
+
+<h3 id="babel-register">babel-register</h3>
+
+<p>这个包会给require加个hook，这个钩子会自动和node的 <code>require</code> 指令绑定，会自动编译文件。和coffeescript的register是一样的。</p>
+
+<pre><code class="language-shell">npm install --save-dev babel-register
+</code></pre>
+
+<p>在文件的开头先引入这个包后，每当使用<code>require</code>加载<code>.js</code>、<code>.jsx</code>、<code>.es</code>和<code>.es6</code>后缀名的文件，就会先用babel进行转码。</p>
+
+<p><strong>babel-register是对require的文件进行编译转码，而不是对当前文件，这个不要搞错了</strong></p>
+
+<pre><code class="language-javascript">//userList.js
+require('babel-register');
+require('./index.js')
+// another codes
+</code></pre>
+
+<p>会自动对index.js进行转码，而不是userList.js剩下的代码。</p>
+
+<p>此外，还有两个需要注意的是：</p>
+
+<ol>
+<li>因为转码是实时的，所以这个包只适合在开发环境中使用</li>
+<li>这个包默认没有polyfill，需要单独引入polyfill</li>
+</ol>
+
+<h3 id="transform-runtime-对比-babel-polyfill">transform-runtime 对比 babel-polyfill</h3>
+
+<p>其实通过上面的介绍我们已经了解他们是干什么的了，这里再稍微总结区分一下吧。我在这里把 babel-runtime 和 babel-plugin-transform-runtime 统称为 transform-runtime，因为一起用才比较好。</p>
+
+<ul>
+<li>babel-polyfill 是当前环境注入这些 es6+ 标准的垫片，好处是引用一次，不再担心兼容，而且它就是全局下的包，代码的任何地方都可以使用。缺点也很明显，它可能会污染原生的一些方法而把原生的方法重写。如果当前项目已经有一个 polyfill 的包了，那你只能保留其一。而且一次性引入这么一个包，会大大增加体积。如果你只是用几个特性，就没必要了，如果你是开发较大的应用，而且会频繁使用新特性并考虑兼容，那就直接引入吧。</li>
+<li>transform-runtime 是利用 plugin 自动识别并替换代码中的新特性，你不需要再引入，只需要装好 babel-runtime 和 配好 plugin 就可以了。好处是按需替换，检测到你需要哪个，就引入哪个 polyfill，如果只用了一部分，打包完的文件体积对比 babel-polyfill 会小很多。而且 transform-runtime 不会污染原生的对象，方法，也不会对其他 polyfill 产生影响。所以 transform-runtime 的方式更适合开发工具包，库，一方面是体积够小，另一方面是用户（开发者）不会因为引用了我们的工具，包而污染了全局的原生方法，产生副作用，还是应该留给用户自己去选择。缺点是随着应用的增大，相同的 polyfill 每个模块都要做重复的工作（检测，替换），虽然 polyfill 只是引用，编译效率不够高效。<strong>值得注意的是，instance 上新添加的一些方法，babel-plugin-transform-runtime 是没有做处理的，比如 数组的 includes, filter, fill 等，这个算是一个关键问题吧</strong></li>
+</ul>
+
+<p>另外，关于 babel-runtime 为什么是 dependencies 依赖。它只是一个集中了 polyfill 的 library，对应需要的 polyfill 都是要引入项目中，并跟项目代码一起打包的。不过它不会都引入，你用了哪个，plugin 就给你 require 哪个。所以即使你最终项目只是 <code>require('babel-runtime/core-js/object/values')</code>其中的一个文件，但是对于这包来说，也是生产依赖的。</p>
+
+<h3 id="参考">参考</h3>
+
+<ol>
+<li><a href="https://segmentfault.com/a/1190000011155061">https://segmentfault.com/a/1190000011155061</a></li>
+<li><a href="https://segmentfault.com/q/1010000005596587">https://segmentfault.com/q/1010000005596587</a></li>
+<li><a href="http://www.ruanyifeng.com/blog/2016/01/babel.html">http://www.ruanyifeng.com/blog/2016/01/babel.html</a></li>
+</ol>
+</article>
+    <footer class="post-footer">
+      
+      <ul class="post-tags">
+        
+          <li><a href="https://xiongchen2012.github.io/tags/javascript"><span class="tag">Javascript</span></a></li>
+        
+          <li><a href="https://xiongchen2012.github.io/tags/babel"><span class="tag">Babel</span></a></li>
+        
+      </ul>
+      
+      <p class="post-copyright">
+        This site is generated by <a href='http://gohugo.io' style='color:rgb(95, 191, 94);'>HUGO</a> with a theme <a href='https://github.com/laozhu/hugo-nuo' style='color:rgb(95, 191, 94);'>HUGO-NUO</a> © deathdealer.cn
+      </p>
+    </footer>
+  </section>
+  <footer class="site-footer">
+  <p>© 2018 Deathdealer-Archives</p>
+  <p>Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> with theme <a href="https://github.com/laozhu/hugo-nuo" target="_blank">Nuo</a>.</p>
+  
+    <p><a href="http://www.miitbeian.gov.cn" title="Check ICP info" target="_blank">苏ICP备15047226号-1</a></p>
+  
+</footer>
+
+
+<script async src="//cdn.bootcss.com/video.js/6.2.8/alt/video.novtt.min.js"></script>
+<script async src="//cdn.bootcss.com/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      displayMath: [['$$','$$'], ['\[','\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: { equationNumbers: { autoNumber: "AMS" },
+      extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    }
+  });
+</script>
+<script type="text/x-mathjax-config">
+  // Fix <code> tags after MathJax finishes running. This is a
+  // hack to overcome a shortcoming of Markdown. Discussion at
+  // https://github.com/mojombo/jekyll/issues/199
+  MathJax.Hub.Queue(() => {
+    MathJax.Hub.getAllJax().map(v => v.SourceElement().parentNode.className += ' has-jax');
+  });
+</script>
+
+<script src="https://xiongchen2012.github.io/js/bundle.js"></script>
+
+
+
+
+  </body>
+</html>

@@ -18,10 +18,10 @@
       <pubDate>Fri, 17 Aug 2018 20:53:39 +0800</pubDate>
       
       <guid>https://xiongchen2012.github.io/post/babel-concept/</guid>
-      <description>Babel入门（1） - 基础知识 Babel是什么 由于现代浏览器对于ECMAScript2015+支持非常有限，用ES6语法写的Javascript代码没办法直接在浏览器中运行。于是Babel（发音/&amp;lsquo;beibəl/）应运而生了。
+      <description>Babel是什么 由于现代浏览器对于ECMAScript2015+支持非常有限，用ES6语法写的Javascript代码没办法直接在浏览器中运行。于是Babel（发音/&amp;lsquo;beibəl/）应运而生了。
 Babel通过自己的工具链（ToolChain），将使用ES6语法写的Javascript代码转换成完全同等功能的ES5代码，以便在浏览器中执行。有了Babel用户可以直接山书写ES6的代码，而不用担心浏览器无法执行，大大提高了用户的开发效率，降低了由于ES5语言特性带来潜在问题的几率。
 官网的解释更简洁：
-Babel is a JavaScript compiler
+&amp;gt;Babel is a JavaScript compiler
 它的目的是：
 Use next generation JavaScript, today.
 配置Babel 有两种方式可以在项目中配置和使用Babel：.bablerc和package.json
@@ -32,6 +32,24 @@ package.json 也可以在项目的package.json中配置babel，内容和上述�
 { &amp;quot;presets&amp;quot;: [], //全局的预设 &amp;quot;plugins&amp;quot;: [], //全局的插件 &amp;quot;env&amp;quot;: { &amp;quot;production&amp;quot;: { &amp;quot;presets&amp;quot;: [], //production环境下的预设 &amp;quot;plugins&amp;quot;: [] //production环境下的插件 } } }  env的取值：process.env.BABEL_ENV &amp;gt; process.env.NODE_ENV &amp;gt; &amp;ldquo;development&amp;rdquo;
 配置文件的查找顺序如下：
 需编译的js文件的当前目录中查找.babelrc &amp;gt; 向上查找babelrc文件直到项目的根目录 &amp;gt; 如果没有babelrc则查找package.</description>
+    </item>
+    
+    <item>
+      <title>Babel入门（2） - 全家桶</title>
+      <link>https://xiongchen2012.github.io/post/babel-tools/</link>
+      <pubDate>Fri, 17 Aug 2018 20:53:39 +0800</pubDate>
+      
+      <guid>https://xiongchen2012.github.io/post/babel-tools/</guid>
+      <description>babel-cli babel自带的命令行工具，用于在命令行编译源文件。babel-cli有两种安装方式：
+ 全局安装  npm install --global babel-cli  全局安装babel后，可以在任意工程下直接执行代码编译。但是官方并不推荐这种方式，而是极力推荐第2种随项目安装的方式，原因和webpack有点一致。
+ 不同的项目使用的Babel版本可以不同 项目依赖的方式，不需要依赖宿主机上也安装Babel，这样的项目可移植性更强   随项目安装  npm install --save-dev babel-cli  在项目内安装babel，借助于npx命令（npm&amp;gt;5.2.0）包执行器，可以在项目内直接执行babel命令。感觉就和全局安装了babel一样。
+babel命令行工具的用法和参数很灵活，具体用到时参考官方文档更为高效和直接：https://babeljs.io/docs/en/babel-cli
+和babel-cli一起被安装的还有一个名为babel-node的命令行工具，这个命令其实是babel的命令行REPL（Read-Eval-Print-Loop）
+另外一个和babel-cli一起安装的命令行工具是babel-external-helpers，用这个命令可以生成一个包括了所有helper函数的js文件，然后在项目入口引入此文件后，再引入一个external-helpers的插件，这样在转码的时候可以直接使用helper js中的代码，可以节省很多代码量。（不这样的话每个模块开头都会重复引用这些helper函数），这个命令行用起比较麻烦，再加上现在有了 babel-runtime 包和 transform-runtime 插件，所以用的也比较少了。
+babel-core Babel的核心包，所有的API都封装在这个包里。当你准备在自己的代码中对某段代码进行转码时，就需要引入这个包。通过这个包，可以对Javascript的新语法进行编译（仅仅是语法哦，）
+npm install --save babel-core  然后就可以在代码中调用babel提供的API，主要的API有几个：
+var babel = require(&#39;babel-core&#39;); /* 对以字符串形式指定的code进行转码 */ babel.transform(&#39;code&#39;,options) /* 对文件进行转码（异步） */ babel.transformFile(&#39;file.js&#39;,options,(err,result)=&amp;gt;{ console.log(result); }) /* 对文件进行转码（同步） */ babel.transformFileSync(&#39;file.js&#39;,options); /* AST转成Code */ babel.transformFromAst(ast, code, options);  具体的options非常多，不照搬官方文档了：https://babeljs.io/docs/en/babel-core#options
+tranform-runtime和babel-runtime Babel默认情况下只会对Javascript新的语法进行转换，但是不会对新的API（如Promise，Map等）进行转换，项目中引入 transform-runtime 插件后就可以为这些新的API提供转换（垫片）。</description>
     </item>
     
   </channel>
