@@ -21,7 +21,7 @@
       <description>Babel是什么 由于现代浏览器对于ECMAScript2015+支持非常有限，用ES6语法写的Javascript代码没办法直接在浏览器中运行。于是Babel（发音/&amp;lsquo;beibəl/）应运而生了。
 Babel通过自己的工具链（ToolChain），将使用ES6语法写的Javascript代码转换成完全同等功能的ES5代码，以便在浏览器中执行。有了Babel用户可以直接山书写ES6的代码，而不用担心浏览器无法执行，大大提高了用户的开发效率，降低了由于ES5语言特性带来潜在问题的几率。
 官网的解释更简洁：
-&amp;gt;Babel is a JavaScript compiler
+&amp;gt; Babel is a JavaScript compiler
 它的目的是：
 Use next generation JavaScript, today.
 配置Babel 有两种方式可以在项目中配置和使用Babel：.bablerc和package.json
@@ -50,6 +50,21 @@ babel-core Babel的核心包，所有的API都封装在这个包里。当你准�
 npm install --save babel-core  然后就可以在代码中调用babel提供的API，主要的API有几个：
 var babel = require(&#39;babel-core&#39;); /* 对以字符串形式指定的code进行转码 */ babel.transform(&#39;code&#39;,options) /* 对文件进行转码（异步） */ babel.transformFile(&#39;file.js&#39;,options,(err,result)=&amp;gt;{ console.log(result); }) /* 对文件进行转码（同步） */ babel.transformFileSync(&#39;file.js&#39;,options); /* AST转成Code */ babel.transformFromAst(ast, code, options);  具体的options非常多，不照搬官方文档了：https://babeljs.io/docs/en/babel-core#options
 tranform-runtime和babel-runtime Babel默认情况下只会对Javascript新的语法进行转换，但是不会对新的API（如Promise，Map等）进行转换，项目中引入 transform-runtime 插件后就可以为这些新的API提供转换（垫片）。</description>
+    </item>
+    
+    <item>
+      <title>Babel入门（3） - preset-env</title>
+      <link>https://xiongchen2012.github.io/post/babel-preset-env/</link>
+      <pubDate>Fri, 17 Aug 2018 20:53:39 +0800</pubDate>
+      
+      <guid>https://xiongchen2012.github.io/post/babel-preset-env/</guid>
+      <description>安装preset-env npm install --save-dev babel-preset-env #OR npm install --save-dev @babel/preset-env  preset-env是什么 首先它是一个preset，使用方法和其它preset是没有任何差别。如果不进行任何配置的话，env = es2015 + es2016 + es2017。既然这样为什么还要搞一个新的preset呢？用户配置3个preset不就行了么？原因如下：
+/* ES2015转译ES6比ES5新的语法；ES2016转译比ES2015更新的语法；ES2017转译比ES2016更新的语法这些行为是默认的，这些preset经常做的太多了。比如大部分现代浏览器都支持generator函数，但是preset-es2015还是会将其转译成复杂的ES5代码 */  有了preset-env之后，可以根据你需要支持的浏览器（或说是某个目标环境）进行配置，preset-env会自动包括需要的polyfill和transform插件，这样的话打包出来的文件尺寸会小很多。preset-env支持几种目标环境配置的方式：
+ 浏览器  preset-env使用 browserslist 来解析你的配置，所以用任意browserlist语法进行配置都可以。例如：
+{ &amp;quot;presets&amp;quot;: [ [&amp;quot;env&amp;quot;, { &amp;quot;targets&amp;quot;: { &amp;quot;browsers&amp;quot;: [&amp;quot;last 2 versions&amp;quot;, &amp;quot;safari &amp;gt;= 7&amp;quot;] } }] ] }  babel会自动引入并转译：所有浏览器最后两个版本，以及Safari版本大于7支持所需要的polyfill和transform
+这里有一份browser query语法的参考： https://github.com/browserslist/browserslist#full-list
+ Node.js  同样的，也可以指定node的版本：
+{ &amp;quot;presets&amp;quot;: [ [&amp;quot;env&amp;quot;, { &amp;quot;targets&amp;quot;: { &amp;quot;node&amp;quot;: &amp;quot;6.10&amp;quot; //或者指定成current，表示 } }] ] }  preset-env是如何工作的  判断environment能支持的ECMAScript新特性  babel通过 compat-table 这个完整的表格来查询某个环境能够支持的ECMAScript新特性（列），然后定期的运行一个脚本（build-data.</description>
     </item>
     
     <item>
