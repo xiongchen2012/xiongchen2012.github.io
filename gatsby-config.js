@@ -2,10 +2,10 @@ module.exports = {
   siteMetadata: {
     title: `Deathdealer's Blog`,
     author: {
-      name: `Xiong Chen(deathdealer)`,
-      summary: `who lives and works in San Francisco building useful things.`,
+      name: `deathdealer(XiongChen)`,
+      summary: `who lives and works in Nanjing.`,
     },
-    description: `A starter blog demonstrating what Gatsby can do.`,
+    description: `deathdealer's blog build by GatsbyJS`,
     siteUrl: `https://blog.deathdealer.cn/`,
     social: {
       twitter: `xiongchen2015`,
