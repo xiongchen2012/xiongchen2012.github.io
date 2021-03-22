@@ -19,4 +19,5 @@ jobs:
       uses: enriikke/gatsby-gh-pages-action@v2.1.1
       with:
         access-token: ${{ secrets.GH_TOKEN }}
+        deploy-branch: test
         gatsby-args: --no-color
