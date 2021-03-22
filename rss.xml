@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Deathdealer's Blog]]></title><description><![CDATA[A starter blog demonstrating what Gatsby can do.]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io</link><generator>GatsbyJS</generator><lastBuildDate>Mon, 22 Mar 2021 08:55:02 GMT</lastBuildDate><item><title><![CDATA[Babel入门（1） - 基础知识]]></title><description><![CDATA[Babel是什么 由于现代浏览器对于ECMAScript2015+支持非常有限，用ES6语法写的Javascript代码没办法直接在浏览器中运行。于是Babel（发音/’beibəl/）应运而生了。 Babel通过自己的工具链（ToolChain），将使用ES…]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io/hello-world/</link><guid isPermaLink="false">https://gatsbystarterblogsource.gatsbyjs.io/hello-world/</guid><pubDate>Fri, 17 Aug 2018 22:12:03 GMT</pubDate><content:encoded>&lt;h3&gt;Babel是什么&lt;/h3&gt;
+&lt;p&gt;由于现代浏览器对于ECMAScript2015+支持非常有限，用ES6语法写的Javascript代码没办法直接在浏览器中运行。于是Babel（发音/’beibəl/）应运而生了。&lt;/p&gt;
+&lt;p&gt;Babel通过自己的工具链（ToolChain），将使用ES6语法写的Javascript代码转换成完全同等功能的ES5代码，以便在浏览器中执行。有了Babel用户可以直接山书写ES6的代码，而不用担心浏览器无法执行，大大提高了用户的开发效率，降低了由于ES5语言特性带来潜在问题的几率。&lt;/p&gt;
+&lt;p&gt;官网的解释更简洁：&lt;br&gt;
+Babel is a JavaScript compiler&lt;/p&gt;
+&lt;p&gt;它的目的是：&lt;br&gt;
+&lt;strong&gt;Use next generation JavaScript, today.&lt;/strong&gt;&lt;/p&gt;
+&lt;h3&gt;配置Babel&lt;/h3&gt;
+&lt;p&gt;有两种方式可以在项目中配置和使用Babel：.bablerc和package.json&lt;/p&gt;
+&lt;h4&gt;.babelrc&lt;/h4&gt;
+&lt;p&gt;在项目根目录配置一个名为&lt;code class=&quot;language-text&quot;&gt;.babelrc&lt;/code&gt;的文件，这个文件按照JSON格式进行书写。主要可以分为两段：&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;json&quot;&gt;&lt;pre class=&quot;language-json&quot;&gt;&lt;code class=&quot;language-json&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    presets&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    plugins&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;其中&lt;code class=&quot;language-text&quot;&gt;presets&lt;/code&gt;用于指定babel编译js代码时使用的规则，&lt;code class=&quot;language-text&quot;&gt;plugins&lt;/code&gt;指定babel使用的一些插件&lt;/p&gt;
+&lt;h4&gt;package.json&lt;/h4&gt;
+&lt;p&gt;也可以在项目的package.json中配置babel，内容和上述方式一样：&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;json&quot;&gt;&lt;pre class=&quot;language-json&quot;&gt;&lt;code class=&quot;language-json&quot;&gt;	...
+	&lt;span class=&quot;token property&quot;&gt;&quot;babel&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+        presets&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+        plugins&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;
+	&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+	...&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h4&gt;env选项&lt;/h4&gt;
+&lt;p&gt;如果想为不同的env配置不同的选项，可以增加&lt;code class=&quot;language-text&quot;&gt;env&lt;/code&gt;配置项&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;json&quot;&gt;&lt;pre class=&quot;language-json&quot;&gt;&lt;code class=&quot;language-json&quot;&gt;	&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;token property&quot;&gt;&quot;presets&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token comment&quot;&gt;//全局的预设&lt;/span&gt;
+        &lt;span class=&quot;token property&quot;&gt;&quot;plugins&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token comment&quot;&gt;//全局的插件&lt;/span&gt;
+        &lt;span class=&quot;token property&quot;&gt;&quot;env&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;token property&quot;&gt;&quot;production&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+            	&lt;span class=&quot;token property&quot;&gt;&quot;presets&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token comment&quot;&gt;//production环境下的预设&lt;/span&gt;
+                &lt;span class=&quot;token property&quot;&gt;&quot;plugins&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;  &lt;span class=&quot;token comment&quot;&gt;//production环境下的插件&lt;/span&gt;
+            &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+	&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;env的取值：process.env.BABEL&lt;em&gt;ENV &gt; process.env.NODE&lt;/em&gt;ENV &gt; “development”&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;配置文件的查找顺序如下：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;需编译的js文件的当前目录中查找&lt;code class=&quot;language-text&quot;&gt;.babelrc&lt;/code&gt; &gt; 向上查找babelrc文件直到项目的根目录 &gt; 如果没有babelrc则查找&lt;code class=&quot;language-text&quot;&gt;package.json&lt;/code&gt;中是否有&lt;code class=&quot;language-text&quot;&gt;babel:{}&lt;/code&gt;&lt;/p&gt;
+&lt;h3&gt;Plugins&lt;/h3&gt;
+&lt;p&gt;为什么要先写插件？要从Babel工作的步骤说起。Babel自称为编译器，它的编译工作分为了三个步骤：解析（parsing）-&gt; 转换（transforming）-&gt; 生成目标代码（generating）。&lt;/p&gt;
+&lt;p&gt;开箱即用的Babel（可以理解为初始状态时的babel），实际上在第2阶段（transforming）什么工作都没做。解析(parsing)一份代码，因为在第2阶段什么都没做，所以第3阶段会输出完全相同的代码。即：&lt;code class=&quot;language-text&quot;&gt;const babel = code =&amp;gt; code&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;因此Babel引入了插件来作用于第2阶段（transforming），插件以第1阶段解析的原始代码作为输入，实质性的进行了转换然后输出给第3阶段。这类用于转换代码的Babel插件统称为：Transform Plugins，插件机制带了很好的扩展性和性能。&lt;/p&gt;
+&lt;p&gt;例如，如果需要将下面代码的的箭头函数转换成ES5，需要用到ES2015插件中的&lt;code class=&quot;language-text&quot;&gt;es2015-arrow-functions&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;javascript&quot;&gt;&lt;pre class=&quot;language-javascript&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;let&lt;/span&gt; doubled &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token parameter&quot;&gt;num&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;=&gt;&lt;/span&gt;num&lt;span class=&quot;token operator&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;安装箭头函数转换的plugin&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;shell&quot;&gt;&lt;pre class=&quot;language-shell&quot;&gt;&lt;code class=&quot;language-shell&quot;&gt;&lt;span class=&quot;token function&quot;&gt;npm&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;install&lt;/span&gt; --save-dev es2015-arrow-functions
+babel -i example.js -o output.js&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;转码后输出，已将箭头函数转换成了ES5的function：&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;javascript&quot;&gt;&lt;pre class=&quot;language-javascript&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;let&lt;/span&gt; doubled &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token parameter&quot;&gt;num&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; num&lt;span class=&quot;token operator&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Babel插件拆分的非常细，基本上每一项语法特性都会有一个对应的插件，比如将ES2015转换相关的官方插件就有19个之多，几乎每个新特性对应一个插件。这样的设计使得开发者可以根据自己的需要进行插件的组合，官方可以不断对其进行扩展，也有利于babel社区贡献特定的插件。&lt;/p&gt;
+&lt;p&gt;PS：有些代码在第1阶段就可能会无法解析，典型的比如React的jsx，babel也通过插件来解决问题。这类用于解析源文件的插件统称为：Syntax Plugins。一般Transform插件会自动使用相应的Syntax插件，不需额外指定Syntax插件。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;总结：Syntax插件+Transform插件共同组成了Babel的插件体系，Syntax用于第1阶段解析源码，Transform用于第2阶段转换源码&lt;/strong&gt;&lt;/p&gt;
+&lt;h3&gt;Presets&lt;/h3&gt;
+&lt;p&gt;上一节解释了Babel的插件机制，通过插件就可以把Babel所有的事情都干了，为什么还要引入Presets呢？&lt;/p&gt;
+&lt;p&gt;原因很简单：逐个插件引入的效率比较低下。比如在项目开发中，开发者想要将所有ES6的代码转成ES5，插件逐个引入的方式比较麻烦（需要引入20+个插件），而且容易出错（少一个可能就会跪了）。&lt;/p&gt;
+&lt;p&gt;这时候，就可以引入presets来解决这个麻烦。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Don’t want to assemble your own set of plugins? No problem! Presets are sharable &lt;a href=&quot;https://babeljs.io/docs/en/babelrc&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;.babelrc&lt;/code&gt;&lt;/a&gt; configs or simply an array of babel plugins.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;官方把presets定义成可共享的babel配置，也可以简单把presets看成plugins数组。比如&lt;code class=&quot;language-text&quot;&gt;babel-preset-es2015&lt;/code&gt;包含了所有跟ES6转换有关的插件；可以理解为：&lt;code class=&quot;language-text&quot;&gt;babel-preset-es2015 === [es2015-arrow-functions,es2015-classes,es2015-destructuring.....]&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;可共享的babel配置，可以理解为配置了presets就可以省去配置一堆插件，而preset名可以替代这些插件名。&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;json&quot;&gt;&lt;pre class=&quot;language-json&quot;&gt;&lt;code class=&quot;language-json&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;token property&quot;&gt;&quot;presets&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;es2015&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;token comment&quot;&gt;// 配置了es2015 preset&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;token comment&quot;&gt;// 等价于&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;token property&quot;&gt;&quot;plugins&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;es2015-arrow-functions&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;es2015-classes&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;es2015-literals&quot;&lt;/span&gt; &lt;span class=&quot;token comment&quot;&gt;// ...]&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;官方提供了12种Preset
+| Preset | 用途 | 备注 |
+| :----- | ------ | ------ |
+| env | 可以根据指定的环境自动配置Babel插件的preset | 这篇博客专门讲这个preset |
+| es2015/es2016/es2017 | 用于转ES2015,2016和2017 | 还有个latest，已经不用了 |
+| stage-0/1/2/3 | 用于转tc39处于各阶段的提案语法 |  |
+| flow | 用于将Flow书写的代码转成javascript |  |
+| react | 用于将React代码转成js(主要是jsx语法) |  |
+| minify | 用于将编译后的代码进行压缩 |  |&lt;/p&gt;
+&lt;h3&gt;Plugin和Preset简写形式&lt;/h3&gt;
+&lt;p&gt;如果plugin的名称以&lt;code class=&quot;language-text&quot;&gt;babel-plugin-&lt;/code&gt;开头，就可以在配置中省掉这个前缀。比如：&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;json&quot;&gt;&lt;pre class=&quot;language-json&quot;&gt;&lt;code class=&quot;language-json&quot;&gt;&lt;span class=&quot;token property&quot;&gt;&quot;plugins&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;someplugin&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;
+等价于
+&lt;span class=&quot;token property&quot;&gt;&quot;plugins&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;babel-plugin-someplugin&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;同样，preset的名称以&lt;code class=&quot;language-text&quot;&gt;babel-preset-&lt;/code&gt;开头，可以在配置中省掉这个前缀。比如：&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;json&quot;&gt;&lt;pre class=&quot;language-json&quot;&gt;&lt;code class=&quot;language-json&quot;&gt;&lt;span class=&quot;token property&quot;&gt;&quot;presets&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;somepreset&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;
+等价于
+&lt;span class=&quot;token property&quot;&gt;&quot;presets&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;babel-plugin-somepreset&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3&gt;Plugin和Preset的执行顺序&lt;/h3&gt;
+&lt;p&gt;可以同时指定多个plugin和preset，plugins和presets也可以同时存在。所以需要知道顺序：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;plugin执行先于preset（Plugins run before Presets）&lt;/li&gt;
+&lt;li&gt;plugin按照配置的次序&lt;strong&gt;顺序&lt;/strong&gt;执行（Plugin ordering is first to last）&lt;/li&gt;
+&lt;li&gt;plugin按照配置的次序&lt;strong&gt;逆序&lt;/strong&gt;执行（Preset ordering is last to first）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Plugin和Preset的选项配置&lt;/h3&gt;
+&lt;p&gt;plugin和preset都支持各自进行配置，不同的插件和预设支持的选项不一样，需要具体查看其文档，但是指定选项的配置语法是相同的：&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;json&quot;&gt;&lt;pre class=&quot;language-json&quot;&gt;&lt;code class=&quot;language-json&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;token property&quot;&gt;&quot;plugins&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;
+        &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;plugin1&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;token property&quot;&gt;&quot;someoption&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;value&quot;&lt;/span&gt;
+            ...
+        &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token comment&quot;&gt;//需要用一个数组来配置plugin和它的选项&lt;/span&gt;
+        &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;plugin2&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;token property&quot;&gt;&quot;someoption&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;value&quot;&lt;/span&gt;
+            &lt;span class=&quot;token comment&quot;&gt;//...&lt;/span&gt;
+        &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;token property&quot;&gt;&quot;presets&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;
+        &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;preset1&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;token property&quot;&gt;&quot;someoption&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;value&quot;&lt;/span&gt;
+            &lt;span class=&quot;token comment&quot;&gt;//...&lt;/span&gt;
+        &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;preset2&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;token property&quot;&gt;&quot;someoption&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;value&quot;&lt;/span&gt;
+            &lt;span class=&quot;token comment&quot;&gt;//...&lt;/span&gt;
+        &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content:encoded></item><item><title><![CDATA[Babel入门（1） - 基础知识]]></title><description><![CDATA[Babel是什么 由于现代浏览器对于ECMAScript2015+支持非常有限，用ES6语法写的Javascript代码没办法直接在浏览器中运行。于是Babel（发音/’beibəl/）应运而生了。 Babel通过自己的工具链（ToolChain），将使用ES…]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io/babel-concept/</link><guid isPermaLink="false">https://gatsbystarterblogsource.gatsbyjs.io/babel-concept/</guid><pubDate>Fri, 17 Aug 2018 22:12:03 GMT</pubDate><content:encoded>&lt;h3&gt;Babel是什么&lt;/h3&gt;
+&lt;p&gt;由于现代浏览器对于ECMAScript2015+支持非常有限，用ES6语法写的Javascript代码没办法直接在浏览器中运行。于是Babel（发音/’beibəl/）应运而生了。&lt;/p&gt;
+&lt;p&gt;Babel通过自己的工具链（ToolChain），将使用ES6语法写的Javascript代码转换成完全同等功能的ES5代码，以便在浏览器中执行。有了Babel用户可以直接山书写ES6的代码，而不用担心浏览器无法执行，大大提高了用户的开发效率，降低了由于ES5语言特性带来潜在问题的几率。&lt;/p&gt;
+&lt;p&gt;官网的解释更简洁：&lt;br&gt;
+Babel is a JavaScript compiler&lt;/p&gt;
+&lt;p&gt;它的目的是：&lt;br&gt;
+&lt;strong&gt;Use next generation JavaScript, today.&lt;/strong&gt;&lt;/p&gt;
+&lt;h3&gt;配置Babel&lt;/h3&gt;
+&lt;p&gt;有两种方式可以在项目中配置和使用Babel：.bablerc和package.json&lt;/p&gt;
+&lt;h4&gt;.babelrc&lt;/h4&gt;
+&lt;p&gt;在项目根目录配置一个名为&lt;code class=&quot;language-text&quot;&gt;.babelrc&lt;/code&gt;的文件，这个文件按照JSON格式进行书写。主要可以分为两段：&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;json&quot;&gt;&lt;pre class=&quot;language-json&quot;&gt;&lt;code class=&quot;language-json&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    presets&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    plugins&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;其中&lt;code class=&quot;language-text&quot;&gt;presets&lt;/code&gt;用于指定babel编译js代码时使用的规则，&lt;code class=&quot;language-text&quot;&gt;plugins&lt;/code&gt;指定babel使用的一些插件&lt;/p&gt;
+&lt;h4&gt;package.json&lt;/h4&gt;
+&lt;p&gt;也可以在项目的package.json中配置babel，内容和上述方式一样：&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;json&quot;&gt;&lt;pre class=&quot;language-json&quot;&gt;&lt;code class=&quot;language-json&quot;&gt;	...
+	&lt;span class=&quot;token property&quot;&gt;&quot;babel&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+        presets&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+        plugins&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;
+	&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+	...&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h4&gt;env选项&lt;/h4&gt;
+&lt;p&gt;如果想为不同的env配置不同的选项，可以增加&lt;code class=&quot;language-text&quot;&gt;env&lt;/code&gt;配置项&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;json&quot;&gt;&lt;pre class=&quot;language-json&quot;&gt;&lt;code class=&quot;language-json&quot;&gt;	&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;token property&quot;&gt;&quot;presets&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token comment&quot;&gt;//全局的预设&lt;/span&gt;
+        &lt;span class=&quot;token property&quot;&gt;&quot;plugins&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token comment&quot;&gt;//全局的插件&lt;/span&gt;
+        &lt;span class=&quot;token property&quot;&gt;&quot;env&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;token property&quot;&gt;&quot;production&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+            	&lt;span class=&quot;token property&quot;&gt;&quot;presets&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token comment&quot;&gt;//production环境下的预设&lt;/span&gt;
+                &lt;span class=&quot;token property&quot;&gt;&quot;plugins&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;  &lt;span class=&quot;token comment&quot;&gt;//production环境下的插件&lt;/span&gt;
+            &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+	&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;env的取值：process.env.BABEL&lt;em&gt;ENV &gt; process.env.NODE&lt;/em&gt;ENV &gt; “development”&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;配置文件的查找顺序如下：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;需编译的js文件的当前目录中查找&lt;code class=&quot;language-text&quot;&gt;.babelrc&lt;/code&gt; &gt; 向上查找babelrc文件直到项目的根目录 &gt; 如果没有babelrc则查找&lt;code class=&quot;language-text&quot;&gt;package.json&lt;/code&gt;中是否有&lt;code class=&quot;language-text&quot;&gt;babel:{}&lt;/code&gt;&lt;/p&gt;
+&lt;h3&gt;Plugins&lt;/h3&gt;
+&lt;p&gt;为什么要先写插件？要从Babel工作的步骤说起。Babel自称为编译器，它的编译工作分为了三个步骤：解析（parsing）-&gt; 转换（transforming）-&gt; 生成目标代码（generating）。&lt;/p&gt;
+&lt;p&gt;开箱即用的Babel（可以理解为初始状态时的babel），实际上在第2阶段（transforming）什么工作都没做。解析(parsing)一份代码，因为在第2阶段什么都没做，所以第3阶段会输出完全相同的代码。即：&lt;code class=&quot;language-text&quot;&gt;const babel = code =&amp;gt; code&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;因此Babel引入了插件来作用于第2阶段（transforming），插件以第1阶段解析的原始代码作为输入，实质性的进行了转换然后输出给第3阶段。这类用于转换代码的Babel插件统称为：Transform Plugins，插件机制带了很好的扩展性和性能。&lt;/p&gt;
+&lt;p&gt;例如，如果需要将下面代码的的箭头函数转换成ES5，需要用到ES2015插件中的&lt;code class=&quot;language-text&quot;&gt;es2015-arrow-functions&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;javascript&quot;&gt;&lt;pre class=&quot;language-javascript&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;let&lt;/span&gt; doubled &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token parameter&quot;&gt;num&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;=&gt;&lt;/span&gt;num&lt;span class=&quot;token operator&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;安装箭头函数转换的plugin&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;shell&quot;&gt;&lt;pre class=&quot;language-shell&quot;&gt;&lt;code class=&quot;language-shell&quot;&gt;&lt;span class=&quot;token function&quot;&gt;npm&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;install&lt;/span&gt; --save-dev es2015-arrow-functions
+babel -i example.js -o output.js&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;转码后输出，已将箭头函数转换成了ES5的function：&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;javascript&quot;&gt;&lt;pre class=&quot;language-javascript&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;let&lt;/span&gt; doubled &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token parameter&quot;&gt;num&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; num&lt;span class=&quot;token operator&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Babel插件拆分的非常细，基本上每一项语法特性都会有一个对应的插件，比如将ES2015转换相关的官方插件就有19个之多，几乎每个新特性对应一个插件。这样的设计使得开发者可以根据自己的需要进行插件的组合，官方可以不断对其进行扩展，也有利于babel社区贡献特定的插件。&lt;/p&gt;
+&lt;p&gt;PS：有些代码在第1阶段就可能会无法解析，典型的比如React的jsx，babel也通过插件来解决问题。这类用于解析源文件的插件统称为：Syntax Plugins。一般Transform插件会自动使用相应的Syntax插件，不需额外指定Syntax插件。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;总结：Syntax插件+Transform插件共同组成了Babel的插件体系，Syntax用于第1阶段解析源码，Transform用于第2阶段转换源码&lt;/strong&gt;&lt;/p&gt;
+&lt;h3&gt;Presets&lt;/h3&gt;
+&lt;p&gt;上一节解释了Babel的插件机制，通过插件就可以把Babel所有的事情都干了，为什么还要引入Presets呢？&lt;/p&gt;
+&lt;p&gt;原因很简单：逐个插件引入的效率比较低下。比如在项目开发中，开发者想要将所有ES6的代码转成ES5，插件逐个引入的方式比较麻烦（需要引入20+个插件），而且容易出错（少一个可能就会跪了）。&lt;/p&gt;
+&lt;p&gt;这时候，就可以引入presets来解决这个麻烦。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Don’t want to assemble your own set of plugins? No problem! Presets are sharable &lt;a href=&quot;https://babeljs.io/docs/en/babelrc&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;.babelrc&lt;/code&gt;&lt;/a&gt; configs or simply an array of babel plugins.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;官方把presets定义成可共享的babel配置，也可以简单把presets看成plugins数组。比如&lt;code class=&quot;language-text&quot;&gt;babel-preset-es2015&lt;/code&gt;包含了所有跟ES6转换有关的插件；可以理解为：&lt;code class=&quot;language-text&quot;&gt;babel-preset-es2015 === [es2015-arrow-functions,es2015-classes,es2015-destructuring.....]&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;可共享的babel配置，可以理解为配置了presets就可以省去配置一堆插件，而preset名可以替代这些插件名。&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;json&quot;&gt;&lt;pre class=&quot;language-json&quot;&gt;&lt;code class=&quot;language-json&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;token property&quot;&gt;&quot;presets&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;es2015&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;token comment&quot;&gt;// 配置了es2015 preset&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;token comment&quot;&gt;// 等价于&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;token property&quot;&gt;&quot;plugins&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;es2015-arrow-functions&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;es2015-classes&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;es2015-literals&quot;&lt;/span&gt; &lt;span class=&quot;token comment&quot;&gt;// ...]&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;官方提供了12种Preset
+| Preset | 用途 | 备注 |
+| :----- | ------ | ------ |
+| env | 可以根据指定的环境自动配置Babel插件的preset | 这篇博客专门讲这个preset |
+| es2015/es2016/es2017 | 用于转ES2015,2016和2017 | 还有个latest，已经不用了 |
+| stage-0/1/2/3 | 用于转tc39处于各阶段的提案语法 |  |
+| flow | 用于将Flow书写的代码转成javascript |  |
+| react | 用于将React代码转成js(主要是jsx语法) |  |
+| minify | 用于将编译后的代码进行压缩 |  |&lt;/p&gt;
+&lt;h3&gt;Plugin和Preset简写形式&lt;/h3&gt;
+&lt;p&gt;如果plugin的名称以&lt;code class=&quot;language-text&quot;&gt;babel-plugin-&lt;/code&gt;开头，就可以在配置中省掉这个前缀。比如：&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;json&quot;&gt;&lt;pre class=&quot;language-json&quot;&gt;&lt;code class=&quot;language-json&quot;&gt;&lt;span class=&quot;token property&quot;&gt;&quot;plugins&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;someplugin&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;
+等价于
+&lt;span class=&quot;token property&quot;&gt;&quot;plugins&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;babel-plugin-someplugin&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;同样，preset的名称以&lt;code class=&quot;language-text&quot;&gt;babel-preset-&lt;/code&gt;开头，可以在配置中省掉这个前缀。比如：&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;json&quot;&gt;&lt;pre class=&quot;language-json&quot;&gt;&lt;code class=&quot;language-json&quot;&gt;&lt;span class=&quot;token property&quot;&gt;&quot;presets&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;somepreset&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;
+等价于
+&lt;span class=&quot;token property&quot;&gt;&quot;presets&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;babel-plugin-somepreset&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3&gt;Plugin和Preset的执行顺序&lt;/h3&gt;
+&lt;p&gt;可以同时指定多个plugin和preset，plugins和presets也可以同时存在。所以需要知道顺序：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;plugin执行先于preset（Plugins run before Presets）&lt;/li&gt;
+&lt;li&gt;plugin按照配置的次序&lt;strong&gt;顺序&lt;/strong&gt;执行（Plugin ordering is first to last）&lt;/li&gt;
+&lt;li&gt;plugin按照配置的次序&lt;strong&gt;逆序&lt;/strong&gt;执行（Preset ordering is last to first）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Plugin和Preset的选项配置&lt;/h3&gt;
+&lt;p&gt;plugin和preset都支持各自进行配置，不同的插件和预设支持的选项不一样，需要具体查看其文档，但是指定选项的配置语法是相同的：&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;json&quot;&gt;&lt;pre class=&quot;language-json&quot;&gt;&lt;code class=&quot;language-json&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;token property&quot;&gt;&quot;plugins&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;
+        &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;plugin1&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;token property&quot;&gt;&quot;someoption&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;value&quot;&lt;/span&gt;
+            ...
+        &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token comment&quot;&gt;//需要用一个数组来配置plugin和它的选项&lt;/span&gt;
+        &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;plugin2&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;token property&quot;&gt;&quot;someoption&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;value&quot;&lt;/span&gt;
+            &lt;span class=&quot;token comment&quot;&gt;//...&lt;/span&gt;
+        &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;token property&quot;&gt;&quot;presets&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;
+        &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;preset1&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;token property&quot;&gt;&quot;someoption&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;value&quot;&lt;/span&gt;
+            &lt;span class=&quot;token comment&quot;&gt;//...&lt;/span&gt;
+        &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;preset2&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;token property&quot;&gt;&quot;someoption&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;value&quot;&lt;/span&gt;
+            &lt;span class=&quot;token comment&quot;&gt;//...&lt;/span&gt;
+        &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content:encoded></item><item><title><![CDATA[New Beginnings]]></title><description><![CDATA[Far far away, behind the word mountains, far from the countries Vokalia and
+Consonantia, there live the blind texts. Separated they live in…]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io/new-beginnings/</link><guid isPermaLink="false">https://gatsbystarterblogsource.gatsbyjs.io/new-beginnings/</guid><pubDate>Thu, 28 May 2015 22:40:32 GMT</pubDate><content:encoded>&lt;p&gt;Far far away, behind the word mountains, far from the countries Vokalia and
+Consonantia, there live the blind texts. Separated they live in Bookmarksgrove
+right at the coast of the Semantics, a large language ocean. A small river named
+Duden flows by their place and supplies it with the necessary regelialia.&lt;/p&gt;
+&lt;h2&gt;On deer horse aboard tritely yikes and much&lt;/h2&gt;
+&lt;p&gt;The Big Oxmox advised her not to do so, because there were thousands of bad
+Commas, wild Question Marks and devious Semikoli, but the Little Blind Text
+didn’t listen. She packed her seven versalia, put her initial into the belt and
+made herself on the way.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;This however showed weasel&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Well uncritical so misled&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;this is very interesting&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Goodness much until that fluid owl&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;When she reached the first hills of the &lt;strong&gt;Italic Mountains&lt;/strong&gt;, she had a last
+view back on the skyline of her hometown &lt;em&gt;Bookmarksgrove&lt;/em&gt;, the headline of
+&lt;a href=&quot;http://google.com&quot;&gt;Alphabet Village&lt;/a&gt; and the subline of her own road, the Line
+Lane. Pityful a rhetoric question ran over her cheek, then she continued her
+way. On her way she met a copy.&lt;/p&gt;
+&lt;h3&gt;Overlaid the jeepers uselessly much excluding&lt;/h3&gt;
+&lt;p&gt;But nothing the copy said could convince her and so it didn’t take long until a
+few insidious Copy Writers ambushed her, made her drunk with
+&lt;a href=&quot;http://google.com&quot;&gt;Longe and Parole&lt;/a&gt; and dragged her into their agency, where
+they abused her for their projects again and again. And if she hasn’t been
+rewritten, then they are still using her.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Far far away, behind the word mountains, far from the countries Vokalia and
+Consonantia, there live the blind texts. Separated they live in Bookmarksgrove
+right at the coast of the Semantics, a large language ocean.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;It is a paradisematic country, in which roasted parts of sentences fly into your
+mouth. Even the all-powerful Pointing has no control about the blind texts it is
+an almost unorthographic life One day however a small line of blind text by the
+name of Lorem Ipsum decided to leave for the far World of Grammar.&lt;/p&gt;
+&lt;h3&gt;According a funnily until pre-set or arrogant well cheerful&lt;/h3&gt;
+&lt;p&gt;The Big Oxmox advised her not to do so, because there were thousands of bad
+Commas, wild Question Marks and devious Semikoli, but the Little Blind Text
+didn’t listen. She packed her seven versalia, put her initial into the belt and
+made herself on the way.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;So baboon this&lt;/li&gt;
+&lt;li&gt;Mounted militant weasel gregariously admonishingly straightly hey&lt;/li&gt;
+&lt;li&gt;Dear foresaw hungry and much some overhung&lt;/li&gt;
+&lt;li&gt;Rash opossum less because less some amid besides yikes jeepers frenetic
+impassive fruitlessly shut&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;When she reached the first hills of the Italic Mountains, she had a last view
+back on the skyline of her hometown Bookmarksgrove, the headline of Alphabet
+Village and the subline of her own road, the Line Lane. Pityful a rhetoric
+question ran over her cheek, then she continued her way. On her way she met a
+copy.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The copy warned the Little Blind Text, that where it came from it would have
+been rewritten a thousand times and everything that was left from its origin
+would be the word “and” and the Little Blind Text should turn around and
+return to its own, safe country.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;But nothing the copy said could convince her and so it didn’t take long until a
+few insidious Copy Writers ambushed her, made her drunk with Longe and Parole
+and dragged her into their agency, where they abused her for their projects
+again and again. And if she hasn’t been rewritten, then they are still using
+her. Far far away, behind the word mountains, far from the countries Vokalia and
+Consonantia, there live the blind texts.&lt;/p&gt;
+&lt;h4&gt;Silent delightfully including because before one up barring chameleon&lt;/h4&gt;
+&lt;p&gt;Separated they live in Bookmarksgrove right at the coast of the Semantics, a
+large language ocean. A small river named Duden flows by their place and
+supplies it with the necessary regelialia. It is a paradisematic country, in
+which roasted parts of sentences fly into your mouth.&lt;/p&gt;
+&lt;p&gt;Even the all-powerful Pointing has no control about the blind texts it is an
+almost unorthographic life One day however a small line of blind text by the
+name of Lorem Ipsum decided to leave for the far World of Grammar. The Big Oxmox
+advised her not to do so, because there were thousands of bad Commas, wild
+Question Marks and devious Semikoli, but the Little Blind Text didn’t listen.&lt;/p&gt;
+&lt;h5&gt;Wherever far wow thus a squirrel raccoon jeez jaguar this from along&lt;/h5&gt;
+&lt;p&gt;She packed her seven versalia, put her initial into the belt and made herself on
+the way. When she reached the first hills of the Italic Mountains, she had a
+last view back on the skyline of her hometown Bookmarksgrove, the headline of
+Alphabet Village and the subline of her own road, the Line Lane. Pityful a
+rhetoric question ran over her cheek, then she continued her way. On her way she
+met a copy.&lt;/p&gt;
+&lt;h6&gt;Slapped cozy a that lightheartedly and far&lt;/h6&gt;
+&lt;p&gt;The copy warned the Little Blind Text, that where it came from it would have
+been rewritten a thousand times and everything that was left from its origin
+would be the word “and” and the Little Blind Text should turn around and return
+to its own, safe country. But nothing the copy said could convince her and so it
+didn’t take long until a few insidious Copy Writers ambushed her, made her drunk
+with Longe and Parole and dragged her into their agency, where they abused her
+for their projects again and again.&lt;/p&gt;</content:encoded></item><item><title><![CDATA[My Second Post!]]></title><description><![CDATA[Wow! I love blogging so much already. Did you know that “despite its name, salted duck eggs can also be made from
+chicken eggs, though the…]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io/my-second-post/</link><guid isPermaLink="false">https://gatsbystarterblogsource.gatsbyjs.io/my-second-post/</guid><pubDate>Wed, 06 May 2015 23:46:37 GMT</pubDate><content:encoded>&lt;p&gt;Wow! I love blogging so much already.&lt;/p&gt;
+&lt;p&gt;Did you know that “despite its name, salted duck eggs can also be made from
+chicken eggs, though the taste and texture will be somewhat different, and the
+egg yolk will be less rich.”?
+(&lt;a href=&quot;https://en.wikipedia.org/wiki/Salted_duck_egg&quot;&gt;Wikipedia Link&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;Yeah, I didn’t either.&lt;/p&gt;</content:encoded></item></channel></rss>
