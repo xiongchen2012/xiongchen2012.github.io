@@ -23,5 +23,4 @@ jobs:
       with:
         access-token: a09ed05ec3d4a70c3a78fc922751432f47482a49
         deploy-branch: master
-      
-
+        gatsby-args: --no-color
