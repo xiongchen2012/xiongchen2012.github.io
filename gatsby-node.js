@@ -95,6 +95,7 @@ exports.createSchemaCustomization = ({ actions }) => {
 
     type Social {
       twitter: String
+      github: String
     }
 
     type MarkdownRemark implements Node {
@@ -111,5 +112,5 @@ exports.createSchemaCustomization = ({ actions }) => {
     type Fields {
       slug: String
     }
-  `)
+  `);
 }

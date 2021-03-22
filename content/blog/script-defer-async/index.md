@@ -5,7 +5,7 @@ description: 详解script标签中的defer和aysnc属性
 ---
 
 #### 一张图很好的说明了区别：
-![image-20210322101853195](https://obs-1d2f.oss-cn-hangzhou.aliyuncs.com/images/image-20210322101853195.png)
+![image-20210322220415727](https://obs-1d2f.oss-cn-hangzhou.aliyuncs.com/images/image-20210322220415727.png)
 
 - 普通script标签
 
