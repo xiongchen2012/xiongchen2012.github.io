@@ -10,7 +10,7 @@ description: 介绍一种类似于immer但是使用更简单的状态管理库va
 
 #### 安装
 
-```javascript
+```shell
 npm install valtio
 ```
 
@@ -32,7 +32,7 @@ setInterval(() => {
 
 然后就可以在任何地方、像普通的js对象一样直接修改值（Mutate from anywhere）。如果需要在React中使用，可以使用valtio提供的`useSnapshot`
 
-```javascript
+```jsx
 import { useSnapshot } from 'valtio'
 
 const Counter = () => {
@@ -54,7 +54,7 @@ const Counter = () => {
 
 如果代理的对象某个字段是`Promise`的话，valtio还支持和Suspense一起使用。
 
-```javascript
+```jsx
 const state = proxy({ post: fetch(url).then((res) => res.json()) })
 
 function Post() {
@@ -80,13 +80,19 @@ import { subscribe } from 'valtio'
 import { subscribeKey } from 'valtio/utils'
 
 // 可以直接订阅整个state的变更
-const unsubscribe = subscribe(state, () => console.log('state has changed to', state))
+const unsubscribe = subscribe(state, () => {
+  console.log('state has changed to', state)
+})
 
 // 也可以只订阅state中某个部分的变更
-const unsubscribe = subscribe(state.obj, () => console.log('state.obj has changed to', state.obj))
+const unsubscribe = subscribe(state.obj, () => {
+  console.log('state.obj has changed to', state.obj)
+})
 
 // 如果你想订阅的字段是JS原始类型的话，用subscribeKey更合适一点
-const unsubscribe = subscribeKey(state, 'count', (v) => console.log('state.count has changed to', v))
+const unsubscribe = subscribeKey(state, 'count', v => {
+  console.log('state.count has changed to', v)
+})
 ```
 
 别忘了在适当的时候调用一下`unsubscribe`方法来取消订阅
@@ -95,13 +101,13 @@ const unsubscribe = subscribeKey(state, 'count', (v) => console.log('state.count
 
 默认情况下，state的变更在触发re-render之前是异步的，批处理的。如果想要同步触发re-render可以在`useSnapshot`时传入`{sync: true}`来关闭这个特性
 
-```javascript
+```jsx
 function TextBox() {
   const snap = useSnapshot(state, { sync: true })
-  return <input value={snap.text} onChange={(e) => (state.text = e.target.value)} />
+  return <input value={snap.text} 
+              onChange={e => state.text = e.target.value)} />
 }
 ```
-
 ##### 5. 在vanilla-js中使用
 
 valtio不仅仅是给react使用的，也可以直接在vanilla中使用，用法基本上与react一样
