@@ -21,3 +21,5 @@ jobs:
         access-token: ${{ secrets.GH_TOKEN }}
         deploy-branch: master
         gatsby-args: --no-color
+        git-config-emai: xiongchen2046@163.com
+        git-config-name: xiongchen2012
