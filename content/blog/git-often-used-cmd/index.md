@@ -4,6 +4,37 @@ date: "2021-05-14T22:34:03.284Z"
 description: "常用Git命令速查"
 ---
 
+#### Branch操作
+
+##### 列出分支
+
+```shell
+git branch # 列出本地分支
+git branch -r # 列出远程分支
+git branch -a # 列出所有分支，包括本地和远程
+```
+
+##### 创建分支
+
+```shell
+# 创建并切换到分支
+git checkout -b <branch_name>  
+git switch -c <branch_name>
+
+# 如果要推送到远程
+git push <origin> <branch_name>
+git push --all <origin> # 推送所有分支
+```
+
+##### 删除分支
+
+```shell
+git push <origin> --delete <branch_name>
+git push <origin> :<branch_name> # 通过省略本地分支名的方法可以删除远程分支，详见下方解释
+```
+
+
+
 #### Tag操作
 
 ##### 列出标签
@@ -35,6 +66,7 @@ git tag -am "<commit-message>" <tagname> # 基于分支的某个commit打标签
 # 如果需要推送到远程
 git push <origin> <tagname>
 git push origin refs/tags/<tagname>
+git push <origin> --tags # 一次性推送所有tags
 ```
 
 
@@ -45,12 +77,20 @@ git push origin refs/tags/<tagname>
 # 删除本地TAG
 git tag -d <tagname>
 
-# 删除远程TAG（两条都可以）
+# 删除远程TAG（下面几条都可以）
 git push --delete origin tag <tagname>
 git push --delete origin <tagname
+git push <origin> :refs/tags/<tagname> 
+git push <origin> :<tagname>
 ```
 
 
 
-
+> git push命令可以用于删除服务器上的分支和标签，它的主要语法是：
+>
+> `git push <origin> <local>:<remote>`
+>
+> 当省略掉`<local>`本地分支名/标签名时，起到的作用就是删除`<remote>`分支/标签，也可以理解为：推送一个空的分支/标签给`<remote>`
+>
+> 这一点非常有用！
 
