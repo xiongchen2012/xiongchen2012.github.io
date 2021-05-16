@@ -26,9 +26,25 @@ git push <origin> <branch_name>
 git push --all <origin> # 推送所有分支
 ```
 
+##### 合并分支
+
+首先切换到目标分支
+
+```shell
+git checkout/switch <target_branch>
+git merge <source_branch>
+# 如果没有冲突，可以把source_branch的内容直接合并到target_branch中
+```
+
+
+
 ##### 删除分支
 
 ```shell
+# 删除本地分支
+git branch -d <branch_name>
+
+# 删除远程分支
 git push <origin> --delete <branch_name>
 git push <origin> :<branch_name> # 通过省略本地分支名的方法可以删除远程分支，详见下方解释
 ```
@@ -93,4 +109,3 @@ git push <origin> :<tagname>
 > 当省略掉`<local>`本地分支名/标签名时，起到的作用就是删除`<remote>`分支/标签，也可以理解为：推送一个空的分支/标签给`<remote>`
 >
 > 这一点非常有用！
-
