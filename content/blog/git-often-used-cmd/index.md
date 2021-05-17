@@ -1,7 +1,7 @@
 ---
 title: 常用Git命令速查
 date: "2021-05-14T22:34:03.284Z"
-description: "常用Git命令速查
+description: "常用Git命令速查"
 ---
 
 #### Git的基本运作原理图
