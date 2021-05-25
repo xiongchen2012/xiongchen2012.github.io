@@ -1,4 +1,8 @@
-
+---
+title: React心智模型
+date: "2021-05-25T17:48:03.284Z"
+description: "不同的人以不同的方式学习，但是好的心智模型总是有价值的。"
+---
 
 I’ve learned that the biggest difference between someone that has mastered a language, framework or tool and someone who hasn’t lies in the *mental models* they use. One person will have a clear and advanced one and the other will not.
 
