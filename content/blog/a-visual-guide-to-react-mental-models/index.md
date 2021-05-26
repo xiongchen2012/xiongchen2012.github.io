@@ -4,24 +4,20 @@ date: "2021-05-25T17:48:03.284Z"
 description: "不同的人以不同的方式学习，但是好的心智模型总是有价值的。"
 ---
 
-I’ve learned that the biggest difference between someone that has mastered a language, framework or tool and someone who hasn’t lies in the *mental models* they use. One person will have a clear and advanced one and the other will not.
+掌握一门语言、框架或工具的人和没有掌握的人之间最大的区别在于他们有没有清晰的心智模型。通过良好的心智模型，你可以直观地理解复杂问题并提出解决方案，而不是一步一步的去寻找答案。
 
-By having a good mental model you can intuitively understand complex problems and device solutions much faster than if you had to find a solution with a step-by-step process.
+> 无论你是React的老司机还是新手，拥有一个良好的心智模型是让你成为React老司机最快的方法。
 
-> Whether you’ve been working with React for years or are just starting, having a useful mental model is, in my opinion, the fastest way to feel confident working with it.
-
-In this article, I will explain those mental models that help me solve problems and tame complexity.
+本文将解释那些帮助我解决问题和降低复杂性的心智模型：
 
 - This is the first part of a **three part** series.
 - Read the [second part here, covering `useState`,`useEffect` and a component’s lifecycles](https://obedparla.com/code/a-visual-guide-to-react-mental-models-part-2-use-state-use-effect-and-lifecycles/).
 
-## What’s A Mental Model?
+## 什么是心智模型?
 
-A mental model is how we imagine a system to work. We create one by understanding different parts of the system and its connections, and it’s important because it helps us make sense of the world and helps us solve problems.
+心智模型是我们想象一个系统如何工作的方式。 我们通过理解系统的不同部分及其联系来构建心智模型，它很重要，因为它帮助我们理解世界，帮助我们解决问题。
 
-
-
-[![A representation of what a mental model is explained with an image inside a mind and the world outside as a complex system](https://obedparla.com/static/d3c5f4f4adcb11d610da2a9dd9b38ce5/0eb09/mental-models-representation.png)](https://obedparla.com/static/d3c5f4f4adcb11d610da2a9dd9b38ce5/0eb09/mental-models-representation.png)A visual representation of a mental model
+  ![image-20210525180948977](https://obs-1d2f.oss-cn-hangzhou.aliyuncs.com/images/image-20210525180948977.png)
 
 
 
