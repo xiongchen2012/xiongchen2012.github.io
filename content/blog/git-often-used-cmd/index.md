@@ -126,7 +126,7 @@ git push <origin> :<branch_name>
 git tag -n
 
 # 查看tag信息
-git show <tagname>
+git show <tag_name>
 ```
 
 
@@ -136,18 +136,21 @@ git show <tagname>
 首先，切换到需要打标签的分支上`git checkout master`，如果是基于分支的某个commit打标签，下面的命令再加一个`commit_id`就行了
 
 ```shell
-# 注解标签来添加注释或签名的；轻标签是为了在本地暂时使用或一次性使用；
+# 有两种标签：
+# 1. 注释标签：用来添加注释或签名的；
+# 2. 轻标签：为了在本地暂时使用或一次性使用；
 
 # 创建轻标签
-git tag <tagname>  # 基于分支打标签
-git tag <tagname> <commit_id> # 基于分支的某个commit打标签
+git tag <tag_name>  # 基于分支打标签
+git tag <tag_name> <commit_id> # 基于分支的某个commit打标签
+
 # 创建注释标签
-git tag -am "<commit-message>" <tagname> # 基于分支打标签
-git tag -am "<commit-message>" <tagname> # 基于分支的某个commit打标签
+git tag -am "<commit-message>" <tag_name> # 基于分支打标签
+git tag -am "<commit-message>" <tag_name> # 基于分支的某个commit打标签
 
 # 如果需要推送到远程
-git push <origin> <tagname>
-git push origin refs/tags/<tagname>
+git push <origin> <tag_name>
+git push origin refs/tags/<tag_name>
 git push <origin> --tags # 一次性推送所有tags
 ```
 
@@ -157,13 +160,13 @@ git push <origin> --tags # 一次性推送所有tags
 
 ```shell
 # 删除本地TAG
-git tag -d <tagname>
+git tag -d <tag_name>
 
 # 删除远程TAG（下面几条都可以）
-git push --delete origin tag <tagname>
-git push --delete origin <tagname
-git push <origin> :refs/tags/<tagname> 
-git push <origin> :<tagname>
+git push --delete origin tag <tag_name>
+git push --delete origin <tag_name>
+git push <origin> :refs/tags/<tag_name> 
+git push <origin> :<tag_name>
 ```
 
 
