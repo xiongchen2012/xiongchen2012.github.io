@@ -17,7 +17,7 @@ description: "不同的人以不同的方式学习，但是好的心智模型总
 
 心智模型是我们想象一个系统如何工作的方式。 我们通过理解系统的不同部分及其联系来构建心智模型，它很重要，因为它帮助我们理解世界，帮助我们解决问题。
 
-  ![image-20210525180948977](https://obs-1d2f.oss-cn-hangzhou.aliyuncs.com/images/image-20210525180948977.png)
+  <img src="https://obs-1d2f.oss-cn-hangzhou.aliyuncs.com/images/image-20210525180948977.png" alt="image-20210525180948977" style="zoom:45%;" />
 
 
 
@@ -37,11 +37,7 @@ If someone had explained it by transferred their mental model to me, I would’v
 
 React helps us build complex, interactive UIs more easily than ever before. It also encourages us to write code in a certain way, guiding us to create apps that are simpler to navigate and understand.
 
-
-
-[![An abstract model inside a mind looking at the React logo](https://obedparla.com/static/c9f28303d7dad2744b40d64b0ab33358/9aabf/react-mental-model-illustration.jpg)](https://obedparla.com/static/c9f28303d7dad2744b40d64b0ab33358/9aabf/react-mental-model-illustration.jpg)
-
-
+ <img src="https://obs-1d2f.oss-cn-hangzhou.aliyuncs.com/images/image-20210528170005430.png" alt="image-20210528170005430" style="zoom:45%;" />
 
 React itself is a mental model with a simple idea at its core: encapsulate portions of your app that rely on similar logic and UI and React will make sure that portion is always up kept up to date.
 
@@ -142,9 +138,7 @@ function logSum(a, b) {
 
 Since a component is a fancy function, that makes a component a box as well, with `props` as the ingredients the box needs to create the output.
 
-
-
-[![A plus B in a box with props explaining a mental model for JavaScript functions](https://obedparla.com/static/1078eb1563b832008167b49c2b8edb11/ce2e0/a-plus-b-box.jpg)](https://obedparla.com/static/1078eb1563b832008167b49c2b8edb11/ce2e0/a-plus-b-box.jpg)
+ <img src="https://obs-1d2f.oss-cn-hangzhou.aliyuncs.com/images/image-20210528170114384.png" alt="image-20210528170114384" style="zoom:45%;" />
 
 
 

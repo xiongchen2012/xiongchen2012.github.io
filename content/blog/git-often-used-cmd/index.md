@@ -6,7 +6,7 @@ description: "常用Git命令速查"
 
 #### Git的基本运作原理图
 
- ![image-20210516201437101](https://obs-1d2f.oss-cn-hangzhou.aliyuncs.com/images/image-20210516201437101.png)
+ <img src="https://obs-1d2f.oss-cn-hangzhou.aliyuncs.com/images/image-20210516201437101.png" alt="image-20210516201437101" style="zoom:80%;" />
 
 
 

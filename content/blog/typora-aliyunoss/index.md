@@ -55,7 +55,7 @@ Picgo是一个很不错的文件上传工具，支持很多图床：阿里云OSS
 
 打开Typora的配置窗口：`偏好设置`、`图像`。将`插入图片时...`设置为`上传图片`
 
-![image-20210423163151924](https://obs-1d2f.oss-cn-hangzhou.aliyuncs.com/images/image-20210423163151924.png)
+ <img src="https://obs-1d2f.oss-cn-hangzhou.aliyuncs.com/images/image-20210423163151924.png" alt="image-20210423163151924" style="zoom:45%;" />
 
 然后在`上传服务设定`中选择`Custom command`，在下面的`命令`中填入：`$node_path $picgo_path upload `
 
@@ -66,5 +66,4 @@ Picgo是一个很不错的文件上传工具，支持很多图床：阿里云OSS
 #### 效果
 
 经过以上两步配置之后，在typora写文档时，如果粘贴图片进来，会自动把文件上传到图床上，然后把markdown中图片的`src`替换为图床生成的URL，这样无论在哪里都可以访问到这个图片了，并且可以永久保存。
-
 
