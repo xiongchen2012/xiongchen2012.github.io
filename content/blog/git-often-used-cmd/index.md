@@ -1,5 +1,5 @@
 ---
-title: 常用Git命令速查
+title: 常用Git命令速查（1）- 基本操作
 date: "2021-05-14T22:34:03.284Z"
 description: "常用Git命令速查"
 ---
@@ -68,7 +68,7 @@ git remote rm <origin_name>
 git remote rename <old_origin> <new_origin>
 ```
 
-> 可以将远程仓库简单理解为远程地址的缩写
+> 可以将远程仓库名简单理解为远程地址的缩写
 
 
 
@@ -117,6 +117,8 @@ git push <origin> --delete <branch_name>
 git push <origin> :<branch_name> 
 ```
 
+
+
 #### Tag操作
 
 ##### 列出标签
@@ -146,7 +148,7 @@ git tag <tag_name> <commit_id> # 基于分支的某个commit打标签
 
 # 创建注释标签
 git tag -am "<commit-message>" <tag_name> # 基于分支打标签
-git tag -am "<commit-message>" <tag_name> # 基于分支的某个commit打标签
+git tag -am "<commit-message>" <commit_id> # 基于分支的某个commit打标签
 
 # 如果需要推送到远程
 git push <origin> <tag_name>
