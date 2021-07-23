@@ -1,0 +1,2 @@
+(self.webpackChunkgatsby_starter_blog=self.webpackChunkgatsby_starter_blog||[]).push([[682],{5518:function(t,e,n){"use strict";n.r(e),n.d(e,{default:function(){return a}});var r=n(3552),u=n(7294),a=function(t){function e(){return t.apply(this,arguments)||this}return(0,r.Z)(e,t),e.prototype.render=function(){return u.createElement("div",null,"关于Deathdealer")},e}(u.Component)}}]);
+//# sourceMappingURL=component---src-pages-about-js-23c30498b90f2e58db94.js.map
