@@ -1,7 +1,7 @@
 ---
 title: 前端埋点之数据上报方式
 date: "2021-07-27T15:48:03.284Z"
-description: "前端埋点数据上报到服务器的3种方式"
+excerpt: "前端埋点数据上报到服务器的3种方式:ajax，image,sendBeacon"
 ---
 
 

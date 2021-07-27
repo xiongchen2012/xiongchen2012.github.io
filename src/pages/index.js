@@ -13,12 +13,7 @@ const BlogIndex = ({ data, location }) => {
     return (
         <Layout location={location} title={siteTitle}>
             <SEO title="所有的博客" />
-            {/* <Bio /> */}
-            <p>
-                No blog posts found. Add markdown posts to "content/blog" (or
-                the directory you specified for the "gatsby-source-filesystem"
-                plugin in gatsby-config.js).
-            </p>
+            <p>Deathdealer暂时隐藏了所有的文档</p>
         </Layout>
     );
   }
@@ -86,7 +81,7 @@ export const pageQuery = graphql`
           slug
         }
         frontmatter {
-          date(formatString: "MMMM DD, YYYY")
+          date(formatString: "YYYY/MM/DD HH:mm:ss")
           title
           description
         }
