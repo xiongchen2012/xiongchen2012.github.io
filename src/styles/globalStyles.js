@@ -13,10 +13,10 @@ export const GlobalStyles = createGlobalStyle`
   
 export const lightTheme = {
     body: '#FFF',
-    text: '#000',
+    text: '#333',
 }
 
 export const darkTheme = {
-    body: '#000',
-    text: '#FFF',
+    body: '#1a1919',
+    text: '#999',
 }

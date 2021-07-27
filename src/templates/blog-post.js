@@ -4,7 +4,7 @@ import {ThemeProvider} from "styled-components";
 
 import  {useDarkMode} from "../styles/useDarkMode";
 import { GlobalStyles, lightTheme, darkTheme } from "../styles/globalStyles";
-import Toggle from "../components/Toggle";
+import Toggle from "../components/toggle";
 import Bio from "../components/bio"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
