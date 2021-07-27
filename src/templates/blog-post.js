@@ -1,6 +1,10 @@
 import * as React from "react"
 import { Link, graphql } from "gatsby"
+import {ThemeProvider} from "styled-components";
 
+import  {useDarkMode} from "../styles/useDarkMode";
+import { GlobalStyles, lightTheme, darkTheme } from "../styles/globalStyles";
+import Toggle from "../components/Toggle";
 import Bio from "../components/bio"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
@@ -9,13 +13,19 @@ const BlogPostTemplate = ({ data, location }) => {
   const post = data.markdownRemark
   const siteTitle = data.site.siteMetadata?.title || `Title`
   const { previous, next } = data
-
+  const [theme, toggleTheme, mountedComponent] = useDarkMode();
+  const themeMode = theme === 'light' ? lightTheme : darkTheme;
+  
+  if(!mountedComponent) return <div/>
   return (
-    <Layout location={location} title={siteTitle}>
+    <ThemeProvider theme={themeMode}>
+      <GlobalStyles/>
+      <Layout location={location} title={siteTitle}>
       <SEO
         title={post.frontmatter.title}
         description={post.frontmatter.description || post.excerpt}
       />
+      <Toggle theme={theme} toggleTheme={toggleTheme} />
       <article
         className="blog-post"
         itemScope
@@ -61,6 +71,7 @@ const BlogPostTemplate = ({ data, location }) => {
         </ul>
       </nav>
     </Layout>
+    </ThemeProvider>
   )
 }
 

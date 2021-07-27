@@ -48,12 +48,14 @@ const Bio = () => {
                     Written by <strong>{author.name}</strong>{' '}
                     {author?.summary || null}
                     {` `}
-                    <a href={`https://twitter.com/${social?.twitter || ``}`}>
+                    <a href={`https://twitter.com/${social?.twitter || ``}`} target="_blank" rel="noreferrer">
                         Twitter
                     </a>
                     <a
                         style={{ paddingLeft: 6 }}
                         href={`https://github.com/${social?.github || ``}`}
+                        target="_blank"
+                        rel="noreferrer"
                     >
                         Github
                     </a>

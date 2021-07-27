@@ -1,6 +1,10 @@
 import * as React from "react"
 import { Link, graphql } from "gatsby"
+import {ThemeProvider} from "styled-components";
 
+import  {useDarkMode} from "../styles/useDarkMode";
+import { GlobalStyles, lightTheme, darkTheme } from "../styles/globalStyles";
+import Toggle from "../components/Toggle";
 import Bio from "../components/bio"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
@@ -8,6 +12,11 @@ import SEO from "../components/seo"
 const BlogIndex = ({ data, location }) => {
   const siteTitle = data.site.siteMetadata?.title || `Title`
   const posts = data.allMarkdownRemark.nodes
+
+  const [theme, toggleTheme, mountedComponent] = useDarkMode();
+  const themeMode = theme === 'light' ? lightTheme : darkTheme;
+  
+  if(!mountedComponent) return <div/>
 
   if (posts.length === 0) {
     return (
@@ -19,9 +28,11 @@ const BlogIndex = ({ data, location }) => {
   }
 
   return (
+    <ThemeProvider theme={themeMode}>
+      <GlobalStyles/>
       <Layout location={location} title={siteTitle}>
           <SEO title="所有的博客" />
-          <Bio />
+          <Bio /><Toggle theme={theme} toggleTheme={toggleTheme} />
           <ol style={{ listStyle: `none` }}>
               {posts.map((post) => {
                   const title = post.frontmatter.title || post.fields.slug;
@@ -62,6 +73,7 @@ const BlogIndex = ({ data, location }) => {
               })}
           </ol>
       </Layout>
+    </ThemeProvider>
   );
 }
 
