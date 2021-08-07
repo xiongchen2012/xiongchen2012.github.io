@@ -60,6 +60,8 @@
   --color-heading: #1a202c;
   --color-heading-black: black;
   --color-accent: #d1dce5;
+  --table-border: #e0e3e6;
+  --color-bg-secondary: #fafbfc;
 }
 
 /* HTML elements */
@@ -221,12 +223,27 @@ table {
   margin-bottom: var(--spacing-8);
   border-collapse: collapse;
   border-spacing: 0.25rem;
+  border: 1px solid var(--table-border);
+}
+
+table thead{
+  background-color: #f5f2f0;
+  
 }
 
 table thead tr th {
   border-bottom: 1px solid var(--color-accent);
+  font-weight: bold;
 }
 
+table td, table th{
+  border: 1px solid var(--table-border);
+  padding: 6px 13px;
+}
+
+table tr:nth-child(even) {
+  background-color: var(--color-bg-secondary);
+}
 /* Link */
 
 a {
