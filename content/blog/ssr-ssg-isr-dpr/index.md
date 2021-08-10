@@ -16,7 +16,7 @@ description: SSR、SSG、ISR、DPR分别是什么，有什么区别，它们是�
 
 SSR 最早是为了解决单页应用（SPA）的 SEO不友好、首屏渲染时间长等问题而诞生的，在服务端实时渲染用户看到的页面，能最大程度上提高用户的体验。完整的SSR过程如下图所示：
 
- <img src="/Users/xiongchen/Library/Application Support/typora-user-images/image-20210809154055808.png" alt="image-20210809154055808" style="zoom:40%;" />
+ <img src="https://obs-1d2f.oss-cn-hangzhou.aliyuncs.com/images/image-20210810222708422.png" alt="image-20210810222708422" style="zoom:50%;" />
 
 ##### SSR的弊端
 
@@ -62,7 +62,7 @@ SSR 最早是为了解决单页应用（SPA）的 SEO不友好、首屏渲染时
 
 页面的更新遵循 stale-while-revalidate 的逻辑，即始终返回 CDN 的缓存数据（无论是否过期）；如果数据已经过期，那么触发异步的预渲染，异步更新 CDN 的缓存。
 
-![img](https://pic3.zhimg.com/80/v2-b4954ced325187f5894ab46e0eaf0c16_1440w.jpg)
+<img src="https://pic3.zhimg.com/80/v2-b4954ced325187f5894ab46e0eaf0c16_1440w.jpg" alt="img" style="zoom:50%;" />
 
 这就是增量式更新（ISR）的概念，这个概念最早由 [Next.js 在 9.5 版本中提出](https://link.zhihu.com/?target=https%3A//nextjs.org/blog/next-9-5%23stable-incremental-static-regeneration)
 
@@ -81,5 +81,5 @@ DPR 本质上讲，是对 ISR 的模型做了几处改动，并且搭配上 CDN 
 2. 数据页面过期时，不再响应过期的缓存页面，而是 CDN 回源到 Builder 上，渲染出最新的数据；
 3. 每次发布新版本时，自动清除 CDN 的缓存数据。
 
-![img](https://pic3.zhimg.com/80/v2-2e1ad7f07dcd5986606f763f62894aae_1440w.jpg)
+<img src="https://pic3.zhimg.com/80/v2-2e1ad7f07dcd5986606f763f62894aae_1440w.jpg" alt="img" style="zoom:50%;" />
 
