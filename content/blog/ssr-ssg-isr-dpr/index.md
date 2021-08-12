@@ -77,6 +77,8 @@ SSR 最早是为了解决单页应用（SPA）的 SEO不友好、首屏渲染时
 
 DPR 本质上讲，是对 ISR 的模型做了几处改动，并且搭配上 CDN 的能力：
 
+
+
 1. 去除了 fallback 行为，而是直接用 [On-demand Builder](https://link.zhihu.com/?target=https%3A//www.netlify.com/blog/2021/04/14/faster-builds-for-large-sites-on-netlify-with-on-demand-builders-now-in-early-access/)（按需构建器）来响应未经过预渲染的页面，然后将结果缓存至 CDN；
 2. 数据页面过期时，不再响应过期的缓存页面，而是 CDN 回源到 Builder 上，渲染出最新的数据；
 3. 每次发布新版本时，自动清除 CDN 的缓存数据。
