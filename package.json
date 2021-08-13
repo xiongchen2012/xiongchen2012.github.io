@@ -34,8 +34,12 @@
     "typeface-montserrat": "0.0.75"
   },
   "devDependencies": {
+    "autoprefixer": "^10.3.1",
+    "gatsby-plugin-postcss": "^4.11.0",
     "gh-pages": "^3.1.0",
-    "prettier": "2.2.1"
+    "postcss": "^8.3.6",
+    "prettier": "2.2.1",
+    "tailwindcss": "^2.2.7"
   },
   "homepage": "https://github.com/gatsbyjs/gatsby-starter-blog#readme",
   "keywords": [

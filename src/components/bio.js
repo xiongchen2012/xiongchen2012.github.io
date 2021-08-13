@@ -32,34 +32,40 @@ const Bio = () => {
     const social = data.site.siteMetadata?.social;
 
     return (
-        <div className="bio">
-            <StaticImage
-                className="bio-avatar"
-                layout="fixed"
-                formats={['AUTO', 'WEBP', 'AVIF']}
-                src="../images/profile-pic.jpg"
-                width={50}
-                height={50}
-                quality={95}
-                alt="AvatarOfDD"
-            />
+        <div className='bio'>
             {author?.name && (
-                <p>
-                    Written by <strong>{author.name}</strong>{' '}
-                    {author?.summary || null}
-                    {` `}
-                    <a href={`https://twitter.com/${social?.twitter || ``}`} target="_blank" rel="noreferrer">
-                        Twitter
-                    </a>
-                    <a
-                        style={{ paddingLeft: 6 }}
-                        href={`https://github.com/${social?.github || ``}`}
-                        target="_blank"
-                        rel="noreferrer"
-                    >
-                        Github
-                    </a>
-                </p>
+                <figure className='md:flex bg-gray-100 rounded-xl p-8 md:p-0'>
+                    <div className='pt-6 md:p-8 text-center md:text-left space-y-4'>
+                        <blockquote>
+                            <p className='text-lg font-semibold'>
+                                deathdealer的技术博客，好记性不如烂笔头，在这里记录下学习过程中值得记录的一切！
+                            </p>
+                        </blockquote>
+                        <figcaption className='font-small'>
+                            <div className='text-gray-500'>
+                                <a
+                                    href={`https://twitter.com/${
+                                        social?.twitter || ``
+                                    }`}
+                                    target='_blank'
+                                    rel='noreferrer'
+                                >
+                                    Twitter
+                                </a>
+                                <a
+                                    style={{ paddingLeft: 6 }}
+                                    href={`https://github.com/${
+                                        social?.github || ``
+                                    }`}
+                                    target='_blank'
+                                    rel='noreferrer'
+                                >
+                                    Github
+                                </a>
+                            </div>
+                        </figcaption>
+                    </div>
+                </figure>
             )}
         </div>
     );

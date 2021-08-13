@@ -13,6 +13,7 @@ module.exports = {
         },
     },
     plugins: [
+        'gatsby-plugin-postcss',
         'gatsby-plugin-cname',
         {
             resolve: `gatsby-plugin-nprogress`,
