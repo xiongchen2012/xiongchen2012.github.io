@@ -1,3 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+ol,
+ul {
+    list-style: disc;
+}
+
+li > ul {
+    list-style: circle;
+  }
+
+img {
+    margin-bottom: 20px;
+}

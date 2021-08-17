@@ -14,9 +14,9 @@ description: 当使用 Hook 特性编写组件的时候时候，总能感觉到�
 const [state,setState] = useState(initalState)
 ```
 
-`useState`的输入是state的初始值，输出是返回一个元组`[state,state的setter函数]`，其中的`state`会被`render函数`引用到，调用`setter函数`会除了会设置新的state之外还会更新UI（通过调用`render()`函数实现）
+`useState`的输入是state的初始值，输出始终是一个元组`[state,state的setter函数]`，其中的`state`会被`render函数`用到，调用`setter函数`除了会设置新的state之外还会更新UI（通过调用`render()`函数实现）
 
-现实中的UI组件不可能只有一个state变量，useState会被多次调用，所以这些state会被保存到一个容器中，这个容器其实就是朴实无华的数组。具体过程如下：
+绝大部分UI组件不可能只有一个state变量，因此`useState`会被多次调用，所以这些state会被保存到一个容器中，这个容器其实就是朴实无华的数组。具体过程如下：
 
 - 第一次渲染时候，根据 useState 顺序，逐个声明 state 并且将其放入全局 Array 中。每次声明 state，都要将 cursor 增加 1。
 - 调用`setter函数`时，会将相应的`state`值更新，同时触发再次渲染的时候。**cursor 被重置为 0**。按照 useState 的声明顺序，依次拿出最新的 state 的值，视图更新，过程如下图所示：
