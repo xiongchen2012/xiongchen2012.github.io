@@ -44,7 +44,7 @@ const ComponentB = () => <ComponentC />;
 
 在React中有好多方法可以避免不必要的`re-render`。本文会聚集于 `React.memo` 这种方式（其它方式将会在后续的文章中介绍）。如果你对 `memo`有兴趣，可以阅读一下丹大师的[Before you memo()](https://overreacted.io/before-you-memo/)
 
-> 在这篇文章中也请记住这一点，我只会探索直接更新`state`或是父组件更新而导致的重新渲染，不会传递任何`props`
+> 在这篇文章中也请记住这一点，我只会探索直接更新`state`或是父组件更新而导致的重新渲染，不会传递任何`props`（props变化的情况下一篇blog会讨论）
 
 如果用 `memo`包裹了组件，当父组件重新渲染时，他是不会重新渲染的。
 
