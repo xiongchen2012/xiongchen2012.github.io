@@ -1,7 +1,7 @@
 ---
 title: React Rendering教程（3） - useMemo
 date: "2021-08-23T22:55:23.256Z"
-description: 子组件用memo包裹时，即使它的props没有变化，父组件渲染时为什么仍然会重新渲染？
+description: `useMemo`会缓存它的计算结果而不是每次render时都返回一个新的值, 它会返回旧的缓存的值，
 
 ---
 

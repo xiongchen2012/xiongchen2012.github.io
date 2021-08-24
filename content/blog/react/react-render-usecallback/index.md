@@ -1,7 +1,7 @@
 ---
 title: React Rendering教程（4） - useCallback
 date: "2021-08-24T13:22:02.383Z"
-description: 子组件用memo包裹时，即使它的props没有变化，父组件渲染时为什么仍然会重新渲染？
+description: 我们经常会把匿名函数作为事件处理器传递给React组件。即使子组件被`memo`包裹，也会引起子组件的重新渲染
 ---
 
 > [原文地址](https://alexsidorenko.com/blog/react-render-usecallback/)
