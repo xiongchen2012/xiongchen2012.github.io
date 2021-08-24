@@ -1,8 +1,7 @@
 ---
 title: React Rendering教程（3） - useMemo
 date: "2021-08-23T22:55:23.256Z"
-description: `useMemo`会缓存它的计算结果而不是每次render时都返回一个新的值, 它会返回旧的缓存的值，
-
+description: useMemo会缓存它的计算结果而不是每次render时都返回一个新的值, 它会返回旧的缓存的值，
 ---
 
 > [原文地址](https://alexsidorenko.com/blog/react-render-usememo/)
