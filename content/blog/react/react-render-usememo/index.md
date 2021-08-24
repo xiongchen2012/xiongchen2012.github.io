@@ -1,6 +1,6 @@
 ---
 title: React Rendering教程（3） - useMemo
-date: "2021-08-23T20:10:28.128Z"
+date: "2021-08-23T22:55:23.256Z"
 description: 子组件用memo包裹时，即使它的props没有变化，父组件渲染时为什么仍然会重新渲染？
 
 ---
