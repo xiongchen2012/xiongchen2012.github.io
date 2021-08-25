@@ -33,10 +33,6 @@ description: 整理Promise所有静态方法
 Promise.all(iterable)
 ```
 
- **参数：**
-
-`iterable`是一个可迭代对象，通常情况下是一个`promise`数组
-
 **运行机制：**
 
 - 如果参数是一个空的可迭代对象，直接返回一个`resolved`的Promise
@@ -58,10 +54,6 @@ Promise.all(iterable)
 Promise.allSettled(iterable)
 ```
 
- **参数：**
-
-`iterable`是一个可迭代对象，通常情况下是一个`promise`数组
-
 **运行机制：**
 
 - `iterable`里所有的promise每一个都必须`resolve`或`reject`才行
@@ -80,10 +72,6 @@ Promise.allSettled(iterable)
 ```javascript
 Promise.race(iterable)
 ```
-
- **参数：**
-
-`iterable`是一个可迭代对象，通常情况下是一个`promise`数组
 
 **运行机制：**
 
@@ -110,10 +98,6 @@ Promise.race(iterable)
 ```javascript
 Promise.any(iterable)
 ```
-
- **参数：**
-
-`iterable`是一个可迭代对象，通常情况下是一个`promise`数组
 
 **运行机制：**
 
