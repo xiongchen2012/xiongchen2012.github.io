@@ -1,5 +1,5 @@
 ---
-title: React的反模式
+title: React常见反模式
 date: "2021-10-06T10:33:23.169Z"
 description: React常见的反模式，如何避免这些反模式
 ---
