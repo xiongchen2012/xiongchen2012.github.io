@@ -8,9 +8,7 @@ description: 我们经常会把匿名函数作为事件处理器传递给React�
 
 我们经常会把匿名函数作为事件处理器传递给React组件。即使子组件被`memo`包裹，也会引起子组件的重新渲染
 
- <img src="https://alexsidorenko.com/367c6ba9150e78ec8142892817bf80e1/initial.gif" style="zoom:50%;" />
-
-
+<video style="aspect-ratio: 1360/665" autoplay="" loop="" muted="" playsinline="" src="https://alexsidorenko.com/a74a21ec4b3136079f1597f02301f898/initial.mp4"></video>
 
 ### JS中的函数
 
@@ -22,7 +20,7 @@ description: 我们经常会把匿名函数作为事件处理器传递给React�
 
 当这样传递一个匿名函数时，很容易忽略`onClick`仅仅只是组件的一个`prop`，而函数也仅仅只是这个`prop`的值。如果把函数赋值给一个变量时，会更容易看出这一点，如下图所示：
 
- <img src="https://alexsidorenko.com/4d5c3004310883d24d2edf3f94b68b7d/declare-function.gif" style="zoom:50%;" />
+<video style="aspect-ratio: 1360/776" autoplay="" loop="" muted="" playsinline="" src="https://alexsidorenko.com/22835a82687aab5f649e792f80720ac4/declare-function.mp4"></video>
 
 这种方式更加明显了，`handler`存储了`onClick` 的值（函数）。无论什么时候这个值变了，子组件都会重新渲染。函数是非原始类型，只会进行引用的比较。
 
@@ -47,7 +45,7 @@ a === a // true
 
 所以，如果想要缓存`handler`的引用，只要把用 `useCallback`包裹一下就行了，先看下面的示例：
 
- <img src="https://alexsidorenko.com/e75abaaa66d7a23de75a16de494630d0/empty-dependencies.gif" style="zoom:50%;" />
+<video style="aspect-ratio: 1360/778" autoplay="" loop="" muted="" playsinline="" src="https://alexsidorenko.com/3b1f1e02cc97c253db02a9169b9e9c38/empty-dependencies.mp4"></video>
 
 可以看到子组件不再重新渲染了，但是`count`不管你点多少次按钮只更新了1次。这也是依赖列表的原因。  `useMemo`和 `useCallback` 一样，只有在依赖列表中的项目发生变化时才会重新计算和更新缓存。 `handler` 在第1次render时会被缓存。由于闭包的存在，即使`count`发生了变化，记忆的函数引用的也是之前的`count`值。在上面的示例中，引用的`count`始终是`0`，因此 `count + 1` 始终是 `1`.
 
@@ -55,7 +53,7 @@ a === a // true
 
 为了使`update`可以更新，可以把`update`放在依赖列表中。通过这种方法 `useCallback` 只要`count`变化时就会重新计算并返回一个持有最新词法作用域的 `handler` 
 
- <img src="https://alexsidorenko.com/9c6c40fbd7d5b872a86b91e02973bf34/count-dependency.gif" style="zoom:50%;" />
+<video style="aspect-ratio: 1360/778" autoplay="" loop="" muted="" playsinline="" src="https://alexsidorenko.com/cfc69f54ded494e3a7753bd21946fa3d/count-dependency.mp4"></video>
 
 噗，又回到原点了。子组件也会一起跟着重新渲染，因为`handler`每次都会随着`count`的改变而更新。为了解决这个问题，可以使用**函数式更新**。
 
@@ -77,6 +75,6 @@ setCount(prevCount => prevCount + 1)
 
 函数式更新可以让我们把`count`从依赖列表中移除，而不用担心闭包的问题。函数 `handler` 不会随着`count`改变而重新计算，而且 `prevCount` 会始终引用最新的值。
 
- <img src="https://alexsidorenko.com/4e2eaef484428232f4ffcc280300b732/functional-update.gif" style="zoom:50%;" />
+<video style="aspect-ratio: 1360/837" autoplay="" loop="" muted="" playsinline="" src="https://alexsidorenko.com/9401a1fb31656179d6294bf4ad068c2c/functional-update.mp4"></video>
 
 完美解决！

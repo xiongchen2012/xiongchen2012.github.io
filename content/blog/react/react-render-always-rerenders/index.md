@@ -8,7 +8,7 @@ description: 什么时候React组件会重新渲染？是当它的state或者pro
 
 先上图：
 
- <img src="https://alexsidorenko.com/6a963b5633b0c2026c6115bd5058703f/parent-rerender.gif" style="zoom:80%;" />
+<video style="aspect-ratio: 1360/740" autoplay="" loop="" muted="" playsinline="" src="https://alexsidorenko.com/e683ce6a34ba9150a64731879649fb75/parent-rerender-new.mp4"></video>
 
 先看上图 👆，APP的父子结构是： `App > A > B > C`，代码如下：
 
@@ -32,7 +32,9 @@ const ComponentB = () => <ComponentC />;
 
 为了进一步演示上面的结论，我们给每个组件加上自己的`state`来跟踪这一行为。
 
- <img src="https://alexsidorenko.com/728abfb0a5d4c5e903945ed97934ef40/state.gif" style="zoom:80%;" />
+<video style="aspect-ratio: 1360/740" autoplay="" loop="" muted="" playsinline="" src="https://alexsidorenko.com/5026a216db461be8e241d5a23148ba0a/state-new.mp4"></video>
+
+
 
 当`C`组件的`state`变化时，只有`C`组件重新渲染。但是当`B`组件的`state`变化时， `B`和`C`都重新渲染了。`B`重新渲染是因为它的`state`更新了，而`C`的重新渲染则是因为它的父组件（B）重新渲染了。
 
@@ -48,17 +50,15 @@ const ComponentB = () => <ComponentC />;
 
 如果用 `memo`包裹了组件，当父组件重新渲染时，他是不会重新渲染的。
 
- <img src="https://alexsidorenko.com/ef91c51dd8092299ccb379791105042f/memo-1.gif" style="zoom:80%;" />
+ <video style="aspect-ratio: 1360/850" autoplay="" loop="" muted="" playsinline="" src="https://alexsidorenko.com/080d4e7fbda8d86b1b1cae3ef4e68fbe/memo-1-new.mp4"></video>
 
 注意：`C`组件因为`state`的更新而重新渲染，但是它的父组件B重新渲染后，它并没有重新渲染。
-
-
 
 ### 提升memo层级
 
 把 `memo`的层级向上提升，看看会发生什么
 
- <img src="https://alexsidorenko.com/7066ca50f1588ee582721662a5450ea0/memo-2.gif" style="zoom:80%;" />
+ <video style="aspect-ratio: 1360/850" autoplay="" loop="" muted="" playsinline="" src="https://alexsidorenko.com/28677def925378663b692d828e6d63a0/memo-2-new.mp4"></video>
 
 `A/B/C`因为`state`更新导致的重新渲染，结论和之前一样。但是App的重新渲染不影响下面的子组件。结论是：**用`memo`包裹的组件，会阻止它整个子树上的组件因为父组件（也就是这个用memo包裹的组件）更新而导致的重新渲染**
 
@@ -70,7 +70,7 @@ const ComponentB = () => <ComponentC />;
 
 ### 兄弟（相邻）组件如何？
 
- <img src="https://alexsidorenko.com/575822f38738dfb52665d0cc137d503a/adjacent.gif" alt="https://alexsidorenko.com/575822f38738dfb52665d0cc137d503a/adjacent.gif" style="zoom:80%;" />
+<video style="aspect-ratio: 1360/850" autoplay="" loop="" muted="" playsinline="" src="https://alexsidorenko.com/303d0e491afb2d055835688b36ba24ad/adjacent-new.mp4"></video>
 
 兄弟组件也符合上面的规则，用 `memo` 包裹的组件不会随着父组件更新而re-render，而且它的子组件树也不会重新渲染。
 
